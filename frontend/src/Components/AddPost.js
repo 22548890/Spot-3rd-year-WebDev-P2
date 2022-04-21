@@ -2,8 +2,9 @@ import { useState } from 'react'
 import React from "react"
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Button from './Button';
-import Swal from 'sweetalert2'
-import "../CSS/Posts.css"
+import "./CSS/Posts.css"
+import { GrLocation } from 'react-icons/gr'
+import { FaLocationArrow } from 'react-icons/fa'
 
 const AddPost = ({ onAdd, showAdd }) => {
     const [postName, setName] = useState('')
@@ -15,11 +16,7 @@ const AddPost = ({ onAdd, showAdd }) => {
     const onSubmit = (e) => {
         e.preventDefault();
         if (!postName || !postDescrip) {
-            Swal.fire(
-                'Please include a post name and description',
-                '',
-                'warning',
-            )
+            alert('Please include a post name and description')
             return
         }
 
@@ -34,7 +31,7 @@ const AddPost = ({ onAdd, showAdd }) => {
                 'longitude': longitude
             }),
         }
-        fetch('http://127.0.0.1:5000/createPost', requestOpt)
+        fetch('http://localhost:6000/post', requestOpt)
             .then(response => response.json())
             .catch(error => console.log(error));
 
@@ -66,7 +63,8 @@ const AddPost = ({ onAdd, showAdd }) => {
                 </div>
                 <div className='form-control'>
                     <label>Category</label>
-                    <select className="comConSelect" required value={postCategory} onChange={(e) => setLan(e.target.value)}>
+                    <span> </span>
+                    <select className="comConSelect" required value={postCategory} onChange={(e) => setCat(e.target.value)}>
                         <option value={"None"} hidden >Select Category</option>
                         <option value={"Sport"} >Sport</option>
                         <option value={"Education"} >Education</option>
@@ -74,17 +72,17 @@ const AddPost = ({ onAdd, showAdd }) => {
                         <option value={"Cars"} >Cars</option>
                     </select>
                 </div>
-                <div className='form-control form-control-check'>
-                    <button className="btn-block" onClick={(e) => {
+                <div >
+                    <FaLocationArrow className="icon-show" onClick={() => {
                         navigator.geolocation.getCurrentPosition(position => {
-                            setLat(position.coords.latidude)
+                            setLat(position.coords.latitude)
                             setLon(position.coords.longitude)
                         })
-                    }} >Share Location</button>
+                    }} />
                 </div>
-                <button className="btn-block" onClick={() => { onSubmit() }} >Add Post</button>
+                <button className="btn" onClick={() => { onSubmit() }} >Add Post</button>
             </form>
-            <button className="back" onClick={() => { handleHome() }}>Cancel</button>
+            <button className="btn" onClick={() => { handleHome() }}>Cancel</button>
         </div>
 
     )

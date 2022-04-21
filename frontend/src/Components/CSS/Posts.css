@@ -147,3 +147,11 @@
     height: 20px;
     
   }
+
+  .icon-show {
+    position: relative;
+    top: 7px;
+    margin: 20px 0;
+    cursor: pointer;
+    color: green;
+  }
