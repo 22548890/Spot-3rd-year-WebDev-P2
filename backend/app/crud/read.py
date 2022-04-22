@@ -1,7 +1,7 @@
-from email.policy import default
-from app import app
-from app import models
+from app import app, db
+from app.models import User, token_required
 
 @app.route('/hello', methods=['GET'])
-def hello():
-    return models.MESSAGES['default']
+@token_required
+def hello(current_user):
+    return current_user.username

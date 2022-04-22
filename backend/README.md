@@ -10,3 +10,5 @@ You only need to do this once:
 From now you only have to do:
 
     flask run
+
+Note: If you change anything regarding the structure of a table, first delete the table (in phpMyAdmin) and then ony "flask run".
