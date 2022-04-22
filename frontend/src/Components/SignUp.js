@@ -148,35 +148,29 @@ class SignUp extends React.Component {
 
     let data = this.state;
     const requestOpt = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        'name': data.username,
-        'password': data.password,
-        'email': data.email,
-        'scaleJava': "data.scaleJava",
-        'scalePython': "data.scalePython",
-        'scaleC': "data.scaleC",
-        'scaleGo': "data.scaleGo",
-        'open_to_contracts': true
-
+          'username': data.username,
+          'email': data.email,
+          'password': data.password,
+          'avatar_url': ""
       }),
-    };
+  }
+  fetch('http://127.0.0.1:5000/register', requestOpt)
+      .then(response => response.json())
+      .catch(error => console.log(error));
+  
+  //window.location.pathname = "/";
 
-    async function fetchFunc() {
-      return await fetch("http://127.0.0.1:5000/devReg", requestOpt)
-        .then((response) => response.json())
-        .catch((error) => console.log(error));
-    }
-    (async () => {
-      let info = await fetchFunc();
-      if (info.success) {
-        window.location.pathname = "/login";
-      } else {
-        Swal.fire(info.msg, "Try again!", "warning");
-      }
-    })();
-  };
+}
+      // let info = await fetchFunc();
+      // if (info.success) {
+      //   window.location.pathname = "/login";
+      // } else {
+      //   Swal.fire(info.msg, "Try again!", "warning");
+      // }
+    
 
   render() {
     const {
