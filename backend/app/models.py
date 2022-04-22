@@ -76,10 +76,11 @@ class Post(db.Model):
 
     def __init__(self, text, video_url, longitude, latitude, category):
         self.text = text
-        self,video_url = video_url
+        self.video_url = video_url
         self.longitude = longitude
         self.latitude = latitude
         self.category = category    
+
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -87,10 +88,45 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+#   post
+#   user 
+
     def __init__(self, text):
         self.text = text
 
 
+###################
+#   Schemas
+###################
+
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('username', 'email', 'avatar_url')
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+# class GroupSchema(ma.Schema):
+#     class Meta:
+#         fields = ('name')
+# group_schema = GroupSchema()
+# groups_schema = GroupSchema(many=True)
+
+class PostSchema(ma.Schema):
+    class Meta:
+        fields = ('text','video_url', 'date', 'longitude', 'latitude', 'category', 'user.username', 'group.name')
+post_schema = PostSchema()
+posts_schema = PostSchema(many=True)
+
+class CommentSchema(ma.Schema):
+    class Meta:
+        fields = ('text', 'user.username')
+comment_schema = CommentSchema()
+comments_schema = CommentSchema(many=True)
+
+
+###################
+#  Authentication
+###################
 
 def token_required(f):
    @wraps(f)

@@ -35,15 +35,13 @@ def login():
     username = request.json['username']
     password = request.json['password']
 
-    user_exist = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first()
 
-    if not user_exist:
+    if not user:
         return {
             'success': False,
             'msg': 'This username does not exists'
         }
-
-    user = User.query.get(user_exist.id)
 
     if check_password_hash(user.password_hash, password):
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
@@ -62,7 +60,7 @@ def login():
 def group_create(current_user):
     name = request.json['name']
     
-    group_exist = User.query.filter_by(name=name).first()
+    group_exist = Group.query.filter_by(name=name).first()
     
     if group_exist:
         return {
@@ -78,18 +76,35 @@ def group_create(current_user):
     db.session.commit()
 
     return {
-        'success': True,
+        'success': True
     }
 
-# @app.route('/group/join', methods = ['POST'])
-# @token_required
-# def group_join(current_user):
-#     name = request.json['name']
+@app.route('/group/join', methods = ['POST'])
+@token_required
+def group_join(current_user):
+    name = request.json['name']
 
-#     group = Group(name=name)
+    group = Group.query.filter_by(name=name).first()
 
+    if not group:
+        return {
+            'success': False,
+            'msg': 'Group does not exists'
+        }
 
-#     return
+    if current_user in group.users:
+        return {
+            'success': False,
+            'msg': 'Already in group'
+        }
+
+    group.users.append(current_user)
+
+    db.session.commit()
+    
+    return {
+        'success': True
+    }
 
 @app.route('/post', methods = ['POST'])
 @token_required
@@ -101,8 +116,15 @@ def post(current_user):
     category = request.json['category']
     group_name = request.json['group_name']
 
-    post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, category=category)
     group = Group.query.filter_by(name=group_name).first()
+
+    if not group:
+        return {
+            'success': False,
+            'msg': 'Group does not exists'
+        }
+
+    post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, category=category)
 
     current_user.posts.append(post)
     group.posts.append(post)
@@ -111,11 +133,7 @@ def post(current_user):
     db.session.commit()
 
     return {
-        'text': text,
-        'video_url': video_url,
-        'longitude': longitude,
-        'latitude': latitude,
-        'category': category,
+        'success': True,
         'user_name': current_user.username,
         'group_name': group_name
     }
