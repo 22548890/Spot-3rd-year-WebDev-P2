@@ -7,15 +7,17 @@ import { GrLocation } from 'react-icons/gr'
 import { FaLocationArrow } from 'react-icons/fa'
 
 const AddPost = ({ onAdd, showAdd }) => {
-    const [postName, setName] = useState('')
-    const [postCategory, setCat] = useState('')
-    const [postDescrip, setDes] = useState('')
+    const [userName, setUserName] = useState('')
+    const [groupName, setGroupName] = useState('')
+    const [postName, setPostName] = useState('')
+    const [category, setCat] = useState('')
+    const [description, setDes] = useState('')
     const [latitude, setLat] = useState('')
     const [longitude, setLon] = useState('')
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (!postName || !postDescrip) {
+        if (!postName || !description) {
             alert('Please include a post name and description')
             return
         }
@@ -24,47 +26,46 @@ const AddPost = ({ onAdd, showAdd }) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'name': postName,
-                'category': postCategory,
-                'description': postDescrip,
+                'userName': userName,
+                'groupName': groupName,
+                'postName': postName,
+                'category': category,
+                'description': description,
                 'latitude': latitude,
                 'longitude': longitude
             }),
         }
-        fetch('http://localhost:6000/post', requestOpt)
+        fetch('http://127.0.0.1:5000/createPost', requestOpt)
             .then(response => response.json())
             .catch(error => console.log(error));
 
-        window.location.pathname = "/";
-        setName('')
+        setPostName('')
+        setUserName('')
+        setGroupName('')
         setCat('')
         setDes('')
         setLat('')
         setLon('')
 
     }
-    const handleHome = () => {
-        window.location.pathname = "/";
-    }
-
-
+    
     return (
         <div className="container">
             <form className='add-form' onSubmit={onSubmit}>
                 <div className='form-control'>
                     <label>Post Name</label>
-                    <input type='text' placeholder='Add Post name' value={postName} onChange={(e) => setName(e.target.value)}
+                    <input type='text' placeholder='Add Post name' value={postName} onChange={(e) => setPostName(e.target.value)}
                     />
                 </div>
                 <div className='form-control'>
                     <input type='text' placeholder="What's happening?"
-                        value={postDescrip} onChange={(e) => setDes(e.target.value)}
+                        value={description} onChange={(e) => setDes(e.target.value)}
                     />
                 </div>
                 <div className='form-control'>
                     <label>Category</label>
                     <span> </span>
-                    <select className="comConSelect" required value={postCategory} onChange={(e) => setCat(e.target.value)}>
+                    <select className="comConSelect" required value={category} onChange={(e) => setCat(e.target.value)}>
                         <option value={"None"} hidden >Select Category</option>
                         <option value={"Sport"} >Sport</option>
                         <option value={"Education"} >Education</option>
@@ -82,7 +83,6 @@ const AddPost = ({ onAdd, showAdd }) => {
                 </div>
                 <button className="btn" onClick={() => { onSubmit() }} >Add Post</button>
             </form>
-            <button className="btn" onClick={() => { handleHome() }}>Cancel</button>
         </div>
 
     )
