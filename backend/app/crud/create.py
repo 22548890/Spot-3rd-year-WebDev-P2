@@ -1,12 +1,14 @@
 from app import app, db
 from app.models import User, Group, Post, Comment, token_required
+
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from datetime import datetime, timedelta
-
 from flask import request
+from flask_cors import cross_origin
 
 @app.route('/register', methods = ['POST'])
+@cross_origin()
 def register():
     username = request.json['username']
     email = request.json['email']
@@ -27,10 +29,11 @@ def register():
     db.session.commit()
 
     return {
-        'success': True,
+        'success': True
     }
 
 @app.route('/login', methods = ['POST'])
+@cross_origin()
 def login():
     username = request.json['username']
     password = request.json['password']
@@ -56,6 +59,7 @@ def login():
         }
 
 @app.route('/group/create', methods = ['POST'])
+@cross_origin()
 @token_required
 def group_create(current_user):
     name = request.json['name']
@@ -80,6 +84,7 @@ def group_create(current_user):
     }
 
 @app.route('/group/join', methods = ['POST'])
+@cross_origin()
 @token_required
 def group_join(current_user):
     name = request.json['name']
@@ -89,7 +94,7 @@ def group_join(current_user):
     if not group:
         return {
             'success': False,
-            'msg': 'Group does not exists'
+            'msg': 'Group does not exist'
         }
 
     if current_user in group.users:
@@ -107,6 +112,7 @@ def group_join(current_user):
     }
 
 @app.route('/post', methods = ['POST'])
+@cross_origin()
 @token_required
 def post(current_user):
     text = request.json['text']
@@ -121,7 +127,7 @@ def post(current_user):
     if not group:
         return {
             'success': False,
-            'msg': 'Group does not exists'
+            'msg': 'Group does not exist'
         }
 
     post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, category=category)
@@ -136,4 +142,33 @@ def post(current_user):
         'success': True,
         'user_name': current_user.username,
         'group_name': group_name
+    }
+
+@app.route('/comment', methods = ['POST'])
+@cross_origin()
+@token_required
+def comment(current_user):
+    text = request.json['text']
+    post_id = request.json['post_id']
+
+    post = Post.query.get(post_id)
+
+    if not post:
+        return {
+            'success': False,
+            'msg': 'Post does not exist'
+        }
+
+    comment = Comment(text=text)
+
+    current_user.comments.append(comment)
+    post.comments.append(comment)
+
+    db.session.add(comment)
+    db.session.commit()
+
+    return {
+        'success': True,
+        'post_id': post_id,
+        'user': current_user.username
     }
