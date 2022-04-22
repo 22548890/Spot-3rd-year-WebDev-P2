@@ -36,12 +36,6 @@ class User(db.Model):
 #   groups
 #   groups_admin
 
-    def set_jwt_auth_active(self, set_status):
-        self.jwt_auth_active = set_status
-
-    def check_jwt_auth_active(self):
-        return self.check_jwt_auth_active
-
     def __init__(self, username, email, avatar_url, password_hash):
         self.username = username
         self.email = email
@@ -85,6 +79,7 @@ class Post(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -101,25 +96,25 @@ class Comment(db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('username', 'email', 'avatar_url')
+        fields = ('id', 'username', 'email', 'avatar_url')
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
-# class GroupSchema(ma.Schema):
-#     class Meta:
-#         fields = ('name')
-# group_schema = GroupSchema()
-# groups_schema = GroupSchema(many=True)
+class GroupSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name')
+group_schema = GroupSchema()
+groups_schema = GroupSchema(many=True)
 
 class PostSchema(ma.Schema):
     class Meta:
-        fields = ('text','video_url', 'date', 'longitude', 'latitude', 'category', 'user.username', 'group.name')
+        fields = ('id', 'text','video_url', 'date', 'longitude', 'latitude', 'category', 'user.username', 'group.name')
 post_schema = PostSchema()
 posts_schema = PostSchema(many=True)
 
 class CommentSchema(ma.Schema):
     class Meta:
-        fields = ('text', 'user.username')
+        fields = ('id', 'text', 'date', 'user.username')
 comment_schema = CommentSchema()
 comments_schema = CommentSchema(many=True)
 
