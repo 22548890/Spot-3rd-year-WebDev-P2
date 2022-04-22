@@ -1,0 +1,201 @@
+#navbar {
+    /* background: white; */
+    display: flex;
+    position: sticky;
+    top: 0;
+    height: 60px;
+    line-height: 60px;
+    width: 100%;
+    z-index: 10;
+    background: rgb(255, 255, 255);
+    width: 100vw;
+    height: 60px;
+    border: 1px solid rgb(153, 143, 143);
+    border-bottom: 3px solid rgb(153, 143, 143);
+  }
+  
+  .nav-wrapper {
+    margin: auto;
+    text-align: center;
+    width: 90%;
+  } 
+  
+  .logo {
+    float: left;
+    margin-left: -10px;
+    font-size: 1.5em;
+    height: 40px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  } 
+  
+  #navbar ul {
+    display: inline-block;
+    float: right;
+    list-style: none;
+    margin-right: 14px;
+    margin-top: -10px;
+    text-align: right;
+    transition: transform 0.5s ease-out;
+    -webkit-transition: transform 0.5s ease-out;
+  } @media(max-width: 640px) {
+      #navbar ul {
+        display: none;
+      }
+    } @media(orientation: landscape) {
+        #navbar ul {
+          display: inline-block;
+        }
+      }
+  
+  #navbar li {
+    display: inline-block;
+  }
+  
+  #navbar li a {
+    color: rgb(13, 26, 38);
+    display: block;
+    font-size: 0.8em;
+    height: 50px;
+    letter-spacing: 1px;
+    margin: 0 20px;
+    padding: 0 4px;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    cursor: pointer;
+  }
+  .home {
+   margin-top:1%;
+  }
+  
+  #navbar li a:hover {
+    /* border-bottom: 1px solid rgb(28, 121, 184); */
+    color: rgb(28, 121, 184);
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+  }
+  
+  /* Animated Bottom Line */
+  #navbar li a:before, #navbar li a:after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 1px;
+    bottom: 5px;
+    background: rgb(13, 26, 38);
+  }
+  
+  #navbar li a:before {
+    left: 0;
+    transition: 0.5s;
+  }
+  
+  #navbar li a:after {
+    background: rgb(13, 26, 38);
+    right: 0;
+    /* transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1); */
+  }
+  
+  #navbar li a:hover:before {
+    background: rgb(13, 26, 38);
+    width: 100%;
+    transition: width 0.5s cubic-bezier((0.22, 0.61, 0.36, 1));
+  }
+  
+  #navbar li a:hover:after {
+    background: transparent;
+    width: 100%;
+    /* transition: 0s; */
+  }
+  .icon-bars.overlay {
+    background: rgb(97, 114, 129);
+    background: rgb(183, 199, 211);
+    width: 20px;
+    animation: middleBar 3s infinite 0.5s;
+    -webkit-animation: middleBar 3s infinite 0.5s;
+  } @keyframes middleBar {
+      0% {width: 0px}
+      50% {width: 20px}
+      100% {width: 0px}
+    } @-webkit-keyframes middleBar {
+        0% {width: 0px}
+        50% {width: 20px}
+        100% {width: 0px}
+      }
+  
+  .icon-bars.overlay::before {
+    background: rgb(97, 114, 129);
+    background: rgb(183, 199, 211);
+    width: 10px;
+    animation: topBar 3s infinite 0.2s;
+    -webkit-animation: topBar 3s infinite 0s;
+  } @keyframes topBar {
+      0% {width: 0px}
+      50% {width: 10px}
+      100% {width: 0px}
+    } @-webkit-keyframes topBar {
+        0% {width: 0px}
+        50% {width: 10px}
+        100% {width: 0px}
+      }
+  
+  .icon-bars.overlay::after {
+    background: rgb(97, 114, 129);
+    background: rgb(183, 199, 211);
+    width: 15px;
+    animation: bottomBar 3s infinite 1s;
+    -webkit-animation: bottomBar 3s infinite 1s;
+  } @keyframes bottomBar {
+      0% {width: 0px}
+      50% {width: 15px}
+      100% {width: 0px}
+    } @-webkit-keyframes bottomBar {
+        0% {width: 0px}
+        50% {width: 15px}
+        100% {width: 0px}
+      }
+     
+      .search{
+        display: flex;
+        position: center;
+        margin-left: 25%;
+        margin-top: 1%;
+        width: 50%;
+        height: 10%;
+      }
+      .create{
+        margin-left:90%;
+        margin-top: -2%;
+        display: flex;
+      }
+
+      .groupForm{
+        width: 50%;
+        margin-left: 25%;
+        border-radius: 10%;
+        border-radius: 10%;
+        height: 200px;
+      }
+    .feed{
+      width: 40%;
+      margin-left:30%;
+      display:flex;
+      flex-direction:column;
+      padding: 0;
+    }
+    .posts{
+      display: flex;
+      clear: both;
+      align-items: center;
+      flex-direction:column;
+    }
+    .heading{
+      color: #ffff;
+      margin-bottom:-2%;
+    }
+    .post{
+      margin: 0.5%;
+    }
