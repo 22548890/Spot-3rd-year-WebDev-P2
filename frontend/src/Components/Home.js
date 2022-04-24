@@ -1,76 +1,63 @@
 import './CSS/Home.css';
 import logo from '../SPOT.svg'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 
 function Home() {
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
     window.location.pathname = "/login";
   };
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
   };
 
-  const [contractName, setName] = useState('')
-  const [contractLength, setLength] = useState('')
-  const [contractValue, setValue] = useState('')
-  const [contractDes, setDes] = useState('')
-  const [contractLan, setLan] = useState('')
-  const [location, setLocation] = useState('')
-  const [open] = useState(true)
+  const [text, setText] = useState('')
+  const [video_url, setVideo_url] = useState('')
+  const [longitude, setLongitude] = useState('')
+  const [latitude, setLatitude] = useState('')
+  const [category, setCategory] = useState('')
+  const [group_name, setGroup_name] = useState('')
   const [data, setData] = useState([]);
   const [onceOff, setOnceOff] = useState(true);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!contractLength || !contractName || !contractValue || !contractDes || !contractLan) {
-      setName('Demo')
-      setLength('0')
-      setValue('0')
-      setLan('')
-      setLocation('')
-    }
 
         const requestOpt = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'access-token':sessionStorage.getItem("token") },
             body: JSON.stringify({
-                'name': contractName,
-                'length': contractLength,
-                'value': contractValue,
-                'description': contractDes,
-                'programming_language': contractLan,
-                'location': location,
-                'open': open
+                'group_name': "x",//group_name
+                'category': category,
+                'text': text,
+                'video_url': video_url,
+                'longitude': longitude,
+                'latitude': latitude
             }),
         }
-        fetch('http://127.0.0.1:5000/createContract', requestOpt)
+        fetch('http://127.0.0.1:5000/post', requestOpt)
             .then(response => response.json())
             .catch(error => console.log(error));
         
-        //window.location.pathname = "/";
-        setName('')
-        setLength('')
-        setValue('')
-        setDes('')
-        setLan('')
-        setLocation('')
-
+        window.location.reload();
 }
 
 
-  if (onceOff) {
-    fetch(`http://127.0.0.1:5000/getAvailableContracts/date/DSC`, {
-      'method': 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => response.json())
-      .then(response => setData(response))
-      .catch(error => console.log(error));
-    //setOnceOff(false);
-  }
+async function getPosts() {
+  const response = await fetch(`http://127.0.0.1:5000/get-all-posts`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json"},
+  });
+  setData(await response.json());
+  return;
+}
+
+useEffect(() => {
+  getPosts();
+}, [])
 
   return (
     <>
@@ -100,19 +87,17 @@ function Home() {
       </nav>
       <div>
         <div className="card posts feed">
+        {/* <label>{sessionStorage.getItem('token')}</label> */}
           <label className="post">Post: </label>
-          <input className="post" type="text" placeholder="type a post message..." onChange={(e) => setDes(e.target.value)} />
+          <input className="post" type="text" placeholder="type a post message..." onChange={(e) => setText(e.target.value)} />
           <button className="post" onClick={onSubmit}>POST</button>
         </div>
         <h1 className="posts heading">Feed:</h1>
         <div className="feed">
           {data.map((d) => (
             <div className="card posts">
-              {/* <label className="post">{d.company_name}</label>
-                        <input className="post" type="text" placeholder="type a post message..."/>
-                        <button className="post" >POST</button> */}
-              <h3 className="post">{d.company_name}</h3>
-              <label className="post">{d.description}</label>
+              <h3 className="post">{"@"+d["user.username"]}</h3>
+              <label className="post-text">{d.text}</label>
               <label>{moment(d.date).format('hh:mm A')+" - " + moment(d.date).format("DD/MM")}</label>
             </div>
 

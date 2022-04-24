@@ -16,16 +16,16 @@ const Email = ({
     value
 }) =>
     <div className="field">
-        <label htmlFor="email">
-            User Email:
+        <label htmlFor="username">
+            Username:
         </label>
         <input
-            id="email"
+            id="username"
             type="text"
             onChange={onChange}
             maxlength="25"
             value={value}
-            placeholder="jbloggs@mail.com"
+            placeholder="username"
             required />
     </div>
 
@@ -112,9 +112,9 @@ class Login extends React.Component {
         let data = this.state;
         const requestOpt = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic' + btoa(data.email + ":" + data.password)},
             body: JSON.stringify({
-                'email': data.email,
+                'username': data.email,
                 'password': data.password,
             }),
         }
@@ -126,15 +126,9 @@ class Login extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) { // correct login info
-                localStorage.setItem("isAuthenticated", "true");
-                if (info.developer) {
-                    localStorage.setItem("isDev", "true");
-                    localStorage.setItem("DevJobsTable_status", "available");
-                } else {
-                    localStorage.setItem("isDev", "false");
-                }
+                sessionStorage.setItem("token", info.token);
+                localStorage.setItem("isAuthenticated", true);
                 window.location.pathname = "/";
-
             } else {
                 // alert(info.msg);
                 Swal.fire(

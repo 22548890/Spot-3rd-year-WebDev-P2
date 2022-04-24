@@ -8,6 +8,7 @@ import ProtectedRoute from './Components/ProtectedRoute';
 import './Components/CSS/LoginCSS.css';
 import ViewProfile from './Components/ViewProfile';
 import EditDevProfile from './Components/Profile';
+import UpdateProfile from './Components/UpdateProfile';
 
 function App() {
   return (
@@ -16,8 +17,8 @@ function App() {
         <Router>
           <Route exact path='/login' component={Login} />
           <Route exact path='/DevReg' component={SignUp} />
-          <ProtectedRoute exact path='/ViewProfile' component={ViewProfile} />
-          <ProtectedRoute exact path='/EditDevProfile' component={EditDevProfile} />
+          <ProtectedRoute exact path='/ViewProfile' component={UpdateProfile} />
+          <ProtectedRoute exact path='/UpdateProfile' component={EditDevProfile} />
           <ProtectedRoute exact path='/' component={Home} />
         </Router>
       </div>

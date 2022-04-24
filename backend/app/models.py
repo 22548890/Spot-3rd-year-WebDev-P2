@@ -29,7 +29,7 @@ class User(db.Model):
     username = db.Column(db.String(32))
     email = db.Column(db.String(32))
     password_hash = db.Column(db.String(128))
-    avatar_url = db.Column(db.String(512))
+    avatar_url = db.Column(db.String(2048))
 
     posts = db.relationship('Post', backref='user')
     comments = db.relationship('Comment', backref='user')
@@ -56,7 +56,7 @@ class Group(db.Model):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text)
-    video_url = db.Column(db.String(512))
+    video_url = db.Column(db.String(2048))
     date = db.Column(db.DateTime, default=datetime.utcnow)
     longitude = db.Column(db.DECIMAL(6,5))
     latitude = db.Column(db.DECIMAL(6,5))

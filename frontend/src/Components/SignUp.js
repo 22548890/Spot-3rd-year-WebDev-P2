@@ -1,12 +1,12 @@
 import React from "react";
 import Swal from "sweetalert2";
 
-const ImgUpload = ({ onChange, src }) => (
+const ImgUpload = ({ onChange, src, value }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
     <div className="img-wrap img-upload">
-      <img htmlFor="photo-upload" src={src} alt="profile" />
+      <img className='loginimg'  src={src} alt="User Avatar" />
     </div>
-    <input id="photo-upload" type="file" onChange={onChange} />
+    <input id="avatar_url_upload" type="url" value={value} onChange={onChange} placeholder={"Paste URL.."} required/>
   </label>
 );
 
@@ -145,32 +145,33 @@ class SignUp extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
     let data = this.state;
     const requestOpt = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-          'username': data.username,
-          'email': data.email,
-          'password': data.password,
-          'avatar_url': ""
-      }),
-  }
-  fetch('http://127.0.0.1:5000/register', requestOpt)
-      .then(response => response.json())
-      .catch(error => console.log(error));
-  
-  //window.location.pathname = "/";
+        'username': data.username,
+        'password': data.password,
+        'email': data.email,
+        'avatar_url': document.getElementById('avatar_url_upload').value
 
-}
-      // let info = await fetchFunc();
-      // if (info.success) {
-      //   window.location.pathname = "/login";
-      // } else {
-      //   Swal.fire(info.msg, "Try again!", "warning");
-      // }
-    
+      }),
+    };
+
+    async function fetchFunc() {
+      return await fetch("http://127.0.0.1:5000/register", requestOpt)
+        .then((response) => response.json())
+        .catch((error) => console.log(error));
+    }
+    (async () => {
+      let info = await fetchFunc();
+      if (info.success) {
+         window.location.pathname = "/login";
+      } else {
+        Swal.fire(info.msg, "Try again!", "warning");
+      }
+    })();
+  };
 
   render() {
     const {

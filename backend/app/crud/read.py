@@ -12,7 +12,7 @@ def getallposts():
     posts = Post.query.order_by(desc('date'))
     results = posts_schema.dump(posts)
     return jsonify(results)
-
+    
 # @app.route('/feed/main', methods=['GET'])
 # @token_required
 # def mainfeed(current_user):

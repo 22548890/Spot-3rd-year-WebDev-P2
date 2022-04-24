@@ -1,7 +1,7 @@
 import React from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 // import "./CSS/DevRegCSS.css";
-
 const ImgUpload = ({ onChange, src }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
     <div className="img-wrap img-upload">
