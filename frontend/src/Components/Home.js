@@ -14,6 +14,10 @@ function Home() {
     window.location.pathname = "/ViewProfile";
   };
 
+  const handleComments = (id) => {
+    window.location.pathname = `/comments/${id}`;
+  };
+
   const [text, setText] = useState('')
   const [video_url, setVideo_url] = useState('')
   const [longitude, setLongitude] = useState('')
@@ -99,6 +103,7 @@ useEffect(() => {
               <h3 className="post">{"@"+d["user.username"]}</h3>
               <label className="post-text">{d.text}</label>
               <label>{moment(d.date).format('hh:mm A')+" - " + moment(d.date).format("DD/MM")}</label>
+              <label className="show-comment" onClick={() =>handleComments(d.id)}>Show Comments</label>
             </div>
 
           ))}

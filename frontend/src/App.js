@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './Components/Home';
 import ProtectedRoute from './Components/ProtectedRoute';
 import './Components/CSS/LoginCSS.css';
-import ViewProfile from './Components/ViewProfile';
+import ViewComments from './Components/ViewComments';
 import EditDevProfile from './Components/Profile';
 import UpdateProfile from './Components/UpdateProfile';
 
@@ -20,6 +20,7 @@ function App() {
           <ProtectedRoute exact path='/ViewProfile' component={UpdateProfile} />
           <ProtectedRoute exact path='/UpdateProfile' component={EditDevProfile} />
           <ProtectedRoute exact path='/' component={Home} />
+          <ProtectedRoute path='/comments' component={ViewComments} />
         </Router>
       </div>
     </Router>
