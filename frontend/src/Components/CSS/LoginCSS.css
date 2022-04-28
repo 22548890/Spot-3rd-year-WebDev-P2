@@ -198,6 +198,13 @@ input::placeholder {
 .show-comment:hover {
   text-decoration: underline;
 }
+
+.show-comment {
+  cursor: pointer;
+}
+.show-comment:hover {
+  text-decoration: underline;
+}
 .back-btn {
   color: #302e2e;
 }

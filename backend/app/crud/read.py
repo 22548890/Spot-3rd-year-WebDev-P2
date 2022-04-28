@@ -1,25 +1,12 @@
 from app import app, db
-from app.models import User, Group, Post, Comment, token_required
+from app.models import User, Group, Membership, Post, Comment, token_required
 from app.models import user_schema, users_schema, post_schema, group_schema, groups_schema, posts_schema, comment_schema, comments_schema
 
 from flask import jsonify
 from flask_cors import cross_origin
 from sqlalchemy import desc
 
-@app.route('/get-all-posts', methods=['GET']) # only for testing
-@cross_origin()
-def getallposts():
-    posts = Post.query.order_by(desc('date'))
-    results = posts_schema.dump(posts)
-    return jsonify(results)
-    
-# @app.route('/feed/main', methods=['GET'])
-# @token_required
-# def mainfeed(current_user):
-#     result =  user_schema.dump(current_user)
-#     return jsonify(result)
-
-@app.route('/myprofile', methods=['GET'])
+@app.route('/profile/my', methods=['GET'])
 @cross_origin()
 @token_required
 def myprofile(current_user):
@@ -40,3 +27,42 @@ def getmygroups(current_user):
     results = groups_schema.dump(current_user.groups)
     return jsonify(results)
 
+@app.route('/feed/main', methods=['GET'])
+@cross_origin()
+@token_required
+def getmainfeed(current_user):
+    groups = current_user.groups
+    group_ids = [group.id for group in groups]
+
+    posts = Post.query.filter(Post.group_id.in_(group_ids)).order_by(desc('date'))
+
+    results = posts_schema.dump(posts)
+    return jsonify(results)
+
+@app.route('/feed/group=<group_id>', methods=['GET'])
+@cross_origin()
+def getgroupfeed(group_id):
+    # group = Group.query.get(group_id)
+    # if not group:
+    #     return {
+    #         'success': False,
+    #         'msg': 'Group does not exist'
+    #     }
+
+    # if not current_user in group.users:
+    #     return {
+    #         'success': False,
+    #         'msg': 'Not a member of group'
+    #     }
+    posts = Post.query.filter_by(group_id=group_id).order_by(desc('date'))
+
+    results = posts_schema.dump(posts)
+    return jsonify(results)
+
+@app.route('/comments/post=<post_id>', methods=['GET'])
+@cross_origin()
+def getcomments(post_id):
+    comments = Comment.query.filter_by(post_id=post_id).order_by(desc('date'))
+
+    results = comments_schema.dump(comments)
+    return jsonify(results)

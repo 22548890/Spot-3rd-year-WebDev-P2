@@ -5,24 +5,12 @@ import jwt
 
 from app import db, ma, app
 
-###################
-# Secondary tables
-###################
-
-group_user = db.Table('group_user',
-    db.Column('group_id', db.Integer, db.ForeignKey('group.id')),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))    
-)
-
-group_admin = db.Table('group_admin',
-    db.Column('group_id', db.Integer, db.ForeignKey('group.id')),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))    
-)
+from sqlalchemy.ext.associationproxy import association_proxy
 
 
 ###################
-#   Main tables
-###################
+#    Tables
+################### 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,10 +19,10 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     avatar_url = db.Column(db.String(2048))
 
-    posts = db.relationship('Post', backref='user')
-    comments = db.relationship('Comment', backref='user')
-#   groups
-#   groups_admin
+    posts = db.relationship('Post', backref='user', cascade='all, delete')
+    comments = db.relationship('Comment', backref='user', cascade='all, delete')
+    memberships = db.relationship('Membership', backref='user', cascade='all, delete')
+    groups = association_proxy("memberships", "group")
 
     def __init__(self, username, email, avatar_url, password_hash):
         self.username = username
@@ -46,12 +34,26 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
 
-    posts = db.relationship('Post', backref='group')
-    users = db.relationship('User', secondary=group_user, backref='groups')
-    admins = db.relationship('User', secondary=group_admin, backref='groups_admin')
+    posts = db.relationship('Post', backref='group', cascade='all, delete')
+    memberships = db.relationship('Membership', backref='group', cascade='all, delete')
+    users = association_proxy("memberships", "user")
 
     def __init__(self, name):
         self.name = name
+
+class Membership(db.Model):
+    __tablename__ = 'group_members'
+
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    admin = db.Column(db.Boolean, default=False)
+
+#   group
+#   user  
+
+    def __init__(self, admin):
+        self.admin = admin
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -64,7 +66,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
-    comments = db.relationship('Comment', backref='post')
+    comments = db.relationship('Comment', backref='post', cascade='all, delete')
 #   user
 #   group
 
@@ -105,6 +107,12 @@ class GroupSchema(ma.Schema):
         fields = ('id', 'name')
 group_schema = GroupSchema()
 groups_schema = GroupSchema(many=True)
+
+class MembershipSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'group.name', 'user.username', 'admin')
+membership_schema = GroupSchema()
+memberships_schema = GroupSchema(many=True)
 
 class PostSchema(ma.Schema):
     class Meta:

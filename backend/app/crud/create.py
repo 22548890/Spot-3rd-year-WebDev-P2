@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Group, Post, Comment, token_required
+from app.models import User, Group, Membership, Post, Comment, token_required
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -50,7 +50,7 @@ def login():
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
         return {
             'success': True,
-            'token':token #!
+            'token':token#.decode('utf8') #!
         }
     else:
         return {
@@ -73,10 +73,12 @@ def group_create(current_user):
         }
 
     group= Group(name=name)
-    group.users.append(current_user)
-    group.admins.append(current_user)
+    membership = Membership(admin=True)
 
-    db.session.add(group)
+    current_user.memberships.append(membership)
+    group.memberships.append(membership)
+
+    db.session.add(group, membership)
     db.session.commit()
 
     return {
@@ -97,14 +99,21 @@ def group_join(current_user):
             'msg': 'Group does not exist'
         }
 
-    if current_user in group.users:
-        return {
-            'success': False,
-            'msg': 'Already in group'
-        }
+    if not Membership.query.first():
+        membership = Membership(admin=True)
+    else:
+        if current_user in group.users:
+            return {
+                'success': False,
+                'msg': 'Already in group',
+                'name': current_user.id
+            }
+        membership = Membership(admin=False)
 
-    group.users.append(current_user)
+    current_user.memberships.append(membership)
+    group.memberships.append(membership)
 
+    db.session.add(membership)
     db.session.commit()
     
     return {

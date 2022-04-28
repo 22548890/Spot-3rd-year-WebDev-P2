@@ -6,30 +6,21 @@ import Swal from 'sweetalert2'
 
 export default function ViewComments() {
     const [text, setText] = useState('')
-    const [video_url, setVideo_url] = useState('')
-    const [longitude, setLongitude] = useState('')
-    const [latitude, setLatitude] = useState('')
-    const [category, setCategory] = useState('')
-    const [group_name, setGroup_name] = useState('')
+    const [comment, setComment] = useState('')
     const [data, setData] = useState([]);
     const [onceOff, setOnceOff] = useState(true);
 
     const onSubmit = (e) => {
         e.preventDefault();
-
         const requestOpt = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'access-token': sessionStorage.getItem("token") },
             body: JSON.stringify({
-                'group_name': "x",//group_name
-                'category': category,
-                'text': text,
-                'video_url': video_url,
-                'longitude': longitude,
-                'latitude': latitude
+                'text': document.getElementById("comment").value,//group_name
+                'post_id': postId,
             }),
         }
-        fetch('http://127.0.0.1:5000/post', requestOpt)
+        fetch('http://127.0.0.1:5000/comment', requestOpt)
             .then(response => response.json())
             .catch(error => console.log(error));
 
@@ -47,9 +38,17 @@ export default function ViewComments() {
         window.location.pathname = "/";
     };
 
+    async function getPost() {
+        const response = await fetch(`http://127.0.0.1:5000/feed/post=${postId}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
+        setData(await response.json());
+        return;
+    }
 
-    async function getPosts() {
-        const response = await fetch(`http://127.0.0.1:5000/get-all-posts`, {
+    async function getComments() {
+        const response = await fetch(`http://127.0.0.1:5000/comments/post=${postId}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         });
@@ -61,7 +60,8 @@ export default function ViewComments() {
     console.log(postId);
 
     useEffect(() => {
-        getPosts();
+        getComments();
+        // getPost();
     }, [])
     return (
         <>
@@ -102,7 +102,7 @@ export default function ViewComments() {
                 <button onClick={handleBack} className="comment back-btn">Return to posts</button>
                 <div className="card posts feed">
                     <label className="post">Add a Comment: </label>
-                    <input className="post" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />
+                    <input className="post" id="comment" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />
                     <button className="post" onClick={onSubmit}>Comment</button>
                 </div>
                 <h1 className="posts heading">Comments:</h1>
