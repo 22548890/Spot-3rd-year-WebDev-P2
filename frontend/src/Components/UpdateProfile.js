@@ -6,13 +6,12 @@ export default function UpdateProfile() {
   const [data, setData] = useState([]);
  
   const handleDelete = () => {
-    let typeDel = "com";
     const requestOpt = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", 'access-token': sessionStorage.getItem('token') },
     };
     async function fetchFunc() {
-      return await fetch(`http://127.0.0.1:5000/${typeDel}Delete`, requestOpt)
+      return await fetch(`http://127.0.0.1:5000/profile/delete`, requestOpt)
         .then((response) => response.json())
         .catch((error) => console.log(error));
     }
@@ -21,6 +20,7 @@ export default function UpdateProfile() {
     })();
     alert("Deleted Account");
     localStorage.clear();
+    sessionStorage.clear();
     window.location.pathname = "/login";
   };
 
@@ -33,7 +33,7 @@ export default function UpdateProfile() {
     e.preventDefault();
     const requestOpt = {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", 'access-token': sessionStorage.getItem('token') },
       body: JSON.stringify({
         username: document.getElementById("username").value,
         password: document.getElementById("password").value,
@@ -42,7 +42,7 @@ export default function UpdateProfile() {
       }),
     };
     async function fetchFunc() {
-      return await fetch("http://127.0.0.1:5000/profileEdit", requestOpt)
+      return await fetch("http://127.0.0.1:5000/profile/update", requestOpt)
         .then((response) => response.json())
         .catch((error) => console.log(error));
     }
@@ -58,7 +58,7 @@ export default function UpdateProfile() {
   };
 
   async function getProfile() {
-    const response = await fetch(`http://127.0.0.1:5000/myprofile`, {
+    const response = await fetch(`http://127.0.0.1:5000/profile/my`, {
       method: "GET",
       headers: { "Content-Type": "application/json", 'access-token': sessionStorage.getItem('token') },
     });

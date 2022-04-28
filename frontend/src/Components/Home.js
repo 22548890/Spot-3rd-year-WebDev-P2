@@ -30,38 +30,38 @@ function Home() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-        const requestOpt = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'access-token':sessionStorage.getItem("token") },
-            body: JSON.stringify({
-                'group_name': "x",//group_name
-                'category': category,
-                'text': text,
-                'video_url': video_url,
-                'longitude': longitude,
-                'latitude': latitude
-            }),
-        }
-        fetch('http://127.0.0.1:5000/post', requestOpt)
-            .then(response => response.json())
-            .catch(error => console.log(error));
-        
-        window.location.reload();
-}
+    const requestOpt = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'access-token': sessionStorage.getItem("token") },
+      body: JSON.stringify({
+        'group_name': "x",//group_name
+        'category': category,
+        'text': text,
+        'video_url': video_url,
+        'longitude': longitude,
+        'latitude': latitude
+      }),
+    }
+    fetch('http://127.0.0.1:5000/post', requestOpt)
+      .then(response => response.json())
+      .catch(error => console.log(error));
+
+    window.location.reload();
+  }
 
 
-async function getPosts() {
-  const response = await fetch(`http://127.0.0.1:5000/get-all-posts`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json"},
-  });
-  setData(await response.json());
-  return;
-}
+  async function getPosts() {
+    const response = await fetch(`http://127.0.0.1:5000/feed/main`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" , 'access-token': sessionStorage.getItem("token") },
+    });
+    setData(await response.json());
+    return;
+  }
 
-useEffect(() => {
-  getPosts();
-}, [])
+  useEffect(() => {
+    getPosts();
+  }, [])
 
   return (
     <>
@@ -73,7 +73,7 @@ useEffect(() => {
           </div>
 
           <ul id="menu">
-          <li>
+            <li>
               <a onClick={"toadd"}> Groups</a>
             </li>
             <li>
@@ -91,7 +91,7 @@ useEffect(() => {
       </nav>
       <div>
         <div className="card posts feed">
-        {/* <label>{sessionStorage.getItem('token')}</label> */}
+          {/* <label>{sessionStorage.getItem('token')}</label> */}
           <label className="post">Post: </label>
           <input className="post" type="text" placeholder="type a post message..." onChange={(e) => setText(e.target.value)} />
           <button className="post" onClick={onSubmit}>POST</button>
@@ -100,10 +100,10 @@ useEffect(() => {
         <div className="feed">
           {data.map((d) => (
             <div className="card posts">
-              <h3 className="post">{"@"+d["user.username"]}</h3>
+              <h3 className="post">{"@" + d["user.username"]}</h3>
               <label className="post-text">{d.text}</label>
-              <label>{moment(d.date).format('hh:mm A')+" - " + moment(d.date).format("DD/MM")}</label>
-              <label className="show-comment" onClick={() =>handleComments(d.id)}>Show Comments</label>
+              <label>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
+              <label className="show-comment" onClick={() => handleComments(d.id)}>Show Comments</label>
             </div>
 
           ))}
