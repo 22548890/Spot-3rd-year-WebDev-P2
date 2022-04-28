@@ -47,9 +47,9 @@ const GroupBio = ({ onChange, value }) => (
   </div>
 );
 
-const handleViewGroups = (e) => {
+const handleViewExplore = (e) => {
   e.preventDefault();
-  window.location.pathname = "/Groups";
+  window.location.pathname = "/Explore";
 };
 
 const Group = ({ onSubmit, name }) => (
@@ -73,12 +73,12 @@ const Group = ({ onSubmit, name }) => (
 const Edit = ({ onSubmit, children }) => (
   <div className="card">
     <form onSubmit={onSubmit}>
-      <h1>Create a Group</h1>
+      <h1>Group Name</h1>
       {children}
-      <button type="submit" className="styleBtn save">
-        Save{" "}
+      <button type="submit" className="styleBtn save" onClick={""}>
+        Join Group!{" "}
       </button>
-      <button className="btn" onClick={handleViewGroups}>
+      <button className="btn" onClick={handleViewExplore}>
         {" "}
         Back{" "}
       </button>
@@ -86,7 +86,7 @@ const Edit = ({ onSubmit, children }) => (
   </div>
 );
 
-class CreateGroup extends React.Component {
+class ViewGroup extends React.Component {
   state = {
     // file: "",
     // imagePreviewUrl:
@@ -168,9 +168,11 @@ class CreateGroup extends React.Component {
         {active === "edit" ? (
           <Edit onSubmit={this.handleSubmit}>
             {/* <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} /> */}
-            <GroupName onChange={this.editName} value={name} />
+            {/* <GroupName onChange={this.editName} value={name} /> */}
             {/* <GroupBio onChange={this.editEmail} value={bio} /> */}
             {/* <Password onChange={this.editPassword} value={password} /> */}
+            <label>Group Description</label>
+            <p> ... </p>
           </Edit>
         ) : (
           <Group
@@ -186,4 +188,4 @@ class CreateGroup extends React.Component {
   }
 }
 
-export default CreateGroup;
+export default ViewGroup;

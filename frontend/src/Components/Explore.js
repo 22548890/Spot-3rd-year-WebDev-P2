@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./CSS/LoginCSS.css";
 
-function MyGroups() {
+function Explore() {
   const [data, setData] = useState([]);
 
-  const handleCreateGroup = () => {
-    window.location.pathname = "/CreateGroup";
-  };
-
-  const handleViewGroup = () => {
-    window.location.pathname = "/ViewGroup";
+  const handleHome = (e) => {
+    e.preventDefault();
+    window.location.pathname = "/";
   };
 
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
+  };
+
+  const handleViewGroup = () => {
+    window.location.pathname = "/ViewGroup";
   };
 
   const handleLogout = () => {
@@ -22,25 +23,17 @@ function MyGroups() {
     window.location.pathname = "/login";
   };
 
-  const handleHome = (e) => {
-    e.preventDefault();
-    window.location.pathname = "/";
-  };
-
-  async function getMyGroups() {
+  async function getAllGroups() {
     const response = await fetch(`http://127.0.0.1:5000/groups/all`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
-      },
+      headers: { "Content-Type": "application/json" },
     });
     setData(await response.json());
     return;
   }
 
   useEffect(() => {
-    getMyGroups();
+    getAllGroups();
   }, []);
 
   return (
@@ -52,9 +45,6 @@ function MyGroups() {
           </div>
 
           <ul id="menu">
-            <li>
-              <a onClick={handleCreateGroup}> Create Group </a>
-            </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
             </li>
@@ -73,16 +63,16 @@ function MyGroups() {
         </thead>
       </div>
 
-      <h1 className="posts heading">My Groups</h1>
+      <h1 className="posts heading">All Groups</h1>
       <div className="feed">
         {data.map((d) => (
           <div className="card posts">
             <label className="post-text">{d.name}</label>
-            <label className="show-comment" onClick={"to be added"}>
+            <label className="show-comment" onClick={handleViewGroup}>
               View Group
             </label>
             {/* <label className="post-text">{d.id}</label> */}
-            <button> Delete Group </button>
+            {/* <button> Join Group </button> */}
           </div>
         ))}
       </div>
@@ -96,4 +86,4 @@ function MyGroups() {
   );
 }
 
-export default MyGroups;
+export default Explore;

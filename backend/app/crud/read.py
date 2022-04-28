@@ -25,3 +25,18 @@ def getallposts():
 def myprofile(current_user):
     result =  user_schema.dump(current_user)
     return jsonify(result)
+
+@app.route('/groups/all', methods=['GET'])
+@cross_origin()
+def getallgroups():
+    groups = Group.query.all()
+    results = groups_schema.dump(groups)
+    return jsonify(results)
+
+@app.route('/groups/my', methods=['GET'])
+@cross_origin()
+@token_required
+def getmygroups(current_user):
+    results = groups_schema.dump(current_user.groups)
+    return jsonify(results)
+

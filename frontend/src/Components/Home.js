@@ -13,6 +13,9 @@ function Home() {
   const handleViewGroups = () => {
     window.location.pathname = "/Groups";
   };
+  const handleViewExplore = () => {
+    window.location.pathname = "/Explore";
+  };
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
   };
@@ -84,10 +87,10 @@ function Home() {
 
           <ul id="menu">
             <li>
-              <a onClick={handleViewGroups}> Groups</a>
+              <a onClick={handleViewGroups}> My Groups</a>
             </li>
             <li>
-              <a onClick={"toadd"}> Explore </a>
+              <a onClick={handleViewExplore}> Explore </a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>

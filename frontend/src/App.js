@@ -9,8 +9,10 @@ import "./Components/CSS/LoginCSS.css";
 import ViewComments from "./Components/ViewComments";
 import EditDevProfile from "./Components/Profile";
 import UpdateProfile from "./Components/UpdateProfile";
-import Groups from "./Components/Groups";
+import MyGroups from "./Components/Groups";
 import CreateGroup from "./Components/CreateGroup";
+import Explore from "./Components/Explore";
+import ViewGroup from "./Components/ViewGroup";
 
 function App() {
   return (
@@ -27,8 +29,10 @@ function App() {
           />
           <ProtectedRoute exact path="/" component={Home} />
           <ProtectedRoute path="/comments" component={ViewComments} />
-          <ProtectedRoute path="/Groups" component={Groups} />
+          <ProtectedRoute path="/Groups" component={MyGroups} />
           <ProtectedRoute path="/CreateGroup" component={CreateGroup} />
+          <ProtectedRoute path="/Explore" component={Explore} />
+          <ProtectedRoute path="/ViewGroup" component={ViewGroup} />
         </Router>
       </div>
     </Router>
