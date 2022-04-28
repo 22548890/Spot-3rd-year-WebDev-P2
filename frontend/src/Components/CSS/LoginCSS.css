@@ -1,33 +1,34 @@
-body{
-  font-family: 'Hind Guntur', sans-serif;
+body {
+  font-family: "Hind Guntur", sans-serif;
   color: #054231;
   display: flex;
   justify-content: center;
   background: rgb(56, 88, 108);
   background-repeat: no-repeat, no-repeat;
-  background-position:  200% -40%;
+  background-position: 200% -40%;
   background-size: 80%;
-  background-image: url("https://www.stratospherenetworks.com/blog/wp-content/uploads/2020/04/abstract-computing-network-concept.jpg"); 
-  background-size:     auto;
-  background-repeat:   no-repeat;
-    background-position: center center; 
+  background-image: url("https://www.stratospherenetworks.com/blog/wp-content/uploads/2020/04/abstract-computing-network-concept.jpg");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
-button { 
+button {
   background-color: #3d77a0;
   border: 1px solid transparent;
   border-radius: 3px;
-  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
+  box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 0 inset;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
+  font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
+    sans-serif;
   font-size: 13px;
   font-weight: 400;
   line-height: 1.15385;
   margin: 0;
   outline: none;
-  padding: 8px .8em;
+  padding: 8px 0.8em;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -38,7 +39,7 @@ button {
   white-space: nowrap;
 }
 
-.card{
+.card {
   width: auto;
   height: auto;
   padding: 15px;
@@ -46,39 +47,56 @@ button {
   border-radius: 25px;
   display: flex;
   justify-content: center;
-  box-shadow: 15px 10px 25px 0px  #3fa1a9;
+  box-shadow: 15px 10px 25px 0px #3fa1a9;
   background: #fff;
   background-repeat: no-repeat, no-repeat;
   background-position: 120% -5%, 200% -40%;
   background-size: 40%, 80%;
-  animation: open .5s;
+  animation: open 0.5s;
+}
+
+.card_groups {
+  margin: auto;
+  width: 25%;
+  height: 25%;
+  padding: 15px;
+  margin-top: 40px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 15px 10px 25px 0px #3fa1a9;
+  background: #fff;
+  background-repeat: no-repeat, no-repeat;
+  background-position: 120% -5%, 200% -40%;
+  background-size: 40%, 80%;
+  animation: open 0.5s;
 }
 
 .statement {
-  display:block;
+  display: block;
   font-size: 14px;
   font-weight: 500;
   margin-right: 10px;
   margin-left: 10px;
 }
-.industry{
+.industry {
   text-align: center;
 }
 
-.field{
+.field {
   margin: 5px;
   display: flex;
   flex-direction: column;
-  }
+}
 
-  form:not(.add-form){
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+form:not(.add-form) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-.loginimg{
+.loginimg {
   position: relative;
   width: 200px;
   height: 200px;
@@ -94,7 +112,7 @@ button {
   height: auto; */
 }
 
-label{
+label {
   text-align: center;
   /* text-transform: uppercase; */
   font-weight: 700;
@@ -102,7 +120,7 @@ label{
   padding: 1px;
 }
 
-input{
+input {
   text-align: center;
   border-radius: 15px;
   border: 1px solid #b7b7b7;
@@ -111,22 +129,22 @@ input{
   transition: 0.2s;
 }
 
-input:focus{
+input:focus {
   outline: none;
   border: 1px solid #64d488;
 }
-input::placeholder{
+input::placeholder {
   color: #bebebe;
 }
-.styleBtn{
+.styleBtn {
   color: #054231;
-  background: #1AB9E3;
+  background: #1ab9e3;
 }
 .save {
   width: 50%;
 }
 
-.menu-item button{
+.menu-item button {
   position: relative;
   color: #054231;
   letter-spacing: 1px;
@@ -141,7 +159,7 @@ input::placeholder{
   border: none;
   background: #64d488;
 }
-.login{
+.login {
   font-weight: 600;
   /* left: -20px; */
   text-transform: uppercase;
@@ -150,7 +168,7 @@ input::placeholder{
   width: 180px;
   /* box-shadow: 20px 0px 40px 0px  #63d3a6; */
 }
-.edit{
+.edit {
   color: #fff;
   width: 220px;
 }
@@ -169,18 +187,24 @@ input::placeholder{
   vertical-align: baseline;
   width: 300px;
 }
-.post-text{
- text-transform: capitalize;
- color: #302e2e;
+.post-text {
+  text-transform: capitalize;
+  color: #302e2e;
 }
 
-.show-comment{
+.show-comment {
   cursor: pointer;
 }
-.show-comment:hover{
+.show-comment:hover {
   text-decoration: underline;
 }
 
-
-  
-
+.show-comment {
+  cursor: pointer;
+}
+.show-comment:hover {
+  text-decoration: underline;
+}
+.back-btn {
+  color: #302e2e;
+}
