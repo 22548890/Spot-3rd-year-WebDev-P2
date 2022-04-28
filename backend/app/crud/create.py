@@ -50,7 +50,7 @@ def login():
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
         return {
             'success': True,
-            'token':token#.decode('utf8') #!
+            'token':token.decode('utf8') #!
         }
     else:
         return {

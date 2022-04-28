@@ -3,6 +3,7 @@ import logo from '../SPOT.svg'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
+import AddPost from './AddPost';
 
 function Home() {
   const handleLogout = () => {
@@ -34,7 +35,7 @@ function Home() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'access-token': sessionStorage.getItem("token") },
       body: JSON.stringify({
-        'group_name': "x",//group_name
+        'group_name': "Jews",//group_name
         'category': category,
         'text': text,
         'video_url': video_url,
@@ -91,11 +92,12 @@ function Home() {
       </nav>
       <div>
         <div className="card posts feed">
-          {/* <label>{sessionStorage.getItem('token')}</label> */}
+          { <label>{sessionStorage.getItem('token')}</label> }
           <label className="post">Post: </label>
           <input className="post" type="text" placeholder="type a post message..." onChange={(e) => setText(e.target.value)} />
           <button className="post" onClick={onSubmit}>POST</button>
-        </div>
+        </div> 
+        {/* <AddPost></AddPost> */}
         <h1 className="posts heading">Feed:</h1>
         <div className="feed">
           {data.map((d) => (
@@ -105,7 +107,6 @@ function Home() {
               <label>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
               <label className="show-comment" onClick={() => handleComments(d.id)}>Show Comments</label>
             </div>
-
           ))}
         </div>
       </div>
