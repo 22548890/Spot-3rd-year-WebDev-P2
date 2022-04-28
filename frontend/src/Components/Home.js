@@ -10,6 +10,7 @@ function Home() {
     sessionStorage.clear();
     window.location.pathname = "/login";
   };
+  
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
   };
