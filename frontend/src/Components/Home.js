@@ -10,14 +10,16 @@ function Home() {
     sessionStorage.clear();
     window.location.pathname = "/login";
   };
+  const handleViewProfile = () => {
+    window.location.pathname = "/ViewProfile";
+  };
+
   const handleViewGroups = () => {
     window.location.pathname = "/Groups";
   };
+
   const handleViewExplore = () => {
     window.location.pathname = "/Explore";
-  };
-  const handleViewProfile = () => {
-    window.location.pathname = "/ViewProfile";
   };
 
   const handleComments = (id) => {
@@ -37,23 +39,23 @@ function Home() {
     e.preventDefault();
 
     const requestOpt = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'access-token': sessionStorage.getItem("token") },
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": sessionStorage.getItem("token"),
+      },
       body: JSON.stringify({
-        'group_name': "x",//group_name
-        'category': category,
-        'text': text,
-        'video_url': video_url,
-        'longitude': longitude,
-        'latitude': latitude
+        group_name: group_name, //group_name
+        category: category,
+        text: text,
+        video_url: video_url,
+        longitude: longitude,
+        latitude: latitude,
       }),
-    }
-    fetch('http://127.0.0.1:5000/post', requestOpt)
-      .then(response => response.json())
-      .catch(error => console.log(error));
-
-    window.location.reload();
-  }
+    };
+    fetch("http://127.0.0.1:5000/post", requestOpt)
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
 
     window.location.reload();
   };
@@ -61,7 +63,10 @@ function Home() {
   async function getPosts() {
     const response = await fetch(`http://127.0.0.1:5000/feed/main`, {
       method: "GET",
-      headers: { "Content-Type": "application/json" , 'access-token': sessionStorage.getItem("token") },
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": sessionStorage.getItem("token"),
+      },
     });
     setData(await response.json());
     return;
@@ -69,7 +74,7 @@ function Home() {
 
   useEffect(() => {
     getPosts();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -87,10 +92,10 @@ function Home() {
 
           <ul id="menu">
             <li>
-              <a onClick={"toadd"}> Groups</a>
+              <a onClick={handleViewGroups}> Groups</a>
             </li>
             <li>
-              <a onClick={handleViewExplore}> Explore </a>
+              <a onClick={handleViewExplore}> Explore</a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
@@ -123,8 +128,17 @@ function Home() {
             <div className="card posts">
               <h3 className="post">{"@" + d["user.username"]}</h3>
               <label className="post-text">{d.text}</label>
-              <label>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
-              <label className="show-comment" onClick={() => handleComments(d.id)}>Show Comments</label>
+              <label>
+                {moment(d.date).format("hh:mm A") +
+                  " - " +
+                  moment(d.date).format("DD/MM")}
+              </label>
+              <label
+                className="show-comment"
+                onClick={() => handleComments(d.id)}
+              >
+                Show Comments
+              </label>
             </div>
           ))}
         </div>

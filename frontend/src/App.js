@@ -15,12 +15,19 @@ import Explore from "./Components/Explore";
 import ViewGroup from "./Components/ViewGroup";
 
 function App() {
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.pathname = "/login";
+  };
+
   return (
     <Router>
       <div>
         <Router>
           <Route exact path="/login" component={Login} />
           <Route exact path="/DevReg" component={SignUp} />
+          <Route exact path="/logout" component={handleLogout} />
           <ProtectedRoute exact path="/ViewProfile" component={UpdateProfile} />
           <ProtectedRoute
             exact
