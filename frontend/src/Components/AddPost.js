@@ -1,9 +1,9 @@
 import { useState } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import {FaLocationArrow} from "react-icons/fa";
 
 const AddPost = () => {
+  var lat = null, lng = null;
   const [group_name, setGroupName] = useState("");
   const [category, setCat] = useState("");
   const [text, setText] = useState("");
@@ -25,12 +25,12 @@ const AddPost = () => {
         "access-token": sessionStorage.getItem("token"),
       },
       body: JSON.stringify({
-        'group_name': "Jews", //group_name
-        'category': category,
-        'text': text,
-        'video_url': video_url,
-        'longitude': longitude,
-        'latitude': latitude
+        group_name: "Jews", //group_name
+        category: category,
+        text: text,
+        video_url: video_url,
+        longitude: longitude,
+        latitude: latitude,
       }),
     };
     fetch("http://127.0.0.1:5000/post", requestOpt)
@@ -42,8 +42,8 @@ const AddPost = () => {
     setGroupName("Jews");
     setCat("");
     setText("");
-    setLat("");
     setLon("");
+    setLat("");
     setVid("X");
   };
 
@@ -87,24 +87,19 @@ const AddPost = () => {
             onChange={(e) => setVid(e.target.value)}
           />
         </div>
-        <div> 
-          <FaLocationArrow
-            className="icon-show"
-            onClick={() => {
-              if (!('geolocation' in navigator)) {
-                console.log("test");
-                setLat(0.0);
-                setLon(0.0);
-              } else {
+          <div className="form-control form-control-check">
+            <label>Share Location:</label>
+            <input
+              type="radio"
+              name="location"
+              onChange={() => {
                 navigator.geolocation.getCurrentPosition((position) => {
                   setLat(position.coords.latitude);
                   setLon(position.coords.longitude);
                 });
-                
-              }
-            }}
-          />
-        </div>
+              }}
+            />
+          </div>
         <button
           className="post"
           onClick={() => {

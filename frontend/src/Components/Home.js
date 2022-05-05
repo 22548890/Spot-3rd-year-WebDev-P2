@@ -4,6 +4,8 @@ import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import AddPost from './AddPost';
+import ShowMap from './ShowMap';
+import Posts from './Posts';
 
 function Home() {
   const handleLogout = () => {
@@ -91,13 +93,14 @@ function Home() {
 
       </nav>
       <div>
-        <div className="card posts feed">
+        {/* <div className="card posts feed">
           { <label>{sessionStorage.getItem('token')}</label> }
           <label className="post">Post: </label>
           <input className="post" type="text" placeholder="type a post message..." onChange={(e) => setText(e.target.value)} />
           <button className="post" onClick={onSubmit}>POST</button>
-        </div> 
-        {/* <AddPost></AddPost> */}
+        </div>  */}
+        <AddPost></AddPost>
+        
         <h1 className="posts heading">Feed:</h1>
         <div className="feed">
           {data.map((d) => (
@@ -106,6 +109,12 @@ function Home() {
               <label className="post-text">{d.text}</label>
               <label>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
               <label className="show-comment" onClick={() => handleComments(d.id)}>Show Comments</label>
+              {(d.latitude == null) ? (
+                <label></label>
+              ) : (
+                <ShowMap lat = {d.latitude} lng = {d.longitude} ></ShowMap>
+              )}
+              
             </div>
           ))}
         </div>
