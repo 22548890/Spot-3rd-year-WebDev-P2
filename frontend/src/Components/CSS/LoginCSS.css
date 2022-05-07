@@ -1,10 +1,10 @@
 body {
   font-family: 'Hind Guntur', sans-serif; 
   
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background: linear-gradient(-45deg, #ee5255, #e24782, #23a5d5, #34deb7, rgb(229, 74, 229), rgb(74, 255, 74));
 	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-	height: 100vh;
+	animation: gradient 10s ease infinite;
+  overflow-y: hidden;
 }
 
 @keyframes gradient {
@@ -17,9 +17,6 @@ body {
 	100% {
 		background-position: 0% 50%;
 	}
-}
-.login-screen::-webkit-scrollbar {
-  display: none;
 }
 
 
@@ -88,10 +85,3 @@ body {
               0 0 50px #00ff62, 0 0 100px #00ff62;
   cursor: pointer;
 }
-
-
-
-
-
-
-

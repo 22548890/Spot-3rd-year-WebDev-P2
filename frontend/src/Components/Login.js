@@ -61,7 +61,7 @@ const Edit = ({
             <div>
                 <input type="checkbox" value="lsRememberMe" id="rememberMe" className='checkbox' /> <label for="rememberMe">Remember me</label>
             </div>
-            <button type="submit" className="login-btn">LOGIN </button>
+            <button type="submit" className="login-btn">Login </button>
             <button className="signup-btn" onClick={handleDevReg}>Sign up</button>
         </form>
     </div>
@@ -129,7 +129,7 @@ class Login extends React.Component {
                 Swal.fire(
                     info.msg,
                     'Try again!',
-                    'warning',
+                    'Warning',
                   )
 
             }

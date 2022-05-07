@@ -1,7 +1,26 @@
 body {
     font-family: 'Hind Guntur', sans-serif; 
-}
-.card{
+    
+    background: linear-gradient(-45deg, #ee5255, #e24782, #23a5d5, #34deb7, rgb(229, 74, 229), rgb(74, 255, 74));
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+    overflow-y: hidden;
+  }
+  
+  @keyframes gradient {
+      0% {
+          background-position: 0% 50%;
+      }
+      50% {
+          background-position: 100% 50%;
+      }
+      100% {
+          background-position: 0% 50%;
+      }
+  }
+  
+  
+  .card{
     max-width: 500px;
     padding: 0px 15px 25px 15px;
     margin-left: auto;
@@ -13,15 +32,15 @@ body {
     background-color: rgba(255, 255, 255, 0.466);
     box-shadow: 0px 10px 50px 10px;
   }
-.card img {
+  .card img {
     width: 200px;
     height: 200px;
     /* background-color: #3fa1a9; */
     display: block;
     margin-left: auto;
     margin-right: auto;
-}
-.card input {
+  }
+  .card input {
     display:block;
     margin-left:auto;
     margin-right:auto;
@@ -29,12 +48,12 @@ body {
     border-radius: 50px;
     margin-bottom: 10px;
     border: 0px
-}
-.checkbox {
+  }
+  .checkbox {
     cursor: pointer;
-}
-
-.login-btn {
+  }
+  
+  .login-btn {
     border: 0px;
     border-radius: 20px;
     width: 100px;
@@ -42,27 +61,28 @@ body {
     margin-top: 10px;
     margin-right: 5px;
     
-}
-.login-btn:hover {
+  }
+  .login-btn:hover {
     background: #03e9f4;
     color: #fff;
     border-radius: 20px;
     box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4,
                 0 0 50px #03e9f4, 0 0 100px #03e9f4;
     cursor: pointer;
-}
-
-.signup-btn {
+  }
+  
+  .signup-btn {
     border: 0px;
     border-radius: 20px;
     width: 100px;
     padding: 10px 25px 10px 25px;
-}
-.signup-btn:hover {
+  }
+  .signup-btn:hover {
     background: #00ff62;
     color: #fff;
     border-radius: 20px;
     box-shadow: 0 0 5px #00ff62, 0 0 25px #00ff62,
                 0 0 50px #00ff62, 0 0 100px #00ff62;
     cursor: pointer;
-}
+  }
+  
