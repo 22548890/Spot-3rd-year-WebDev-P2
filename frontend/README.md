@@ -9,4 +9,6 @@ npm install --save moment
 
 npm install --save sweetalert2
 
+npm i react-leaflet
+
 Then npm start should work.
