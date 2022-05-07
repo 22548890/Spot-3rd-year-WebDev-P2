@@ -3,6 +3,8 @@ import logo from "../SPOT.svg";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import AddPost from "./AddPost";
+import ShowMap from "./ShowMap";
 
 function Home() {
   const handleLogout = () => {
@@ -109,8 +111,8 @@ function Home() {
         </div>
       </nav>
       <div>
-        <div className="card posts feed">
-          {/* <label>{sessionStorage.getItem('token')}</label> */}
+        {/* <div className="card posts feed">
+          {/* <label>{sessionStorage.getItem('token')}</label> }
           <label className="post">Post: </label>
           <input
             className="post"
@@ -121,7 +123,8 @@ function Home() {
           <button className="post" onClick={onSubmit}>
             POST
           </button>
-        </div>
+        </div> */}
+        <AddPost></AddPost>
         <h1 className="posts heading">Feed:</h1>
         <div className="feed">
           {data.map((d) => (
@@ -139,6 +142,12 @@ function Home() {
               >
                 Show Comments
               </label>
+              {(d.latitude == null) ? (
+                <label></label>
+              ) : (
+                <ShowMap lat = {d.latitude} lng = {d.longitude} ></ShowMap>
+              )}
+
             </div>
           ))}
         </div>
