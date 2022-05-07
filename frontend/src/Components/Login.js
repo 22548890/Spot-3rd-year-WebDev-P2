@@ -8,7 +8,7 @@ const ImgUpload = ({
     src
 }) =>
     <div  >
-        <img htmlFor="photo-upload" className='loginimg' src={src} alt="DEVCO LOGO" />
+        <img htmlFor="photo-upload" src={src} alt="SPOT LOGO" />
     </div>
 
 const Email = ({
@@ -59,14 +59,10 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             {children}
             <div>
-                <input type="checkbox" value="lsRememberMe" id="rememberMe" /> <label for="rememberMe">Remember me</label>
+                <input type="checkbox" value="lsRememberMe" id="rememberMe" className='checkbox' /> <label for="rememberMe">Remember me</label>
             </div>
-            
-            <button type="submit" className="styleBtn login">LOGIN </button>
-            <div>
-                <button className="CRegBtn" onClick={handleDevReg}>Sign up</button>
-            </div>
-
+            <button type="submit" className="login-btn">LOGIN </button>
+            <button className="signup-btn" onClick={handleDevReg}>Sign up</button>
         </form>
     </div>
 
@@ -80,7 +76,6 @@ const Profile = ({
             <h1>Successfully Logged in</h1>
             <div className="email">{email}</div>
             <div className="password">{password}</div>
-
         </form>
     </div>
 
@@ -148,17 +143,13 @@ class Login extends React.Component {
             active } = this.state;
 
         return (
-            <div >
-
+            <div className='login-screen'>
                 {(active === 'edit') ? (
-
                     <Edit onSubmit={this.handleSubmit}>
                         <ImgUpload src={logo} className="loginimg" />
                         <Email onChange={this.editEmail} value={email} />
                         <Password onChange={this.editPassword} value={password} />
                     </Edit>
-
-
                 ) : (
                     <Profile
                         onSubmit={this.handleSubmit}

@@ -25,7 +25,7 @@ function App() {
     <Router>
       <div>
         <Router>
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
           <Route exact path="/DevReg" component={SignUp} />
           <Route exact path="/logout" component={handleLogout} />
           <ProtectedRoute exact path="/ViewProfile" component={UpdateProfile} />
@@ -34,7 +34,7 @@ function App() {
             path="/UpdateProfile"
             component={EditDevProfile}
           />
-          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/home" component={Home} />
           <ProtectedRoute path="/comments" component={ViewComments} />
           <ProtectedRoute path="/Groups" component={MyGroups} />
           <ProtectedRoute path="/CreateGroup" component={CreateGroup} />
