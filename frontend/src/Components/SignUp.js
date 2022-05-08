@@ -1,12 +1,14 @@
 import React from "react";
 import Swal from "sweetalert2";
+import './CSS/LoginCSS.css'
 
 const ImgUpload = ({ onChange, src, value }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
     <div className="img-wrap img-upload">
       <img className='loginimg'  src={src} alt="User Avatar" />
     </div>
-    <input id="avatar_url_upload" type="url" value={value} onChange={onChange} placeholder={"Paste URL.."} required/>
+    Image:
+    <input id="avatar_url_upload" type="url" value={value} onChange={onChange} placeholder={"Image URL"} required/>
   </label>
 );
 
@@ -88,13 +90,17 @@ const Edit = ({ onSubmit, children }) => (
     <form onSubmit={onSubmit}>
       <h1>User Registration</h1>
       {children}
-      <button type="submit" className="styleBtn save">
-        Save{" "}
-      </button>
-      <button className="btn" onClick={handleHome}>
-        {" "}
-        Back{" "}
-      </button>
+      
+      <div className="edit-btns">
+        <button type="submit" className="save-btn">
+          Save{" "}
+        </button>
+        <button className="back-btn" onClick={handleHome}>
+          {" "}
+          Back{" "}
+        </button>
+      </div>
+      
     </form>
   </div>
 );
@@ -185,7 +191,7 @@ class SignUp extends React.Component {
       <div>
         {active === "edit" ? (
           <Edit onSubmit={this.handleSubmit}>
-            <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
+            <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} id = "signUpImg"/>
             <Username onChange={this.editUsername} value={username} />
             <Email onChange={this.editEmail} value={email} />
             <Password onChange={this.editPassword} value={password} />

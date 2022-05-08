@@ -59,7 +59,8 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             {children}
             <div>
-                <input type="checkbox" value="lsRememberMe" id="rememberMe" className='checkbox' /> <label for="rememberMe">Remember me</label>
+                <input type="checkbox" value="lsRememberMe" id="rememberMe" className='checkbox' />
+                <label for="rememberMe">Remember me</label>
             </div>
             <button type="submit" className="login-btn">Login </button>
             <button className="signup-btn" onClick={handleDevReg}>Sign up</button>
