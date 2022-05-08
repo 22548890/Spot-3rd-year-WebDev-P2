@@ -2,13 +2,24 @@ import { useState } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const AddPost = () => {
+const AddPost = (data) => {
   const [group_name, setGroupName] = useState("");
   const [category, setCat] = useState("");
   const [text, setText] = useState("");
-  const [latitude, setLat] = useState("");
-  const [longitude, setLon] = useState("");
+  const [latitude, setLat] = useState(null);
+  const [longitude, setLon] = useState(null);
   const [video_url, setVid] = useState("");
+
+  function setLocation() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLat(position.coords.latitude);
+      setLon(position.coords.longitude);
+    },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -92,10 +103,11 @@ const AddPost = () => {
               type="radio"
               name="location"
               onChange={() => {
-                navigator.geolocation.getCurrentPosition((position) => {
-                  setLat(position.coords.latitude);
-                  setLon(position.coords.longitude);
-                })
+                // navigator.geolocation.getCurrentPosition((position) => {
+                //   setLat(position.coords.latitude);
+                //   setLon(position.coords.longitude);
+                // })
+                setLocation();
               }}
             />
           </div>

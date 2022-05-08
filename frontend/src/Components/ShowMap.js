@@ -9,8 +9,14 @@ import L from "leaflet";
 import { useState } from "react";
 
 const ShowMap = ({ lat, lng }) => {
-  const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
   const [sMap, setMap] = useState(false);
+  function GetIcon(iS) {
+    return L.icon({
+      iconUrl: require("../Static/Icons/mapmarker.png"),
+      iconSize: [iS]
+    })
+
+  }
 
   const position = [lat, lng];
   return (
@@ -28,7 +34,7 @@ const ShowMap = ({ lat, lng }) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={position} icon={icon}>
+              <Marker position={position} icon={GetIcon(30)}>
                 <Popup>
                   A pretty CSS3 popup.
                   <br /> Easily customizable.

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import AddPost from "./AddPost";
 import ShowMap from "./ShowMap";
+import BigMap from "./BigMap";
 
 function Home() {
   const handleLogout = () => {
@@ -125,6 +126,7 @@ function Home() {
           </button>
         </div> */}
         <AddPost></AddPost>
+        <BigMap></BigMap>
         <h1 className="posts heading">Feed:</h1>
         <div className="feed">
           {data.map((d) => (
