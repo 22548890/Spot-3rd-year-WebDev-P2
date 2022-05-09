@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const AddPost = (data) => {
+const AddPost = () => {
   const [group_name, setGroupName] = useState("");
   const [category, setCat] = useState("");
   const [text, setText] = useState("");
@@ -11,21 +11,34 @@ const AddPost = (data) => {
   const [video_url, setVid] = useState("");
 
   function setLocation() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLat(position.coords.latitude);
-      setLon(position.coords.longitude);
-    },
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude);
+        setLon(position.coords.longitude);
+      },
       (err) => {
         console.log(err);
       }
     );
-  };
+  }
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (!text) {
       alert("Please include a post description");
       return;
+    }
+    if (latitude != null) {
+      if (!(/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/).test(latitude.toString())) {
+        alert("Please include an appropraite latitude");
+        return;
+      }
+    }
+    if (longitude != null) {
+      if (!(/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/).test(longitude.toString())) {
+        alert("Please include an appropriate longitude");
+        return;
+      }
     }
 
     const requestOpt = {
@@ -97,20 +110,33 @@ const AddPost = (data) => {
             onChange={(e) => setVid(e.target.value)}
           />
         </div>
-          <div className="form-control form-control-check">
-            <label>Share Location:</label>
-            <input
-              type="radio"
-              name="location"
-              onChange={() => {
-                // navigator.geolocation.getCurrentPosition((position) => {
-                //   setLat(position.coords.latitude);
-                //   setLon(position.coords.longitude);
-                // })
-                setLocation();
-              }}
-            />
-          </div>
+        <div className="form-control form-control-check">
+          <label>Share Location(automatic):</label>
+          <input
+            type="radio"
+            name="location"
+            onChange={() => {
+              setLocation();
+            }}
+          />
+        </div>
+        <div className="form-control">
+          <label>Share Location(Manually):</label>
+          <br></br>
+          <input
+            className="post"
+            type="text"
+            placeholder="latitude"
+            onChange={(e) => setLat(e.target.value)}
+          />
+          <br></br>
+          <input
+            className="post"
+            type="text"
+            placeholder="longitude"
+            onChange={(e) => setLon(e.target.value)}
+          />
+        </div>
         <button
           className="post"
           onClick={() => {
