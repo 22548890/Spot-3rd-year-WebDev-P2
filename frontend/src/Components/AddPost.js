@@ -62,7 +62,7 @@ const AddPost = () => {
 
     window.location.reload();
 
-    setGroupName("Jews");
+    setGroupName("");
     setCat("");
     setText("");
     setLon("");
