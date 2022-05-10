@@ -67,7 +67,7 @@ const AddPost = () => {
     setText("");
     setLon("");
     setLat("");
-    setVid("X");
+    setVid("");
   };
 
   return (
