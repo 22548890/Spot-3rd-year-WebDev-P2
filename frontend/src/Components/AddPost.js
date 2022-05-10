@@ -48,7 +48,7 @@ const AddPost = () => {
         "access-token": sessionStorage.getItem("token"),
       },
       body: JSON.stringify({
-        group_name: "x", //group_name
+        group_name: group_name,
         category: category,
         text: text,
         video_url: video_url,
@@ -67,7 +67,7 @@ const AddPost = () => {
     setText("");
     setLon("");
     setLat("");
-    setVid("X");
+    setVid("");
   };
 
   return (
