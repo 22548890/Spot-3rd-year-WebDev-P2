@@ -72,6 +72,10 @@ def group_create(current_user):
             'msg': 'This name already exists'
         }
 
+    group = Group(name=name)
+    db.session.add(group)
+    db.session.commit()
+    
     membership = Membership(group_id=group.id, user_id=current_user.id, admin=True)
 
     # current_user.memberships.append(membership)
