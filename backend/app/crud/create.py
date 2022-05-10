@@ -50,7 +50,7 @@ def login():
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
         return {
             'success': True,
-            'token':token.decode('utf8') #!
+            'token':token #.decode('utf8') #!
         }
     else:
         return {
@@ -71,6 +71,9 @@ def group_create(current_user):
             'success': False,
             'msg': 'This name already exists'
         }
+    group = Group(name=name)
+    db.session.add(group)
+    db.session.commit()
 
     membership = Membership(group_id=group.id, user_id=current_user.id, admin=True)
 
