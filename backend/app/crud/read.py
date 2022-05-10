@@ -66,3 +66,36 @@ def getcomments(post_id):
 
     results = comments_schema.dump(comments)
     return jsonify(results)
+
+@app.route('/friends/requests/to', methods=['GET'])
+@cross_origin()
+@token_required
+def friendsrequeststo(current_user):
+    requests_to = current_user.friendships_request_to
+    users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted == False]
+
+    results = users_schema.dump(users)
+    return jsonify(results)
+
+@app.route('/friends/requests/from', methods=['GET'])
+@cross_origin()
+@token_required
+def friendsrequestsfrom(current_user):
+    requests_from = current_user.friendships_request_from
+    users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted == False]
+
+    results = users_schema.dump(users)
+    return jsonify(results)
+
+@app.route('/friends', methods=['GET'])
+@cross_origin()
+@token_required
+def friends(current_user):
+    requests_from = current_user.friendships_request_from
+    users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted]
+    requests_to = current_user.friendships_request_to
+    more_users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted]
+    if len(more_users) > 0:
+        users.append(more_users)
+    results = users_schema.dump(users)
+    return jsonify(results)

@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Group, Post, Comment, token_required
+from app.models import Friendship, User, Group, Post, Comment, token_required
 from app.models import user_schema, users_schema, post_schema, group_schema, groups_schema, posts_schema, comment_schema, comments_schema
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,6 +28,24 @@ def update_profile(current_user):
     current_user.email = email
     current_user.password = generate_password_hash(password)
     current_user.avatar_url = avatar_url
+
+    db.session.commit()
+
+    return {
+        'success':True
+    }
+
+@app.route('/friend/request/accept', methods=['PUT'])
+@cross_origin()
+@token_required
+def friend_request_accept(current_user):
+    username = request.json['username']
+
+    friend = User.query.filter_by(username=username).first()
+
+    friendship = Friendship.query.get((friend.id, current_user.id))
+
+    friendship.accepted = True
 
     db.session.commit()
 

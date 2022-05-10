@@ -7,10 +7,22 @@ from app import db, ma, app
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-
 ###################
 #    Tables
 ################### 
+
+class Friendship(db.Model):
+    friend_request_from_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that requests
+    friend_request_to_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that accepts the request
+    accepted = db.Column(db.Boolean, default=False)
+
+    # friend_request_from
+    # friend_request_to
+
+    def __init__(self, friend_request_from_id, friend_request_to_id):
+        self.friend_request_from_id = friend_request_from_id
+        self.friend_request_to_id = friend_request_to_id
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,14 +33,22 @@ class User(db.Model):
 
     posts = db.relationship('Post', backref='user', cascade='all, delete')
     comments = db.relationship('Comment', backref='user', cascade='all, delete')
+    
     memberships = db.relationship('Membership', backref='user', cascade='all, delete')
     groups = association_proxy("memberships", "group")
+
+    friendships_request_to = db.relationship('Friendship', backref='friend_request_from', primaryjoin=id==Friendship.friend_request_from_id, cascade='all, delete')
+    friendships_request_from = db.relationship('Friendship', backref='friend_request_to', primaryjoin=id==Friendship.friend_request_to_id, cascade='all, delete')
+    
+    # friends_request_to = association_proxy('friendships_request_to', 'friend_request_to')
+    # friends_request_from = association_proxy('friendships_request_from', 'friend_request_from')
 
     def __init__(self, username, email, avatar_url, password_hash):
         self.username = username
         self.email = email
         self.avatar_url = avatar_url
         self.password_hash = password_hash
+
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,20 +60,21 @@ class Group(db.Model):
 
     def __init__(self, name):
         self.name = name
+ 
 
 class Membership(db.Model):
-    __tablename__ = 'group_members'
-
-    id = db.Column(db.Integer, primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    admin = db.Column(db.Boolean, default=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    admin = db.Column(db.Boolean)
 
 #   group
 #   user  
 
-    def __init__(self, admin):
+    def __init__(self, group_id, user_id, admin):
+        self.group_id = group_id
+        self.user_id = user_id
         self.admin = admin
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -144,7 +165,9 @@ def token_required(f):
            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
            current_user = User.query.filter_by(id=data['id']).first()
        except:
-           return jsonify({'message': 'token is invalid'})
+           return jsonify({
+               'timeout':True,
+               'message': 'token is invalid'})
  
        return f(current_user, *args, **kwargs)
    return decorator
