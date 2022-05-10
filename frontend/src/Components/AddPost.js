@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 const AddPost = () => {
+  const [data, setData] = useState([]);
   const [group_name, setGroupName] = useState("");
   const [category, setCat] = useState("");
   const [text, setText] = useState("");
@@ -22,6 +23,22 @@ const AddPost = () => {
     );
   }
 
+  async function getMyGroups() {
+    const response = await fetch(`http://127.0.0.1:5000/groups/all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": sessionStorage.getItem("token"),
+      },
+    });
+    setData(await response.json());
+    return;
+  }
+
+  useEffect(() => {
+    getMyGroups();
+  }, []);
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (!text) {
@@ -29,16 +46,32 @@ const AddPost = () => {
       return;
     }
     if (latitude != null) {
-      if (!(/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/).test(latitude.toString())) {
+      if (
+        !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(
+          latitude.toString()
+        )
+      ) {
         alert("Please include an appropraite latitude");
         return;
       }
     }
     if (longitude != null) {
-      if (!(/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/).test(longitude.toString())) {
+      if (
+        !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(
+          longitude.toString()
+        )
+      ) {
         alert("Please include an appropriate longitude");
         return;
       }
+    }
+    if (
+      !/(.*[#]){1}[0-9]*[a-zA-Z](.*[#]){1}[0-9]*[a-zA-Z](.*[#]){1}[0-9]*[a-zA-Z]/.test(
+        category.toString()
+      )
+    ) {
+      alert("Please include appropriate hashtags of 3 or more");
+      return;
     }
 
     const requestOpt = {
@@ -48,7 +81,7 @@ const AddPost = () => {
         "access-token": sessionStorage.getItem("token"),
       },
       body: JSON.stringify({
-        group_name: "test", //group_name
+        group_name: group_name,
         category: category,
         text: text,
         video_url: video_url,
@@ -84,21 +117,30 @@ const AddPost = () => {
           />
         </div>
         <div className="form-control">
-          <label>Category:</label>
+          <label className="post">Hashtags for Post(include atleast 3):</label>
+          <br></br>
+          <input
+            className="post"
+            type="text"
+            placeholder="#"
+            onChange={(e) => setCat(e.target.value)}
+          />
+        </div>
+        <div className="form-control">
+          <label>Choose Group:</label>
           <span> </span>
           <select
             className="comConSelect"
             required
             value={category}
-            onChange={(e) => setCat(e.target.value)}
+            onChange={(e) => setGroupName(e.target.value)}
           >
             <option value={"None"} hidden>
-              Select Category
+              Select group
             </option>
-            <option value={"Sport"}>Sport</option>
-            <option value={"Education"}>Education</option>
-            <option value={"Movies"}>Movies</option>
-            <option value={"Cars"}>Cars</option>
+            {data.map((d) => (
+                <option value={d.name}>{d.name}</option>
+            ))}
           </select>
         </div>
         <div className="form-control">
