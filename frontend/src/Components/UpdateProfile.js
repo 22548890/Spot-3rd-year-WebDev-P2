@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import Swal from 'sweetalert2'
+import './CSS/LoginCSS.css'
 
 export default function UpdateProfile() {
   const [data, setData] = useState([]);
@@ -75,7 +76,9 @@ export default function UpdateProfile() {
       <div className="field">
       <h2>My Profile:</h2>
       <img htmlFor="photo-upload" className='loginimg' src={data.avatar_url} alt="User Avatar" />
-      <input id="photo-upload" className="img-upload" type="url" placeholder={"Enter URL"} defaultValue={data.avatar_url} />
+      Image URL:
+      <input id="photo-upload" className="img-upload" type="url" placeholder={"Image URL"} defaultValue={data.avatar_url} />
+      
         <label>Username:</label>
         <input
           id="username"
@@ -102,13 +105,13 @@ export default function UpdateProfile() {
         />
         
     
-        <button className="UpdateBtn" onClick={UpdateProfile}>
+        <button className="update-btn" onClick={UpdateProfile}>
         Update Profile
       </button>
-      <button className="deleteBtn" onClick={handleDelete}>
+      <button className="delete-btn" onClick={handleDelete}>
         Delete Account
       </button>
-      <button className="btn home" onClick={handleHome}>
+      <button className="home-btn" onClick={handleHome}>
         Back Home
       </button>
       </div>    
