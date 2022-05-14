@@ -136,7 +136,7 @@ const AddPost = () => {
           <input
             className="post"
             type="text"
-            placeholder="#"
+            placeholder="#typehashtagshere"
             onChange={(e) => setHashtags(e.target.value)}
           />
         </div>

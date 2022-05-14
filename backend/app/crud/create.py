@@ -206,7 +206,7 @@ def comment(current_user):
 @app.route('/friend/add', methods = ['POST'])
 @cross_origin()
 @token_required
-def friend_add(current_user):
+def friend_adduser(current_user):
     user_id = request.json['user_id']
     user = User.query.get(user_id)
     current_user.friends.append(user)

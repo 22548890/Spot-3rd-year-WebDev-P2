@@ -47,7 +47,7 @@ function MyGroups() {
     <>
       <nav id="navbar" class="">
         <div className="nav-wrapper">
-          <div className="logo">
+          <div className="logo" onClick={handleHome}>
             <label>Spot</label>
           </div>
 

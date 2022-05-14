@@ -13,6 +13,7 @@ import MyGroups from "./Components/Groups";
 import CreateGroup from "./Components/CreateGroup";
 import Explore from "./Components/Explore";
 import ViewGroup from "./Components/ViewGroup";
+import Friends from "./Components/Friends";
 
 function App() {
   const handleLogout = () => {
@@ -39,6 +40,7 @@ function App() {
           <ProtectedRoute path="/Groups" component={MyGroups} />
           <ProtectedRoute path="/CreateGroup" component={CreateGroup} />
           <ProtectedRoute path="/Explore" component={Explore} />
+          <ProtectedRoute path="/Friends" component={Friends} />
           <ProtectedRoute path="/ViewGroup" component={ViewGroup} />
         </Router>
       </div>
