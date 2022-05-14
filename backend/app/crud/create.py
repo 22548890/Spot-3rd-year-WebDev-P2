@@ -50,7 +50,7 @@ def login():
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
         return {
             'success': True,
-            'token':token.decode('utf8') #!
+            'token':token#.decode('utf8') #!
         }
     else:
         return {
@@ -131,7 +131,7 @@ def post(current_user):
     longitude = request.json['longitude']
     latitude = request.json['latitude']
     group_name = request.json['group_name']
-    hashtags = request.json['hashtags']
+    hashtags = ["tag1","tag2","tag3"]
 
     group = Group.query.filter_by(name=group_name).first()
 

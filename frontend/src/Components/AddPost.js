@@ -82,7 +82,7 @@ const AddPost = () => {
       },
       body: JSON.stringify({
         group_name: group_name,
-        category: category,
+        hashtags: category,
         text: text,
         video_url: video_url,
         longitude: longitude,
