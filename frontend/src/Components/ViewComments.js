@@ -8,6 +8,7 @@ export default function ViewComments() {
     const [text, setText] = useState('')
     const [comment, setComment] = useState('')
     const [data, setData] = useState([]);
+    const [dataPost, setDataPost] = useState([]);
     const [onceOff, setOnceOff] = useState(true);
 
     const onSubmit = (e) => {
@@ -39,18 +40,18 @@ export default function ViewComments() {
     };
 
     async function getPost() {
-        const response = await fetch(`http://127.0.0.1:5000/feed/post=${postId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/get/post=${postId}`, {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "access-token": sessionStorage.getItem("token")},
         });
-        setData(await response.json());
+        setDataPost(await response.json());
         return;
     }
 
     async function getComments() {
         const response = await fetch(`http://127.0.0.1:5000/comments/post=${postId}`, {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "access-token": sessionStorage.getItem("token") },
         });
         setData(await response.json());
         return;
@@ -61,7 +62,7 @@ export default function ViewComments() {
 
     useEffect(() => {
         getComments();
-        // getPost();
+        getPost();
     }, [])
     return (
         <>
@@ -93,9 +94,9 @@ export default function ViewComments() {
                 <div className="feed">
                     {/* {data.map((d) => ( */}
                     <div className="card posts">
-                        <h3 className="post">{"@" + data["user.username"]}</h3>
-                        <label className="post-text">{data.text}</label>
-                        <label>{moment(data.date).format('hh:mm A') + " - " + moment(data.date).format("DD/MM")}</label>
+                        <h3 className="post">{"@" + dataPost["user.username"]}</h3>
+                        <label className="post-text">{dataPost.text}</label>
+                        <label>{moment(dataPost.date).format('hh:mm A') + " - " + moment(data.date).format("DD/MM")}</label>
                     </div>
                     {/* ))} */}
                 </div>

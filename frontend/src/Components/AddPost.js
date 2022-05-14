@@ -34,7 +34,7 @@ const AddPost = () => {
   }
 
   async function getMyGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/all`, {
+    const response = await fetch(`http://127.0.0.1:5000/groups/my`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const AddPost = () => {
             className="post"
             type="text"
             placeholder="#"
-            onChange={(e) => setCat(e.target.value)}
+            onChange={(e) => setHashtags(e.target.value)}
           />
         </div>
         <div className="form-control">
