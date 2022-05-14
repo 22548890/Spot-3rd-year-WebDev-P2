@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import Friendship, User, Group, Membership, Post, Comment, token_required
+from app.models import Friendship, User, Group, Membership, Post, Comment, Hashtag, token_required
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -50,7 +50,7 @@ def login():
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
         return {
             'success': True,
-            'token':token #.decode('utf8') #!
+            'token':token.decode('utf8') #!
         }
     else:
         return {
@@ -130,8 +130,8 @@ def post(current_user):
     video_url = request.json['video_url']
     longitude = request.json['longitude']
     latitude = request.json['latitude']
-    category = request.json['category']
     group_name = request.json['group_name']
+    hashtags = request.json['hashtags']
 
     group = Group.query.filter_by(name=group_name).first()
 
@@ -140,14 +140,28 @@ def post(current_user):
             'success': False,
             'msg': 'Group does not exist'
         }
+    
+    if len(hashtags) < 3 or not isinstance(hashtags, list):
+        return {
+            'success': False,
+            'msg': 'You need at least 3 hashtags'
+        }
 
-    post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, category=category)
+    post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude)
 
     current_user.posts.append(post)
     group.posts.append(post)
 
     db.session.add(post)
     db.session.commit()
+
+    for hashtag in hashtags:
+        tag = Hashtag.query.filter_by(tag=hashtag).first()
+        if not tag:
+            tag = Hashtag(hashtag)
+        post.hashtags.append(tag)
+        db.session.add(tag)
+        db.session.commit()
 
     return {
         'success': True,

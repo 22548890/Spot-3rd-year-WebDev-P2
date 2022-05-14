@@ -10,14 +10,19 @@ from sqlalchemy.ext.associationproxy import association_proxy
 ###################
 #    Tables
 ################### 
+hashtag_post = db.Table('hashtag_post',
+    db.Column('hashtag_id', db.Integer, db.ForeignKey('hashtag.id')),
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
+)
+
 
 class Friendship(db.Model):
     friend_request_from_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that requests
     friend_request_to_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that accepts the request
     accepted = db.Column(db.Boolean, default=False)
 
-    # friend_request_from
-    # friend_request_to
+#   friend_request_from
+#   friend_request_to
 
     def __init__(self, friend_request_from_id, friend_request_to_id):
         self.friend_request_from_id = friend_request_from_id
@@ -83,20 +88,19 @@ class Post(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     longitude = db.Column(db.String(10))
     latitude = db.Column(db.String(10))
-    category = db.Column(db.String(32)) 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
+    hashtags = db.relationship('Hashtag', secondary=hashtag_post, backref='posts')
     comments = db.relationship('Comment', backref='post', cascade='all, delete')
 #   user
 #   group
 
-    def __init__(self, text, video_url, longitude, latitude, category):
+    def __init__(self, text, video_url, longitude, latitude):
         self.text = text
         self.video_url = video_url
         self.longitude = longitude
-        self.latitude = latitude
-        self.category = category    
+        self.latitude = latitude    
 
 
 class Comment(db.Model):
@@ -111,6 +115,15 @@ class Comment(db.Model):
 
     def __init__(self, text):
         self.text = text
+
+class Hashtag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(32))
+
+#   posts
+
+    def __init__(self, tag):
+        self.tag = tag
 
 
 ###################
@@ -137,7 +150,7 @@ memberships_schema = GroupSchema(many=True)
 
 class PostSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'text','video_url', 'date', 'longitude', 'latitude', 'category', 'user.username', 'group.name')
+        fields = ('id', 'text','video_url', 'date', 'longitude', 'latitude', 'user.username', 'group.name')
 post_schema = PostSchema()
 posts_schema = PostSchema(many=True)
 

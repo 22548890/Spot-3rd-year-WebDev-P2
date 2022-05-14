@@ -13,11 +13,13 @@ def myprofile(current_user):
     result =  user_schema.dump(current_user)
     return jsonify(result)
 
-@app.route('/groups/all', methods=['GET'])
+@app.route('/groups/all', methods=['GET'])  # excluding my groups
 @cross_origin()
-def getallgroups():
+@token_required
+def getallgroups(current_user): 
     groups = Group.query.all()
-    results = groups_schema.dump(groups)
+    groups_rest = [group for group in groups if not current_user in group.users]
+    results = groups_schema.dump(groups_rest)
     return jsonify(results)
 
 @app.route('/groups/my', methods=['GET'])
@@ -41,7 +43,8 @@ def getmainfeed(current_user):
 
 @app.route('/feed/group=<group_id>', methods=['GET'])
 @cross_origin()
-def getgroupfeed(group_id):
+@token_required
+def getgroupfeed(current_user, group_id):
     # group = Group.query.get(group_id)
     # if not group:
     #     return {
@@ -59,9 +62,20 @@ def getgroupfeed(group_id):
     results = posts_schema.dump(posts)
     return jsonify(results)
 
+@app.route('/get/post=<post_id>', methods=['GET']) # should I just use multiple schema?
+@cross_origin()
+@token_required
+def getpost(current_user, post_id):
+    post = Post.query.get(post_id)
+
+    result = post_schema.dump(post)
+    return jsonify(result)
+
+
 @app.route('/comments/post=<post_id>', methods=['GET'])
 @cross_origin()
-def getcomments(post_id):
+@token_required
+def getcomments(current_user, post_id):
     comments = Comment.query.filter_by(post_id=post_id).order_by(desc('date'))
 
     results = comments_schema.dump(comments)
