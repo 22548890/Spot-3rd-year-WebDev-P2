@@ -99,7 +99,7 @@ export default function ViewComments() {
                     </div>
                     {/* ))} */}
                 </div>
-                <button onClick={handleBack} className="comment back-btn">Return to posts</button>
+                <button onClick={handleBack} className="comment back-btn">Return Home</button>
                 <div className="card posts feed">
                     <label className="post">Add a Comment: </label>
                     <input className="post" id="comment" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />

@@ -29,12 +29,15 @@ const BigMap = () => {
     );
   }
 
+  const handleComments = (id) => {
+    window.location.pathname = `/comments/${id}`;
+  };
+
   function GetIcon(iS) {
     return L.icon({
       iconUrl: require("../Static/Icons/mapmarker.png"),
-      iconSize: [iS]
-    })
-
+      iconSize: [iS],
+    });
   }
 
   async function getPosts() {
@@ -75,19 +78,30 @@ const BigMap = () => {
                   {d.latitude == null ? (
                     <label></label>
                   ) : (
-                    <Marker position={[d.latitude, d.longitude]} icon={GetIcon(40)}>
-                    <Popup>
-                      <div>
-                        <h3 className="post">{"@" + d["user.username"]}</h3>
-                        <label className="post-text">{d.text}</label>
-                        <label>
-                          {moment(d.date).format("hh:mm A") +
-                            " - " +
-                            moment(d.date).format("DD/MM")}
-                        </label>
-                      </div>
-                    </Popup>
-                  </Marker> 
+                    <Marker
+                      position={[d.latitude, d.longitude]}
+                      icon={GetIcon(40)}
+                    >
+                      <Popup>
+                        <div>
+                          <h3 className="post">{"@" + d["user.username"]}</h3>
+                          <label className="post-text">Group: {d["group.name"]}</label><br/>
+                          <label className="post-text">{d.text}</label><br/>
+                          <label>
+                            {moment(d.date).format("hh:mm A") +
+                              " - " +
+                              moment(d.date).format("DD/MM")}
+                          </label>
+                          <br></br>
+                          <label
+                            className="show-comment"
+                            onClick={() => handleComments(d.id)}
+                          >
+                            Go to Post
+                          </label>
+                        </div>
+                      </Popup>
+                    </Marker>
                   )}
                 </div>
               ))}
