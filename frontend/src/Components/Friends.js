@@ -16,18 +16,19 @@ const Friends = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
-        user_id : id,
+        user_id: id,
       }),
     };
     fetch("http://127.0.0.1:5000/friend/add", requestOpt)
       .then((response) => response.json())
       .catch((error) => console.log(error));
 
-      setTimeout(function(){ window.location.reload()}, 10);
-    ;
+    setTimeout(function () {
+      window.location.reload();
+    }, 10);
   }
 
   const handleViewGroups = () => {
@@ -40,7 +41,7 @@ const Friends = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    sessionStorage.clear();
+    localStorage.clear();
     window.location.pathname = "/login";
   };
 
@@ -54,7 +55,7 @@ const Friends = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
     });
     setFriends(await response.json());
@@ -70,7 +71,7 @@ const Friends = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
     });
     setUsers(await response.json());
@@ -127,21 +128,18 @@ const Friends = () => {
       </div>
       <div className="users users2 users3">
         <h3>Other Users</h3>
-        <input
-            className="post"
-            type="text"
-            placeholder="Seach name"
-          />
+        <input className="post" type="text" placeholder="Seach name" />
         <table>
           <tbody>
             {users.map((u) => (
               <tr key={u.id}>
                 <td>{u.username}</td>
                 <td>
-                  <FaUserPlus onClick={() => {
-                    addFriend(u.id)
-                  }
-                    }></FaUserPlus>
+                  <FaUserPlus
+                    onClick={() => {
+                      addFriend(u.id);
+                    }}
+                  ></FaUserPlus>
                 </td>
               </tr>
             ))}

@@ -8,7 +8,7 @@ export default function UpdateProfile() {
   const handleDelete = () => {
     const requestOpt = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json", 'access-token': sessionStorage.getItem('token') },
+      headers: { "Content-Type": "application/json", 'access-token': localStorage.getItem('token') },
     };
     async function fetchFunc() {
       return await fetch(`http://127.0.0.1:5000/profile/delete`, requestOpt)
@@ -33,7 +33,7 @@ export default function UpdateProfile() {
     e.preventDefault();
     const requestOpt = {
       method: "PUT",
-      headers: { "Content-Type": "application/json", 'access-token': sessionStorage.getItem('token') },
+      headers: { "Content-Type": "application/json", 'access-token': localStorage.getItem('token') },
       body: JSON.stringify({
         username: document.getElementById("username").value,
         password: document.getElementById("password").value,
@@ -60,7 +60,7 @@ export default function UpdateProfile() {
   async function getProfile() {
     const response = await fetch(`http://127.0.0.1:5000/profile/my`, {
       method: "GET",
-      headers: { "Content-Type": "application/json", 'access-token': sessionStorage.getItem('token') },
+      headers: { "Content-Type": "application/json", 'access-token': localStorage.getItem('token') },
     });
     setData(await response.json());
     return;

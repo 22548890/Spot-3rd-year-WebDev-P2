@@ -15,7 +15,7 @@ export default function ViewComments() {
         e.preventDefault();
         const requestOpt = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'access-token': sessionStorage.getItem("token") },
+            headers: { 'Content-Type': 'application/json', 'access-token': localStorage.getItem("token") },
             body: JSON.stringify({
                 'text': document.getElementById("comment").value,//group_name
                 'post_id': postId,
@@ -42,7 +42,7 @@ export default function ViewComments() {
     async function getPost() {
         const response = await fetch(`http://127.0.0.1:5000/get/post=${postId}`, {
             method: "GET",
-            headers: { "Content-Type": "application/json", "access-token": sessionStorage.getItem("token")},
+            headers: { "Content-Type": "application/json", "access-token": localStorage.getItem("token")},
         });
         setDataPost(await response.json());
         return;
@@ -51,7 +51,7 @@ export default function ViewComments() {
     async function getComments() {
         const response = await fetch(`http://127.0.0.1:5000/comments/post=${postId}`, {
             method: "GET",
-            headers: { "Content-Type": "application/json", "access-token": sessionStorage.getItem("token") },
+            headers: { "Content-Type": "application/json", "access-token": localStorage.getItem("token") },
         });
         setData(await response.json());
         return;
@@ -96,6 +96,7 @@ export default function ViewComments() {
                     <div className="card posts">
                         <h3 className="post">{"@" + dataPost["user.username"]}</h3>
                         <label className="post-text">{dataPost.text}</label>
+                        <label>Location: {dataPost.latitude+" "+dataPost.longitude}</label>
                         <label>{moment(dataPost.date).format('hh:mm A') + " - " + moment(data.date).format("DD/MM")}</label>
                     </div>
                     {/* ))} */}

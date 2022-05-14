@@ -4,19 +4,14 @@ import React from "react";
 export default function ViewProfile() {
   const [data, setData] = useState([]);
   const [onceOff, setOnceOff] = useState(true);
-  const isDev = localStorage.getItem("isDev");
 
-  const handleDelete = () => {
-    let typeDel = "com";
-    if (isDev === "true") {
-      typeDel = "dev";
-    }
+  const handleDelete = () => { 
     const requestOpt = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json","access-token": localStorage.getItem("token") },
     };
     async function fetchFunc() {
-      return await fetch(`http://127.0.0.1:5000/${typeDel}Delete`, requestOpt)
+      return await fetch(`http://127.0.0.1:5000/profile/delete`, requestOpt)
         .then((response) => response.json())
         .catch((error) => console.log(error));
     }
@@ -25,6 +20,7 @@ export default function ViewProfile() {
     })();
     alert("Deleted Account");
     localStorage.clear();
+    sessionStorage.clear();
     window.location.pathname = "/login";
   };
 

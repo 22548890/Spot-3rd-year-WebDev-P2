@@ -2,6 +2,7 @@ import React from 'react'
 import './CSS/LoginCSS.css'
 import logo from '../SPOT.svg'
 import Swal from 'sweetalert2'
+import moment from "moment"
 
 const ImgUpload = ({
     onChange,
@@ -109,6 +110,7 @@ class Login extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
+        localStorage.setItem("timeoutTime", "true");
         let data = this.state;
         const requestOpt = {
             method: 'POST',
@@ -126,7 +128,7 @@ class Login extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) { // correct login info
-                sessionStorage.setItem("token", info.token);
+                localStorage.setItem("token", info.token);
                 localStorage.setItem("isAuthenticated", true);
                 window.location.pathname = "/";
             } else {

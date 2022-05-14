@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AddPost = () => {
   const [data, setData] = useState([]);
@@ -10,6 +11,7 @@ const AddPost = () => {
   const [latitude, setLat] = useState(null);
   const [longitude, setLon] = useState(null);
   const [video_url, setVid] = useState("");
+  const [isDuplicate, setDuplicate] = useState(false);
 
   function setLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -23,6 +25,7 @@ const AddPost = () => {
     );
   }
   function setHashtags(hashtag) {
+    setDuplicate(false);
     const ht = hashtag.split("#");
     const hash = [];
     for (let i = 0; i < ht.length; i++) {
@@ -31,6 +34,12 @@ const AddPost = () => {
       }
       setCat(hash);
     }
+    for(let i = 0; i < ht.length; i++) {  
+      for(let j = i+1; j < ht.length; j++) {  
+          if(hash[i] === hash[j])  
+          setDuplicate(true);
+      }  
+  }  
   }
 
   async function getMyGroups() {
@@ -38,7 +47,7 @@ const AddPost = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
     });
     setData(await response.json());
@@ -52,7 +61,11 @@ const AddPost = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (!text) {
-      alert("Please include a post description");
+      Swal.fire(
+        "Please include a post description",
+        'Try again!',
+        'warning',
+      )
       return;
     }
     if (latitude != null) {
@@ -61,7 +74,11 @@ const AddPost = () => {
           latitude.toString()
         )
       ) {
-        alert("Please include an appropraite latitude");
+        Swal.fire(
+          "Please include an appropriate latitude",
+          'Try again!',
+          'warning',
+        )
         return;
       }
     }
@@ -71,12 +88,20 @@ const AddPost = () => {
           longitude.toString()
         )
       ) {
-        alert("Please include an appropriate longitude");
+        Swal.fire(
+          "Please include an appropriate longitude",
+          'Try again!',
+          'warning',
+        )
         return;
       }
     }
     if (/\s/g.test(category)) {
-      alert("Please do not include spaces with hashtags");
+      Swal.fire(
+        "Please do not include spaces with hashtags",
+        'Try again!',
+        'warning',
+      )
       return;
     }
     if (
@@ -84,7 +109,27 @@ const AddPost = () => {
         category
       )
     ) {
-      alert("Please include at least 3 hashtags");
+      Swal.fire(
+        "Please include at least 3 hashtags",
+        'Try again!',
+        'warning',
+      )
+      return;
+    }
+    if (isDuplicate) {
+      Swal.fire(
+        "Please include UNIQUE hashtags",
+        'Try again!',
+        'warning',
+      )
+      return;
+    }
+    if (group_name==="") {
+      Swal.fire(
+        "Please select a group",
+        'Try again!',
+        'warning',
+      )
       return;
     }
 
@@ -92,7 +137,7 @@ const AddPost = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         group_name: group_name,
