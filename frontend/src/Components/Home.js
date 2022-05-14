@@ -45,7 +45,7 @@ function Home() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         group_name: group_name,
@@ -68,7 +68,7 @@ function Home() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
     });
     setData(await response.json());

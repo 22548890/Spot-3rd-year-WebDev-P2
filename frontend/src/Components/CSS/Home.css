@@ -192,6 +192,13 @@
       align-items: center;
       flex-direction:column;
     }
+    .groups{
+      display: flex;
+      clear: both;
+      align-items: center;
+      flex-direction:column;
+      padding: 1%;
+    }
     .heading{
       color: #ffff;
       margin-bottom:-2%;

@@ -45,7 +45,7 @@ const BigMap = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
     });
     setData(await response.json());

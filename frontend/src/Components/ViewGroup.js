@@ -56,11 +56,6 @@ const Group = ({ onSubmit, name }) => (
   <div className="card">
     <form onSubmit={onSubmit}>
       <h1>Group Successfully Created!</h1>
-      {/* <label className="custom-file-upload fas">
-        <div className="img-wrap">
-          <img for="photo-upload" src={src} alt="Upload" />
-        </div>
-      </label> */}
       <div className="name">{name}</div>
       {/* <div className="bio">{bio}</div> */}
       <button type="submit" className="styleBtn edit">
@@ -88,47 +83,15 @@ const Edit = ({ onSubmit, children }) => (
 
 class ViewGroup extends React.Component {
   state = {
-    // file: "",
-    // imagePreviewUrl:
-    //   "https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true",
     name: "",
-    // bio: "",
-    // password: "",
     active: "edit",
   };
-
-  // photoUpload = (e) => {
-  //   e.preventDefault();
-  //   const reader = new FileReader();
-  //   const file = e.target.files[0];
-  //   reader.onloadend = () => {
-  //     this.setState({
-  //       file: file,
-  //       imagePreviewUrl: reader.result,
-  //     });
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
   editName = (e) => {
     const name = e.target.value;
     this.setState({
       name,
     });
   };
-
-  // editEmail = (e) => {
-  //   const bio = e.target.value;
-  //   this.setState({
-  //     bio,
-  //   });
-  // };
-
-  // editPassword = (e) => {
-  //   const password = e.target.value;
-  //   this.setState({
-  //     password,
-  //   });
-  // };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -137,14 +100,12 @@ class ViewGroup extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         name: data.name,
       }),
     };
-    // bio: data.bio,
-    // avatar_url: document.getElementById("avatar_url_upload").value,
 
     async function fetchFunc() {
       return await fetch("http://127.0.0.1:5000/group/create", requestOpt)
@@ -167,20 +128,13 @@ class ViewGroup extends React.Component {
       <div>
         {active === "edit" ? (
           <Edit onSubmit={this.handleSubmit}>
-            {/* <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} /> */}
-            {/* <GroupName onChange={this.editName} value={name} /> */}
-            {/* <GroupBio onChange={this.editEmail} value={bio} /> */}
-            {/* <Password onChange={this.editPassword} value={password} /> */}
             <label>Group Description</label>
             <p> ... </p>
           </Edit>
         ) : (
           <Group
             onSubmit={this.handleSubmit}
-            // src={imagePreviewUrl}
             name={name}
-            // bio={bio}
-            // password={password}
           />
         )}
       </div>

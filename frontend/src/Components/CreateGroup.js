@@ -137,7 +137,7 @@ class CreateGroup extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "access-token": sessionStorage.getItem("token"),
+        "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         name: data.name,
