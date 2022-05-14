@@ -27,7 +27,7 @@ const ShowMap = ({ lat, lng }) => {
             <MapContainer
               center={position}
               zoom={13}
-              style={{ width: "200px", height: "200px", position: "center" }}
+              style={{ width: "300px", height: "300px", position: "center" }}
               scrollWheelZoom={false}
             >
               <TileLayer
@@ -36,8 +36,9 @@ const ShowMap = ({ lat, lng }) => {
               />
               <Marker position={position} icon={GetIcon(30)}>
                 <Popup>
-                  A pretty CSS3 popup.
-                  <br /> Easily customizable.
+                  <label>Latitude: {lat}</label>
+                  <br></br>
+                  <label>Longitude: {lng}</label>
                 </Popup>
               </Marker>
             </MapContainer>
