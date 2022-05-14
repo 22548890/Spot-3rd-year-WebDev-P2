@@ -22,6 +22,16 @@ const AddPost = () => {
       }
     );
   }
+  function setHashtags(hashtag) {
+    const ht = hashtag.split("#");
+    const hash = [];
+    for (let i = 0; i < ht.length; i++) {
+      if (i != ht.length - 1) {
+        hash[i] = "#" + ht[i + 1];
+      }
+      setCat(hash);
+    }
+  }
 
   async function getMyGroups() {
     const response = await fetch(`http://127.0.0.1:5000/groups/all`, {
@@ -65,12 +75,16 @@ const AddPost = () => {
         return;
       }
     }
+    if (/\s/g.test(category)) {
+      alert("Please do not include spaces with hashtags");
+      return;
+    }
     if (
       !/(.*[#]){1}[0-9]*[a-zA-Z](.*[#]){1}[0-9]*[a-zA-Z](.*[#]){1}[0-9]*[a-zA-Z]/.test(
-        category.toString()
+        category
       )
     ) {
-      alert("Please include appropriate hashtags of 3 or more");
+      alert("Please include at least 3 hashtags");
       return;
     }
 
@@ -139,7 +153,7 @@ const AddPost = () => {
               Select group
             </option>
             {data.map((d) => (
-                <option value={d.name}>{d.name}</option>
+              <option value={d.name}>{d.name}</option>
             ))}
           </select>
         </div>
