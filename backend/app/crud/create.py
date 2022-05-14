@@ -131,7 +131,7 @@ def post(current_user):
     longitude = request.json['longitude']
     latitude = request.json['latitude']
     group_name = request.json['group_name']
-    hashtags = ["tag1","tag2","tag3"]
+    hashtags = request.json['hashtags']
 
     group = Group.query.filter_by(name=group_name).first()
 
