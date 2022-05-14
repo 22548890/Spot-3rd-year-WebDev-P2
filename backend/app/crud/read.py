@@ -13,7 +13,7 @@ def myprofile(current_user):
     result =  user_schema.dump(current_user)
     return jsonify(result)
 
-@app.route('/groups/all', methods=['GET'])  # excluding my groups
+@app.route('/groups/not-my', methods=['GET'])  # excluding my groups
 @cross_origin()
 @token_required
 def getallgroups(current_user): 
@@ -35,6 +35,7 @@ def getmygroups(current_user):
 def getmainfeed(current_user):
     groups = current_user.groups
     group_ids = [group.id for group in groups]
+    friends_ids = current_user.friends
 
     posts = Post.query.filter(Post.group_id.in_(group_ids)).order_by(desc('date'))
 
@@ -81,35 +82,60 @@ def getcomments(current_user, post_id):
     results = comments_schema.dump(comments)
     return jsonify(results)
 
-@app.route('/friends/requests/to', methods=['GET'])
-@cross_origin()
-@token_required
-def friendsrequeststo(current_user):
-    requests_to = current_user.friendships_request_to
-    users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted == False]
+# @app.route('/friends/requests/to', methods=['GET'])
+# @cross_origin()
+# @token_required
+# def friendsrequeststo(current_user):
+#     requests_to = current_user.friendships_request_to
+#     users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted == False]
 
-    results = users_schema.dump(users)
-    return jsonify(results)
+#     results = users_schema.dump(users)
+#     return jsonify(results)
 
-@app.route('/friends/requests/from', methods=['GET'])
-@cross_origin()
-@token_required
-def friendsrequestsfrom(current_user):
-    requests_from = current_user.friendships_request_from
-    users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted == False]
+# @app.route('/friends/requests/from', methods=['GET'])
+# @cross_origin()
+# @token_required
+# def friendsrequestsfrom(current_user):
+#     requests_from = current_user.friendships_request_from
+#     users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted == False]
 
-    results = users_schema.dump(users)
-    return jsonify(results)
+#     results = users_schema.dump(users)
+#     return jsonify(results)
 
 @app.route('/friends', methods=['GET'])
 @cross_origin()
 @token_required
 def friends(current_user):
-    requests_from = current_user.friendships_request_from
-    users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted]
-    requests_to = current_user.friendships_request_to
-    more_users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted]
-    if len(more_users) > 0:
-        users.append(more_users)
+    results = users_schema.dump(current_user.friends)
+    return jsonify(results)
+    # requests_from = current_user.friendships_request_from
+    # users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted]
+    # requests_to = current_user.friendships_request_to
+    # more_users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted]
+    # if len(more_users) > 0:
+    #     users.append(more_users)
+    # results = users_schema.dump(users)
+    # return jsonify(results)
+
+@app.route('/non-friends', methods=['GET'])
+@cross_origin()
+@token_required
+def non_friends(current_user):
+    excl_ids = [friend.id for friend in current_user.friends]
+    excl_ids.append(current_user.id)
+    users = User.query.filter(User.id.not_in(excl_ids))
     results = users_schema.dump(users)
     return jsonify(results)
+
+# @app.route('/users/all', methods=['GET'])  # excluding friends and requested and requests from
+# @cross_origin()
+# @token_required
+# def all_users(current_user): 
+#     requests_from = current_user.friendships_request_from
+#     users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted]
+#     requests_to = current_user.friendships_request_to
+#     more_users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted]
+#     if len(more_users) > 0:
+#         users.append(more_users)
+#     results = users_schema.dump(users)
+#     return jsonify(results)
