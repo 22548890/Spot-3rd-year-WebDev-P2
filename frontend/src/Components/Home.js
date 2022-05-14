@@ -25,6 +25,10 @@ function Home() {
     window.location.pathname = "/Explore";
   };
 
+  const handleFriends = () => {
+    window.location.pathname = "/Friends";
+  };
+
   const handleComments = (id) => {
     window.location.pathname = `/comments/${id}`;
   };
@@ -94,11 +98,14 @@ function Home() {
           </div>
 
           <ul id="menu">
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
+          <li>
+              <a onClick={handleViewExplore}> Explore</a>
             </li>
             <li>
-              <a onClick={handleViewExplore}> Explore</a>
+              <a onClick={handleFriends}> Friends</a>
+            </li>
+            <li>
+              <a onClick={handleViewGroups}> Groups</a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>

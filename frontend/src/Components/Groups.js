@@ -62,7 +62,7 @@ function MyGroups() {
   }
 
   async function getAllGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/all`, {
+    const response = await fetch(`http://127.0.0.1:5000/groups/not-my`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +100,7 @@ function MyGroups() {
     <>
       <nav id="navbar" class="">
         <div className="nav-wrapper">
-          <div className="logo">
+          <div className="logo" onClick={handleHome}>
             <label>Spot</label>
           </div>
 

@@ -17,7 +17,7 @@ def delete_profile(current_user):
         'success':True
     }
 
-@app.route('/group/delete', methods=['DELETE']) # not tested
+@app.route('/group/delete', methods=['DELETE']) # not tested yet
 @cross_origin()
 @token_required
 def delete_group(current_user):
@@ -46,7 +46,24 @@ def delete_group(current_user):
 
     db.session.delete(group)
     db.session.commit()
-    
+
     return {
         'success':True
     }
+
+# @app.route('/friend/request/reject', methods=['DELETE']) # not tested yet
+# @cross_origin()
+# @token_required
+# def friend_request_reject(current_user): 
+#     username = request.json['username']
+
+#     friend = User.query.filter_by(username=username).first()
+
+#     friendship = Friendship.query.get((friend.id, current_user.id))
+
+#     db.session.delete(friendship)
+#     db.session.commit()
+
+#     return {
+#         'success':True
+#     }
