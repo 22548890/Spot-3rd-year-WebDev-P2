@@ -140,7 +140,7 @@ def post(current_user):
             'success': False,
             'msg': 'Group does not exist'
         }
-
+    
     post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, category=category)
 
     current_user.posts.append(post)

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import AddPost from "./AddPost";
 import ShowMap from "./ShowMap";
 import BigMap from "./BigMap";
+import ReactPlayer from 'react-player'
 
 function Home() {
   const handleLogout = () => {
@@ -51,7 +52,7 @@ function Home() {
         group_name: group_name,
         category: category,
         text: text,
-        video_url: video_url,
+        video_url: video_url.split('/',1)[1],
         longitude: longitude,
         latitude: latitude,
       }),
@@ -133,6 +134,8 @@ function Home() {
             <div className="card posts">
               <h3 className="post">{"@" + d["user.username"]}</h3>
               <label className="post-text">{d.text}</label>
+              <label className="postvid"><ReactPlayer url = {'./videos/'.concat(d.video_url.split('h')[1])} controls = {true}/></label>
+              
               <label>
                 {moment(d.date).format("hh:mm A") +
                   " - " +

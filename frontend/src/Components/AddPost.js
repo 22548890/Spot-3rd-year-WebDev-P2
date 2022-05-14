@@ -1,6 +1,11 @@
 import { useState } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+//import { FileUploader } from './Components/FileUploader';
+//import { ToastContainer} from 'react-toastify';
+//import ReactPlayer from "react-player";
+import axios from 'axios';
+
 
 const AddPost = () => {
   const [group_name, setGroupName] = useState("");
@@ -22,12 +27,49 @@ const AddPost = () => {
     );
   }
 
+  // function FileUploadPage(){
+  //   const [video_url, setVid] = useState([]);
+  //   const [isFilePicked, setIsFilePicked] = useState(false);
+    
+  //   const changeHandler = (event) => {
+      
+  //     setVid(event.target.name);
+  //     setIsFilePicked(true);
+
+
+  //       // const data = new FormData();
+
+  //       // for(let i = 0; i < video_url.length; i++) {
+  //       //     data.append('file', video_url[i]);
+  //       // }
+
+  //       // axios.post('./videos', data)
+
+  //   };
+  
+  //   const handleSubmission = () => {
+  //   };
+  
+  //   return(
+  //    <div>
+  //       <input type="file" name="file" onChange={changeHandler} />
+  //       <div>
+  //         <button onClick={handleSubmission}>Submit</button>
+  //       </div>
+  //     </div>
+  //   )
+  // }
+
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (!text) {
       alert("Please include a post description");
       return;
     }
+
+   //video_url= video_url.split('/',1)[1];
+
     if (latitude != null) {
       if (!(/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/).test(latitude.toString())) {
         alert("Please include an appropraite latitude");
@@ -40,6 +82,8 @@ const AddPost = () => {
         return;
       }
     }
+
+    
 
     const requestOpt = {
       method: "POST",
@@ -102,12 +146,16 @@ const AddPost = () => {
           </select>
         </div>
         <div className="form-control">
-          <label className="post">Video URL:</label>
+          <label className="post">Video File:</label>
+          
           <input
-            className="post"
-            type="text"
-            placeholder="Type video URL"
-            onChange={(e) => setVid(e.target.value)}
+          
+          type= "file"
+          className="post"
+          
+           onChange={(e) =>   setVid(e.target.value)}
+          
+           
           />
         </div>
         <div className="form-control form-control-check">
