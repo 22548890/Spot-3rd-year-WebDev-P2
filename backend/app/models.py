@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
 import jwt
 
@@ -15,18 +15,23 @@ hashtag_post = db.Table('hashtag_post',
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
 )
 
+user_friend = db.Table('user_friend',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('friend_id', db.Integer, db.ForeignKey('user.id'))
+)
 
-class Friendship(db.Model):
-    friend_request_from_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that requests
-    friend_request_to_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that accepts the request
-    accepted = db.Column(db.Boolean, default=False)
 
-#   friend_request_from
-#   friend_request_to
+# class Friendship(db.Model):
+#     friend_request_from_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that requests
+#     friend_request_to_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that accepts the request
+#     accepted = db.Column(db.Boolean, default=False)
 
-    def __init__(self, friend_request_from_id, friend_request_to_id):
-        self.friend_request_from_id = friend_request_from_id
-        self.friend_request_to_id = friend_request_to_id
+# #   friend_request_from
+# #   friend_request_to
+
+#     def __init__(self, friend_request_from_id, friend_request_to_id):
+#         self.friend_request_from_id = friend_request_from_id
+#         self.friend_request_to_id = friend_request_to_id
 
 
 class User(db.Model):
@@ -36,14 +41,16 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     avatar_url = db.Column(db.String(2048))
 
-    posts = db.relationship('Post', backref='user', cascade='all, delete')
-    comments = db.relationship('Comment', backref='user', cascade='all, delete')
+    posts = db.relationship('Post', backref='user', cascade='all, delete, delete-orphan')
+    comments = db.relationship('Comment', backref='user', cascade='all, delete, delete-orphan')
     
     memberships = db.relationship('Membership', backref='user', cascade='all, delete')
     groups = association_proxy("memberships", "group")
 
-    friendships_request_to = db.relationship('Friendship', backref='friend_request_from', primaryjoin=id==Friendship.friend_request_from_id, cascade='all, delete')
-    friendships_request_from = db.relationship('Friendship', backref='friend_request_to', primaryjoin=id==Friendship.friend_request_to_id, cascade='all, delete')
+    friends = db.relationship('User', secondary=user_friend, primaryjoin=user_friend.c.user_id==id, secondaryjoin=user_friend.c.friend_id==id)
+
+    # friendships_request_to = db.relationship('Friendship', backref='friend_request_from', primaryjoin=id==Friendship.friend_request_from_id, cascade='all, delete')
+    # friendships_request_from = db.relationship('Friendship', backref='friend_request_to', primaryjoin=id==Friendship.friend_request_to_id, cascade='all, delete')
     
     # friends_request_to = association_proxy('friendships_request_to', 'friend_request_to')
     # friends_request_from = association_proxy('friendships_request_from', 'friend_request_from')
@@ -59,7 +66,7 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
 
-    posts = db.relationship('Post', backref='group', cascade='all, delete')
+    posts = db.relationship('Post', backref='group', cascade='all, delete, delete-orphan')
     memberships = db.relationship('Membership', backref='group', cascade='all, delete')
     users = association_proxy("memberships", "user")
 
@@ -85,28 +92,30 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text)
     video_url = db.Column(db.String(2048))
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.DateTime, default=datetime.now)
     longitude = db.Column(db.String(10))
     latitude = db.Column(db.String(10))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-
+    hashtags_text = db.Column(db.Text)
+    
     hashtags = db.relationship('Hashtag', secondary=hashtag_post, backref='posts')
-    comments = db.relationship('Comment', backref='post', cascade='all, delete')
+    comments = db.relationship('Comment', backref='post', cascade='all, delete, delete-orphan')
 #   user
 #   group
 
-    def __init__(self, text, video_url, longitude, latitude):
+    def __init__(self, text, video_url, longitude, latitude, hashtags_text):
         self.text = text
         self.video_url = video_url
         self.longitude = longitude
-        self.latitude = latitude    
+        self.latitude = latitude  
+        self.hashtags_text = hashtags_text
 
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.DateTime, default=datetime.now)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -150,7 +159,7 @@ memberships_schema = GroupSchema(many=True)
 
 class PostSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'text','video_url', 'date', 'longitude', 'latitude', 'user.username', 'group.name')
+        fields = ('id', 'text','video_url', 'date', 'longitude', 'latitude', 'user.username', 'group.name', 'hashtags_text')
 post_schema = PostSchema()
 posts_schema = PostSchema(many=True)
 

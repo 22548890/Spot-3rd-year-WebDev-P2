@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import Friendship, User, Group, Membership, Post, Comment, Hashtag, token_required
+from app.models import User, Group, Membership, Post, Comment, Hashtag, token_required
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -147,7 +147,11 @@ def post(current_user):
             'msg': 'You need at least 3 hashtags'
         }
 
-    post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude)
+    hashtags_text = ""
+    for hashtag in hashtags:
+        hashtags_text += '#' + hashtag 
+
+    post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, hashtags_text=hashtags_text)
 
     current_user.posts.append(post)
     group.posts.append(post)
@@ -166,7 +170,8 @@ def post(current_user):
     return {
         'success': True,
         'user_name': current_user.username,
-        'group_name': group_name
+        'group_name': group_name,
+        'hashtags': hashtags_text
     }
 
 @app.route('/comment', methods = ['POST'])
@@ -198,51 +203,64 @@ def comment(current_user):
         'user': current_user.username
     }
 
-@app.route('/friend/request', methods = ['POST'])
+@app.route('/friend/add', methods = ['POST'])
 @cross_origin()
 @token_required
 def friend_add(current_user):
-    username = request.json['username']
+    user_id = request.json['user_id']
+    user = User.query.get(user_id)
+    current_user.friends.append(user)
 
-    friend = User.query.filter_by(username=username).first()
-
-    if not friend:
-        return {
-            'success': False,
-            'msg': 'User does not exist'
-        }
-
-    fship = Friendship.query.get((current_user.id, friend.id))
-    if fship:
-        if fship.accepted:
-            return {
-                'success': False,
-                'msg': 'Already friends'
-            }
-        else:
-            return {
-                'success': False,
-                'msg': 'Request already sent'
-            }
-
-    fship = Friendship.query.get((friend.id, current_user.id))
-    if fship:
-        if fship.accepted:
-            return {
-                'success': False,
-                'msg': 'Already friends'
-            }
-        else:
-            return {
-                'success': False,
-                'msg': 'Request already received'
-            }
-
-    friendship = Friendship(friend_request_from_id=current_user.id, friend_request_to_id=friend.id)
-
-    db.session.add(friendship)
     db.session.commit()
-    
     return {
         'success': True
     }
+
+# @app.route('/friend/request', methods = ['POST'])
+# @cross_origin()
+# @token_required
+# def friend_add(current_user):
+#     username = request.json['username']
+
+#     friend = User.query.filter_by(username=username).first()
+
+#     if not friend:
+#         return {
+#             'success': False,
+#             'msg': 'User does not exist'
+#         }
+
+#     fship = Friendship.query.get((current_user.id, friend.id))
+#     if fship:
+#         if fship.accepted:
+#             return {
+#                 'success': False,
+#                 'msg': 'Already friends'
+#             }
+#         else:
+#             return {
+#                 'success': False,
+#                 'msg': 'Request already sent'
+#             }
+
+#     fship = Friendship.query.get((friend.id, current_user.id))
+#     if fship:
+#         if fship.accepted:
+#             return {
+#                 'success': False,
+#                 'msg': 'Already friends'
+#             }
+#         else:
+#             return {
+#                 'success': False,
+#                 'msg': 'Request already received'
+#             }
+
+#     friendship = Friendship(friend_request_from_id=current_user.id, friend_request_to_id=friend.id)
+
+#     db.session.add(friendship)
+#     db.session.commit()
+    
+#     return {
+#         'success': True
+#     }
