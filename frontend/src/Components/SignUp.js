@@ -4,9 +4,16 @@ import Swal from "sweetalert2";
 const ImgUpload = ({ onChange, src, value }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
     <div className="img-wrap img-upload">
-      <img className='loginimg'  src={src} alt="User Avatar" />
+      <img className="loginimg" src={src} alt="User Avatar" />
     </div>
-    <input id="avatar_url_upload" type="url" value={value} onChange={onChange} placeholder={"Paste URL.."} required/>
+    <input
+      id="avatar_url_upload"
+      type="url"
+      value={value}
+      onChange={onChange}
+      placeholder={"Paste URL.."}
+      required
+    />
   </label>
 );
 
@@ -60,12 +67,7 @@ const handleHome = (e) => {
   window.location.pathname = "/login";
 };
 
-const Profile = ({
-  onSubmit,
-  src,
-  name,
-  email,
-}) => (
+const Profile = ({ onSubmit, src, name, email }) => (
   <div className="card">
     <form onSubmit={onSubmit}>
       <h1>Successfully Registered</h1>
@@ -146,15 +148,23 @@ class SignUp extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let data = this.state;
+    var string = "%";
+    if (data.username.includes(string)) {
+      Swal.fire(
+        "Username cannot contain a '%'.",
+        " Please try again.",
+        "warning"
+      );
+      return;
+    }
     const requestOpt = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        'username': data.username,
-        'password': data.password,
-        'email': data.email,
-        'avatar_url': document.getElementById('avatar_url_upload').value
-
+        username: data.username,
+        password: data.password,
+        email: data.email,
+        avatar_url: document.getElementById("avatar_url_upload").value,
       }),
     };
 
@@ -166,7 +176,7 @@ class SignUp extends React.Component {
     (async () => {
       let info = await fetchFunc();
       if (info.success) {
-         window.location.pathname = "/login";
+        window.location.pathname = "/login";
       } else {
         Swal.fire(info.msg, "Try again!", "warning");
       }
@@ -174,13 +184,7 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const {
-      imagePreviewUrl,
-      username,
-      email,
-      password,
-      active,
-    } = this.state;
+    const { imagePreviewUrl, username, email, password, active } = this.state;
     return (
       <div>
         {active === "edit" ? (

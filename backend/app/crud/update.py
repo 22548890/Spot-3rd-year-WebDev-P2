@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Group, Post, Comment, token_required
+from app.models import User, Group, Membership, Post, Comment, token_required
 from app.models import user_schema, users_schema, post_schema, group_schema, groups_schema, posts_schema, comment_schema, comments_schema
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -61,6 +61,22 @@ def unfriend(current_user):
     db.session.commit()
     return {
         'success':True
+    }
+
+@app.route('/admin/make', methods = ['PUT'])
+@cross_origin()
+@token_required
+def make_admin(current_user):
+    group_id = request.json['group_id']
+    user_id = request.json['user_id']
+
+    mship = Membership.query.get((group_id, user_id))
+
+    mship.admin = 1
+
+    db.session.commit()
+    return {
+        'success': True
     }
 
 # @app.route('/friend/request/accept', methods=['PUT'])

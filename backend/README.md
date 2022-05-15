@@ -11,6 +11,7 @@ You only need to do this once:
 
     pip install haversine
     pip install geocoder
+    pip install itertools
 
 
 

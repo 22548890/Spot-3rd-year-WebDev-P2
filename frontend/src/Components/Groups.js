@@ -7,7 +7,7 @@ function MyGroups() {
   const [dataAllGroups, setDataAllGroups] = useState([]);
   // const [dataAdmin, setAdmin] = useState([]);
   // const [group_name, setGroupName] = useState("");
-  const admin = false;
+  // const admin = false;
 
   const handleCreateGroup = () => {
     window.location.pathname = "/CreateGroup";
@@ -112,17 +112,17 @@ function MyGroups() {
     fetch("http://127.0.0.1:5000/group/join", requestOpt)
       .then((response) => response.json())
       .catch((error) => console.log(error));
-      setTimeout(function () {
-        window.location.reload();
-      }, 20);
+    setTimeout(function () {
+      window.location.reload();
+    }, 20);
     return;
   }
 
   const handleChange = () => {
-    let search = document.querySelector('input').value;
+    let search = document.querySelector("input").value;
     // if (search === '') {
     //     search = '%';
-    // } 
+    // }
     // fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
     // 'method': 'GET',
     // headers: { 'Content-Type': 'application/json' }
@@ -130,7 +130,7 @@ function MyGroups() {
     // .then(response => response.json())
     // .then(response => setData(response))
     // .catch(error => console.log(error));
-  }
+  };
 
   useEffect(() => {
     getMyGroups();
@@ -182,18 +182,23 @@ function MyGroups() {
           {data.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
-              <label className="show-comment" onClick={()=>handleShowGroup(d.id)}>
+              <label
+                className="show-comment"
+                onClick={() => handleShowGroup(d.id)}
+              >
                 View Members
               </label>
               {/* <label className="post-text">{d.id}</label> */}
-              {admin === true ? (
+              {d.admin === 1 ? (
                 <div>
                   <button onClick={() => handleDelete(d.name)}>
                     Delete Group
                   </button>
                 </div>
               ) : (
-                <div>{/* <label>Not admin</label> */}</div>
+                <div>
+                  <label>Not admin</label>
+                </div>
               )}
             </div>
           ))}
@@ -207,9 +212,11 @@ function MyGroups() {
         </div>
       ) : (
         <div className="feed card">
-          <input type="search"
+          <input
+            type="search"
             placeholder="Search Group..."
-            onInput={() => handleChange()} />
+            onInput={() => handleChange()}
+          />
           {dataAllGroups.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
