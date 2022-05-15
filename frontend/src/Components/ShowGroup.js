@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 
 const ShowGroup = () => {
   const [data, setData] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [group, setGroup] = useState([]);
+  const [user, setUser] = useState([]);
 
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
@@ -13,6 +14,31 @@ const ShowGroup = () => {
   const handleViewGroups = () => {
     window.location.pathname = "/Groups";
   };
+
+  function makeAdmin(userId) {
+    makeUserAdmin(userId);
+  }
+
+  function makeUserAdmin(id) {
+    const requestOpt = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        group_id: groupId,
+        user_id: id,
+      }),
+    };
+    fetch("http://127.0.0.1:5000/admin/make", requestOpt)
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
+
+    setTimeout(function () {
+      window.location.reload();
+    }, 20);
+  }
 
   const handleLogout = () => {
     localStorage.clear();
@@ -33,25 +59,59 @@ const ShowGroup = () => {
     window.location.pathname = "/Groups";
   };
 
-  var str = "" + window.location.pathname;
-  var groupId = str.substring(str.lastIndexOf("/") + 1, str.length);
-  console.log(groupId);
-
-  async function getGroup() {
-    const response = await fetch(`http://127.0.0.1:5000/users/group=${groupId}`, {
+  async function getProfile() {
+    const response = await fetch(`http://127.0.0.1:5000/profile/my`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "access-token": localStorage.getItem("token"),
       },
     });
+    setUser(await response.json());
+    return;
+  }
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  async function getGroupInfo() {
+    const response = await fetch(`http://127.0.0.1:5000/group=${groupId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+    });
+    setGroup(await response.json());
+    return;
+  }
+
+  useEffect(() => {
+    getGroupInfo();
+  }, []);
+
+  var str = "" + window.location.pathname;
+  var groupId = str.substring(str.lastIndexOf("/") + 1, str.length);
+  console.log(groupId);
+
+  async function getGroup() {
+    const response = await fetch(
+      `http://127.0.0.1:5000/users/group=${groupId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("token"),
+        },
+      }
+    );
     setData(await response.json());
     return;
   }
   useEffect(() => {
     getGroup();
   }, []);
-
 
   return (
     <>
@@ -85,18 +145,62 @@ const ShowGroup = () => {
           </ul>
         </div>
       </nav>
-
-      <h1 className="posts heading">Group Members:</h1>
+      <h1 className="posts heading">{group.name}</h1>
       <div className="card feed">
-        {data.map((d) => (
-          <>
-            <label className="post-text">{d.username}</label>
-           
-          </>
-
-        ))}
+        <table>
+          <tbody>
+            {data.map((d) => (
+              <>
+                <tr key={d.id}>
+                  <td>
+                    {d.username === user.username ? (
+                      <label>{d.username}(You)</label>
+                    ) : (
+                      <div>
+                        {d.admin === 1 ? (
+                          <label>{d.username}(Admin)</label>
+                        ) : (
+                          <label>{d.username}(Member)</label>
+                        )}
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    {group.admin == 1 ? (
+                      <div>
+                      {d.username === user.username ? (
+                        <label></label>
+                      ) : (
+                        <div>
+                        {d.admin === 1 ? (
+                          <label></label>
+                        ) : (
+                          <button
+                          className="follow"
+                          onClick={() => {
+                            makeAdmin(d.id);
+                          }}
+                        >
+                          Make Admin
+                        </button>
+                        )}
+                        </div>
+                      )}
+                    </div>
+                    ) : (
+                      <label></label>
+                      
+                    )}
+                  </td>
+                </tr>
+              </>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <button className="btn back" onclick={handleGroup}>Back</button>
+      <button className="btn back" onclick={handleGroup}>
+        Back
+      </button>
     </>
   );
 };

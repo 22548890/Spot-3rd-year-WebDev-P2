@@ -46,16 +46,6 @@ def getmygroups(current_user, group_name):
     return jsonify(results)
 
 
-@app.route('/group=<group_id>', methods=['GET'])
-@cross_origin()
-@token_required
-def getgroup(current_user, group_id):
-    group = Group.query.get(group_id)
-    mship = Membership.query.get((group_id, current_user.id))
-    result = group_schema.dump(group)
-    result = dict(chain.from_iterable([result.items(), {'admin':mship.admin}.items()]))
-    return jsonify(result)
-
 @app.route('/feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>', methods=['GET'])
 @cross_origin()
 @token_required
@@ -114,6 +104,18 @@ def getcomments(current_user, post_id):
 
     results = comments_schema.dump(comments)
     return jsonify(results)
+
+
+@app.route('/group=<group_id>', methods=['GET'])
+@cross_origin()
+@token_required
+def getgroup(current_user, group_id):
+    group = Group.query.get(group_id)
+    mship = Membership.query.get((group_id, current_user.id))
+    result = group_schema.dump(group)
+    result = dict(chain.from_iterable([result.items(), {'admin':mship.admin}.items()]))
+    return jsonify(result)
+
 
 @app.route('/users/group=<group_id>', methods=['GET'])
 @cross_origin()

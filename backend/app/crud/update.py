@@ -78,21 +78,3 @@ def make_admin(current_user):
     return {
         'success': True
     }
-
-# @app.route('/friend/request/accept', methods=['PUT'])
-# @cross_origin()
-# @token_required
-# def friend_request_accept(current_user):
-#     username = request.json['username']
-
-#     friend = User.query.filter_by(username=username).first()
-
-#     friendship = Friendship.query.get((friend.id, current_user.id))
-
-#     friendship.accepted = True
-
-#     db.session.commit()
-
-#     return {
-#         'success':True
-#     }

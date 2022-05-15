@@ -41,7 +41,7 @@ const BigMap = () => {
   }
 
   async function getPosts() {
-    const response = await fetch(`http://127.0.0.1:5000/feed/main`, {
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${"%"}&user=${"%"}&orderby=${"date"}&order=${"dsc"}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
