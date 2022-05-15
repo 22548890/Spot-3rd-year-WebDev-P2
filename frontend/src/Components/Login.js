@@ -65,11 +65,7 @@ const Edit = ({
             
             <button type="submit" className="styleBtn login">LOGIN </button>
             <div>
-<<<<<<< HEAD
                 <button className="CRegBtn" onClick={handleSignup}>Sign up</button>
-=======
-                <button className="CRegBtn" onClick={handleSignUp}>Sign up</button>
->>>>>>> origin/Spot5.6
             </div>
 
         </form>
