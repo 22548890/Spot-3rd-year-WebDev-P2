@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 from sqlalchemy import desc, or_
 from haversine import haversine, Unit
 import geocoder
+from itertools import chain
 
 @app.route('/profile/my', methods=['GET'])
 @cross_origin()
@@ -60,7 +61,7 @@ def getgroup(current_user, group_id):
 @app.route('/feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>', methods=['GET'])
 @cross_origin()
 @token_required
-def feed(current_user, group_name, username, orderby, order):
+def feed(current_user, group_name='%', username='%', orderby='date', order='dsc'):
     group_ids = [group.id for group in current_user.groups]
     user_ids = [user.id for user in current_user.friends]
     
@@ -93,18 +94,6 @@ def feed(current_user, group_name, username, orderby, order):
 @cross_origin()
 @token_required
 def getgroupfeed(current_user, group_id):
-    # group = Group.query.get(group_id)
-    # if not group:
-    #     return {
-    #         'success': False,
-    #         'msg': 'Group does not exist'
-    #     }
-
-    # if not current_user in group.users:
-    #     return {
-    #         'success': False,
-    #         'msg': 'Not a member of group'
-    #     }
     posts = Post.query.filter_by(group_id=group_id).order_by(desc('date'))
 
     results = posts_schema.dump(posts)
@@ -154,9 +143,10 @@ def getcomments(current_user, post_id):
 @token_required
 def getgroupusers(current_user, group_id):
     group = Group.query.get(group_id)
-    users = group.users
-    # users += users
-    results = users_schema.dump(users)
+    admin_ids = [mship.user_id for mship in Membership.query.filter_by(group_id=group_id).all() if mship.admin == 1]
+    admins = [dict(chain.from_iterable([user.items(), {'admin':1}.items()])) for user in users_schema.dump(group.users) if user['id'] in admin_ids]
+    others = [dict(chain.from_iterable([user.items(), {'admin':0}.items()])) for user in users_schema.dump(group.users) if not user['id'] in admin_ids]
+    results = admins + others
     return jsonify(results)
 
 @app.route('/friends', methods=['GET'])
