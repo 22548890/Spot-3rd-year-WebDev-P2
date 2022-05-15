@@ -23,8 +23,9 @@ function MyGroups() {
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
   };
-  const handleViewExplore = () => {
-    window.location.pathname = "/Explore";
+
+  const handleShowGroup = (id) => {
+    window.location.pathname = `/ShowGroup/${id}`;
   };
 
   const handleLogout = () => {
@@ -99,7 +100,9 @@ function MyGroups() {
     fetch("http://127.0.0.1:5000/group/join", requestOpt)
       .then((response) => response.json())
       .catch((error) => console.log(error));
-    window.location.reload();
+      setTimeout(function () {
+        window.location.reload();
+      }, 20);
     return;
   }
 
@@ -160,7 +163,7 @@ function MyGroups() {
           {data.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
-              <label className="show-comment" onClick={"to be added"}>
+              <label className="show-comment" onClick={handleShowGroup(d.id)}>
                 View Group
               </label>
               {/* <label className="post-text">{d.id}</label> */}

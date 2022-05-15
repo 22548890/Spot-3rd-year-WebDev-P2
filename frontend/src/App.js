@@ -12,6 +12,7 @@ import MyGroups from "./Components/Groups";
 import CreateGroup from "./Components/CreateGroup";
 import ViewGroup from "./Components/ViewGroup";
 import Friends from "./Components/Friends";
+import ShowGroup from "./Components/ShowGroup";
 
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
           <ProtectedRoute path="/Groups" component={MyGroups} />
           <ProtectedRoute path="/CreateGroup" component={CreateGroup} />
           <ProtectedRoute path="/Friends" component={Friends} />
-          <ProtectedRoute path="/ViewGroup" component={ViewGroup} />
+          <ProtectedRoute path="/ShowGroup" component={ShowGroup} />
         </Router>
         {/* )} */}
       </div>
