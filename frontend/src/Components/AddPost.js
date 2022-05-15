@@ -111,7 +111,7 @@ const AddPost = () => {
       Swal.fire("Please include UNIQUE hashtags", "Try again!", "warning");
       return;
     }
-    if (group_name === "") {
+    if (group_name === "" && document.getElementById("group_name").value==="") {
       Swal.fire("Please select a group", "Try again!", "warning");
       return;
     }
@@ -123,7 +123,7 @@ const AddPost = () => {
         "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
-        group_name: group_name,
+        group_name: document.getElementById("group_name").value,
         hashtags: category,
         text: text,
         video_url: video_url,
@@ -174,8 +174,9 @@ const AddPost = () => {
           <select
             className="comConSelect"
             required
-            value={group_name}
-            onChange={(e) => setGroupName(e.target.value)}
+            id="group_name"
+            // value={group_name}
+            // onChange={(e) => setGroupName(e.target.value)}
           >
             <option value={category} hidden>
               Select group
