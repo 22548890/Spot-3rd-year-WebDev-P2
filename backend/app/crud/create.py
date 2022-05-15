@@ -50,7 +50,7 @@ def login():
         token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
         return {
             'success': True,
-            'token':token#.decode('utf8') #!
+            'token':token.decode('utf8') #!
         }
     else:
         return {
@@ -149,7 +149,7 @@ def post(current_user):
 
     hashtags_text = ""
     for hashtag in hashtags:
-        hashtags_text += '#' + hashtag 
+        hashtags_text += hashtag 
 
     post = Post(text=text, video_url=video_url, longitude=longitude, latitude=latitude, hashtags_text=hashtags_text)
 
@@ -160,6 +160,7 @@ def post(current_user):
     db.session.commit()
 
     for hashtag in hashtags:
+        hashtag = hashtag[1:]
         tag = Hashtag.query.filter_by(tag=hashtag).first()
         if not tag:
             tag = Hashtag(hashtag)
@@ -201,19 +202,6 @@ def comment(current_user):
         'success': True,
         'post_id': post_id,
         'user': current_user.username
-    }
-
-@app.route('/friend/add', methods = ['POST'])
-@cross_origin()
-@token_required
-def friend_adduser(current_user):
-    user_id = request.json['user_id']
-    user = User.query.get(user_id)
-    current_user.friends.append(user)
-
-    db.session.commit()
-    return {
-        'success': True
     }
 
 # @app.route('/friend/request', methods = ['POST'])
