@@ -13,7 +13,7 @@ Chris Langeveldt
 
 Reuben Genders
 
-Jamie Sher
+Jamie Sher -21586233
 
 Ansar Kurrimboccus
 
@@ -25,3 +25,5 @@ Jayden Abrahams
 
 
 ## Project Report link:
+
+https://docs.google.com/document/d/1Kwvinl9qwd2iudi-7Wn3r7HdimUCPiXr_37U85O1CGQ/edit
