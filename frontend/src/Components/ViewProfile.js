@@ -68,21 +68,13 @@ export default function ViewProfile() {
           <>
             <div className="name">{d.name}</div>
             <div className="email">
-              {isDev === "true" ? d.email : d.industry}
             </div>
-            {/* <div className="scale">{isDev === 'true' ? ('JavaScript - ' + d.scaleJava) : ('')}</div>
-                        <div className="scale">{isDev === 'true' ? ('Python - ' + d.scalePython) : ('')}</div>
-                        <div className="scale">{isDev === 'true' ? ('C/C++ - ' + d.scaleC) : ('')}</div>
-                        <div className="scale">{isDev === 'true' ? ('Go - ' + d.scaleGo) : ('')}</div> */}
             <div className="open">
               {d.open_to_contracts == true
                 ? "Private Account"
                 : "Public Account"}
             </div>
             <div className="Money made:">
-              {isDev === "true"
-                ? "Posts: " + d.money_made
-                : "Money spent: R" + d.money_spent}
             </div>
           </>
         ))}
