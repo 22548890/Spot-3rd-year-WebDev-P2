@@ -140,6 +140,15 @@ def getcomments(current_user, post_id):
 #     results = users_schema.dump(users)
 #     return jsonify(results)
 
+@app.route('/users/group=<group_id>', methods=['GET'])
+@cross_origin()
+@token_required
+def getgroupusers(current_user, group_id):
+    group = Group.query.get(group_id
+    )
+    results = users_schema.dump(group.users)
+    return jsonify(results)
+
 @app.route('/friends', methods=['GET'])
 @cross_origin()
 @token_required

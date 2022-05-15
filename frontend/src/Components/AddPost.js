@@ -34,12 +34,11 @@ const AddPost = () => {
       }
     }
     setCat(hash);
-    for(let i = 0; i < ht.length; i++) {  
-      for(let j = i+1; j < ht.length; j++) {  
-          if(hash[i] === hash[j])  
-          setDuplicate(true);
-      }  
-  }  
+    for (let i = 0; i < ht.length; i++) {
+      for (let j = i + 1; j < ht.length; j++) {
+        if (hash[i] === hash[j]) setDuplicate(true);
+      }
+    }
   }
 
   async function getMyGroups() {
@@ -61,11 +60,7 @@ const AddPost = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (!text) {
-      Swal.fire(
-        "Please include a post description",
-        'Try again!',
-        'warning',
-      )
+      Swal.fire("Please include a post description", "Try again!", "warning");
       return;
     }
     if (latitude != null) {
@@ -76,9 +71,9 @@ const AddPost = () => {
       ) {
         Swal.fire(
           "Please include an appropriate latitude",
-          'Try again!',
-          'warning',
-        )
+          "Try again!",
+          "warning"
+        );
         return;
       }
     }
@@ -90,18 +85,18 @@ const AddPost = () => {
       ) {
         Swal.fire(
           "Please include an appropriate longitude",
-          'Try again!',
-          'warning',
-        )
+          "Try again!",
+          "warning"
+        );
         return;
       }
     }
     if (/\s/g.test(category)) {
       Swal.fire(
         "Please do not include spaces with hashtags",
-        'Try again!',
-        'warning',
-      )
+        "Try again!",
+        "warning"
+      );
       return;
     }
     if (
@@ -109,27 +104,15 @@ const AddPost = () => {
         category
       )
     ) {
-      Swal.fire(
-        "Please include at least 3 hashtags",
-        'Try again!',
-        'warning',
-      )
+      Swal.fire("Please include at least 3 hashtags", "Try again!", "warning");
       return;
     }
     if (isDuplicate) {
-      Swal.fire(
-        "Please include UNIQUE hashtags",
-        'Try again!',
-        'warning',
-      )
+      Swal.fire("Please include UNIQUE hashtags", "Try again!", "warning");
       return;
     }
-    if (group_name==="") {
-      Swal.fire(
-        "Please select a group",
-        'Try again!',
-        'warning',
-      )
+    if (group_name === "") {
+      Swal.fire("Please select a group", "Try again!", "warning");
       return;
     }
 
@@ -203,14 +186,15 @@ const AddPost = () => {
           </select>
         </div>
         <div className="form-control">
-          <label className="post">Video URL:</label>
+          <label className="post">Video File:</label>
+
           <input
+            type="file"
             className="post"
-            type="text"
-            placeholder="Type video URL"
             onChange={(e) => setVid(e.target.value)}
           />
         </div>
+
         <div className="form-control form-control-check">
           <label>Share Location(automatic):</label>
           <input

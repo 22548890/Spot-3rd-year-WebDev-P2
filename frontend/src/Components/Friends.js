@@ -29,7 +29,27 @@ const Friends = () => {
 
     setTimeout(function () {
       window.location.reload();
-    }, 10);
+    }, 20);
+  }
+
+  function removeFriend(id) {
+    const requestOpt = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        user_id: id,
+      }),
+    };
+    fetch("http://127.0.0.1:5000/friend/remove", requestOpt)
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
+
+    setTimeout(function () {
+      window.location.reload();
+    }, 20);
   }
 
   const handleViewGroups = () => {
@@ -129,6 +149,13 @@ const Friends = () => {
             {friends.map((f) => (
               <tr key={f.id}>
                 <td>{f.username}</td>
+                <td>
+                  <button className="follow"
+                    onClick={() => {
+                      removeFriend(f.id);
+                    }}
+                  >unfollow</button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -149,6 +176,7 @@ const Friends = () => {
                   
                 }}
                 >{u.username}</td>
+                
                 <td>
                   <button className="follow"
                     onClick={() => {

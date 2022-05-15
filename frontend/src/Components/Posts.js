@@ -1,6 +1,7 @@
 import ShowMap from "./ShowMap";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import ReactPlayer from 'react-player';
 
 const Posts = () => {
   const [data, setData] = useState([]);
@@ -75,6 +76,12 @@ const Posts = () => {
               <div className="card posts">
                 <h3 className="post">{"@" + d["user.username"]}</h3>
                 <label className="post-text">{d.text}</label>
+                {d.video_url == '' ? (
+                  <label></label>
+                ) : (
+                  <label className="postvid"><ReactPlayer url = {'./videos/'.concat(d.video_url.split('h')[1])} controls = {true}/></label>
+                )}
+                
                 {/* {sortHashtags(d.hashtags_text)}
                 {hashtags.map(() => (
                   <label></label>
