@@ -104,6 +104,7 @@ class Post(db.Model):
 #   user
 #   group
 
+
     def __init__(self, text, video_url, longitude, latitude, hashtags_text):
         self.text = text
         self.video_url = video_url

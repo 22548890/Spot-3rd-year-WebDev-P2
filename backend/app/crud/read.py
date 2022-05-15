@@ -4,7 +4,9 @@ from app.models import user_schema, users_schema, post_schema, group_schema, gro
 
 from flask import jsonify
 from flask_cors import cross_origin
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
+from haversine import haversine, Unit
+import geocoder
 
 @app.route('/profile/my', methods=['GET'])
 @cross_origin()
@@ -29,18 +31,54 @@ def getmygroups(current_user):
     results = groups_schema.dump(current_user.groups)
     return jsonify(results)
 
-@app.route('/feed/main', methods=['GET'])
+# @app.route('/feed/main', methods=['GET'])
+# @cross_origin()
+# @token_required
+# def getmainfeed(current_user):
+#     group_ids = [group.id for group in current_user.groups]
+#     friend_ids = [friend.id for friend in current_user.friends]
+
+#     posts = Post.query.filter(or_(Post.group_id.in_(group_ids), Post.user_id.in_(friend_ids))).order_by(desc('date'))
+
+#     results = posts_schema.dump(posts)
+#     return jsonify(results)
+
+
+
+#
+# Note: when group and user unrestricted, send me '%'
+#
+@app.route('/feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>', methods=['GET'])
 @cross_origin()
 @token_required
-def getmainfeed(current_user):
-    groups = current_user.groups
-    group_ids = [group.id for group in groups]
-    friends_ids = current_user.friends
+def feed(current_user, group_name, username, orderby, order):
+    group_ids = [group.id for group in current_user.groups]
+    user_ids = [user.id for user in current_user.friends]
+    
+    group_name += '%'
+    username += '%'
 
-    posts = Post.query.filter(Post.group_id.in_(group_ids)).order_by(desc('date'))
+    groups = Group.query.filter(Group.id.in_(group_ids), Group.name.like(group_name))
+
+    flatList = [ item for elem in [group.users for group in groups] for item in elem]
+    user_ids += [user.id for user in flatList]
+    users = User.query.filter(User.id.in_(user_ids), User.username.like(username))
+
+    group_ids = [group.id for group in groups]
+    user_ids = [friend.id for friend in users]
+
+    if order == 'asc':
+        posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids)).order_by('date')
+    else:
+        posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids)).order_by(desc('date'))
+    
+    if orderby == 'location':
+        posts = [post for post in posts]
+        posts.sort(key=distance_to_post)
 
     results = posts_schema.dump(posts)
     return jsonify(results)
+
 
 @app.route('/feed/group=<group_id>', methods=['GET'])
 @cross_origin()
@@ -147,3 +185,14 @@ def timeout(current_user):
     return {
         "timeout":False
     }
+
+def distance_to_post(post):
+    g = geocoder.ip('me')
+    lat = float(post.latitude)
+    lng = float(post.longitude)
+
+    loc1 = (g.lat, g.lng)
+    loc2 = (lat, lng)
+
+    return haversine(loc1, loc2)
+
