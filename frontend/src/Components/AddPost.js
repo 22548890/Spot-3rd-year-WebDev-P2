@@ -191,10 +191,10 @@ const AddPost = () => {
           <select
             className="comConSelect"
             required
-            value={category}
+            value={group_name}
             onChange={(e) => setGroupName(e.target.value)}
           >
-            <option value={"None"} hidden>
+            <option value={category} hidden>
               Select group
             </option>
             {data.map((d) => (
