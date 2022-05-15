@@ -144,8 +144,7 @@ def getcomments(current_user, post_id):
 @cross_origin()
 @token_required
 def getgroupusers(current_user, group_id):
-    group = Group.query.get(group_id
-    )
+    group = Group.query.get(group_id)
     results = users_schema.dump(group.users)
     return jsonify(results)
 

@@ -152,10 +152,6 @@ function MyGroups() {
           </div>
 
           <ul id="menu">
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/Ansar-5.5
             <li>
               <a onClick={handleCreateGroup}> Create Group </a>
             </li>
@@ -186,19 +182,14 @@ function MyGroups() {
           {data.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
-<<<<<<< HEAD
-              <label className="show-comment" onClick={handleShowGroup(d.id)}>
-=======
-              <label className="show-comment" onClick={handleViewGroup}>
->>>>>>> origin/Ansar-5.5
-                View Group
+              <label className="show-comment" onClick={()=>handleShowGroup(d.id)}>
+                View Members
               </label>
               {/* <label className="post-text">{d.id}</label> */}
-              {admin == true ? (
+              {admin === true ? (
                 <div>
                   <button onClick={() => handleDelete(d.name)}>
-                    {" "}
-                    Delete Group{" "}
+                    Delete Group
                   </button>
                 </div>
               ) : (
@@ -222,9 +213,6 @@ function MyGroups() {
           {dataAllGroups.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
-              <label className="show-comment" onClick={"to be added"}>
-                View Group
-              </label>
               {/* <label className="post-text">{d.id}</label> */}
               <button onClick={() => joinGroup(d.name)}> Join Group </button>
             </div>

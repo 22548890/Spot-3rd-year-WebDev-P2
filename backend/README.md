@@ -9,6 +9,10 @@ You only need to do this once:
     To install:
     pip install pyjwt
 
+    pip install haversine
+    pip install geocoder
+
+
 
 From now you only have to do:
 

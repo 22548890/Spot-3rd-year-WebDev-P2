@@ -1,11 +1,10 @@
 import React from "react";
 import logo from "../SPOT.svg";
 import { useState, useEffect } from "react";
-import { FaUserPlus } from "react-icons/fa";
 
 const ShowGroup = () => {
-    const [data, setData] = useState([]);
-    const [users, setUsers] = useState([]);
+  const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
@@ -29,47 +28,17 @@ const ShowGroup = () => {
     e.preventDefault();
     window.location.pathname = "/";
   };
-
-  async function getGroup() {
-    const response = await fetch(
-      `http://127.0.0.1:5000/users/group=${groupId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "access-token": localStorage.getItem("token"),
-        },
-      }
-    );
-    setUsers(await response.json());
-    return;
-  }
-
-  const handleDelete = (groupName) => {
-    const requestOpt = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        group_name: groupName,
-      }),
-    };
-    async function fetchFunc() {
-      return await fetch(`http://127.0.0.1:5000/group/delete`, requestOpt)
-        .then((response) => response.json())
-        .catch((error) => console.log(error));
-    }
-    (async () => {
-      await fetchFunc();
-    })();
-    alert("Deleted " + groupName + " group");
-    window.location.reload();
+  const handleGroup = (e) => {
+    e.preventDefault();
+    window.location.pathname = "/Groups";
   };
 
-  async function getMyGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/my`, {
+  var str = "" + window.location.pathname;
+  var groupId = str.substring(str.lastIndexOf("/") + 1, str.length);
+  console.log(groupId);
+
+  async function getGroup() {
+    const response = await fetch(`http://127.0.0.1:5000/users/group=${groupId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -83,9 +52,6 @@ const ShowGroup = () => {
     getGroup();
   }, []);
 
-  var str = "" + window.location.pathname;
-    var groupId = str.substring(str.lastIndexOf("/") + 1, str.length);
-    console.log(groupId);
 
   return (
     <>
@@ -113,31 +79,24 @@ const ShowGroup = () => {
             </li>
             <li>
               <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
+                Logout
               </button>
             </li>
           </ul>
         </div>
       </nav>
-      
-          {data.map((d) => (
-              <div className="card feed">
-              {(groupId == d.id) ? (
-                  <div className="groups">
-                  <label className="post-text">{d.name}</label>
-                  <button onClick={() => handleDelete(d.name)}>
-                    {" "}
-                    Delete Group{" "}
-                  </button>
-                </div>
-              ) : (
-                  <label></label>
-              )}
-              
-            
-            </div>
-          ))}
-        
+
+      <h1 className="posts heading">Group Members:</h1>
+      <div className="card feed">
+        {data.map((d) => (
+          <>
+            <label className="post-text">{d.username}</label>
+           
+          </>
+
+        ))}
+      </div>
+      <button className="btn back" onclick={handleGroup}>Back</button>
     </>
   );
 };
