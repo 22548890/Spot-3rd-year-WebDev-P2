@@ -29,8 +29,13 @@ def getallgroups(current_user):
 @cross_origin()
 @token_required
 def getmygroups(current_user):
-    results = groups_schema.dump(current_user.groups)
+    groups = groups_schema.dump(current_user.groups)
+    admin_to_group_ids = {mship.group_id for mship in Membership.query.filter_by(user_id=current_user.id).all() if mship.admin == 1}
+    admin_to = [dict(chain.from_iterable([group.items(), {'admin':1}.items()])) for group in groups if group['id'] in admin_to_group_ids]
+    others = [dict(chain.from_iterable([group.items(), {'admin':0}.items()])) for group in groups if not group['id'] in admin_to_group_ids]
+    results = admin_to + others
     return jsonify(results)
+
 
 @app.route('/group=<group_id>', methods=['GET'])
 @cross_origin()
