@@ -126,21 +126,28 @@ def getgroupusers(current_user, group_id):
     results = admins + others
     return jsonify(results)
 
-@app.route('/friends', methods=['GET'])
+@app.route('/friends/user=<username>', methods=['GET'])
 @cross_origin()
 @token_required
-def friends(current_user):
-    results = users_schema.dump(current_user.friends)
+def friends(current_user, username):
+    friend_ids = [friend.id for friend in current_user.friends]
+
+    username += '%'
+    users = User.query.filter(User.id.in_(friend_ids), User.username.like(username))
+
+    results = users_schema.dump(users)
     return jsonify(results)
 
-
-@app.route('/non-friends', methods=['GET'])
+@app.route('/non-friends/user=<username>', methods=['GET'])
 @cross_origin()
 @token_required
-def non_friends(current_user):
+def non_friends(current_user, username):
     excl_ids = [friend.id for friend in current_user.friends]
     excl_ids.append(current_user.id)
-    users = User.query.filter(User.id.not_in(excl_ids))
+
+    username += '%'
+    users = User.query.filter(User.id.not_in(excl_ids), User.username.like(username))
+    
     results = users_schema.dump(users)
     return jsonify(results)
 

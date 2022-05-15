@@ -58,12 +58,15 @@ class User(db.Model):
     # friends_request_from = association_proxy('friendships_request_from', 'friend_request_from')
 
     def distance_to_post(post):
-        g = geocoder.ip('me')
+        # This code works to get current location, but the server only allows a certain amount of location requests a day
+        # g = geocoder.ip('me') 
+        # loc1 = (g.lat, g.lng)
+
+        loc1 = (-33.9346,18.8668)
         
         lat = float(post.latitude)
         lng = float(post.longitude)
 
-        loc1 = (g.geojson['features'][0]['properties']['lat'], g.geojson['features'][0]['properties']['lng'])
         loc2 = (lat, lng)
 
         return haversine(loc1, loc2)
