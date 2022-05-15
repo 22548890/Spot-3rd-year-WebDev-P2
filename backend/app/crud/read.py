@@ -13,7 +13,7 @@ def myprofile(current_user):
     result =  user_schema.dump(current_user)
     return jsonify(result)
 
-@app.route('/groups/not-my', methods=['GET'])  # excluding my groups
+@app.route('/groups/not-my', methods=['GET'])
 @cross_origin()
 @token_required
 def getallgroups(current_user): 
@@ -139,3 +139,11 @@ def non_friends(current_user):
 #         users.append(more_users)
 #     results = users_schema.dump(users)
 #     return jsonify(results)
+
+@app.route('/timeout', methods=['GET'])
+@cross_origin()
+@token_required
+def timeout(current_user):
+    return {
+        "timeout":False
+    }
