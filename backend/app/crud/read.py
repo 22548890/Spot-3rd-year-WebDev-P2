@@ -73,7 +73,7 @@ def feed(current_user, group_name, username, orderby, order):
         posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids)).order_by(desc('date'))
     
     if orderby == 'location':
-        posts = [post for post in posts]
+        posts = [post for post in posts if not (post.latitude is None or post.longitude is None)]
         posts.sort(key=distance_to_post)
 
     results = posts_schema.dump(posts)
