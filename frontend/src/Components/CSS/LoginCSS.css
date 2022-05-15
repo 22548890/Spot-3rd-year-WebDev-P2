@@ -1,0 +1,260 @@
+body {
+  font-family: "Hind Guntur", sans-serif;
+  color: #054231;
+  display: flex;
+  justify-content: center;
+  background: rgb(56, 88, 108);
+  background-repeat: no-repeat, no-repeat;
+  background-position: 200% -40%;
+  background-size: 80%;
+  background-image: url("https://www.stratospherenetworks.com/blog/wp-content/uploads/2020/04/abstract-computing-network-concept.jpg");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+button {
+  background-color: #3d77a0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
+    sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.15385;
+  margin: 0;
+  outline: none;
+  padding: 8px 0.8em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.card {
+  width: auto;
+  height: auto;
+  padding: 15px;
+  margin-top: 40px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 15px 10px 25px 0px #3fa1a9;
+  background: #fff;
+  background-repeat: no-repeat, no-repeat;
+  background-position: 120% -5%, 200% -40%;
+  background-size: 40%, 80%;
+  animation: open 0.5s;
+}
+
+.card_groups {
+  margin: auto;
+  width: 25%;
+  height: 25%;
+  padding: 15px;
+  margin-top: 40px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 15px 10px 25px 0px #3fa1a9;
+  background: #fff;
+  background-repeat: no-repeat, no-repeat;
+  background-position: 120% -5%, 200% -40%;
+  background-size: 40%, 80%;
+  animation: open 0.5s;
+}
+
+.statement {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.industry {
+  text-align: center;
+}
+
+.field {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+form:not(.add-form) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginimg {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  /* border-radius: 50%;
+  border-radius: 50%; */
+  display: inline-block;
+  position: relative;
+  /* padding: 6px; */
+  /* background: linear-gradient(270deg, #3fa1a9, #79f1a4); */
+  /* margin-bottom: 25px; */
+  /* width: auto;
+  height: auto; */
+}
+
+label {
+  text-align: center;
+  /* text-transform: uppercase; */
+  font-weight: 700;
+  color: #676767;
+  padding: 1px;
+}
+
+input {
+  text-align: center;
+  border-radius: 15px;
+  border: 1px solid #b7b7b7;
+  padding: 5px 5px 5px 10px;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #64d488;
+}
+input::placeholder {
+  color: #bebebe;
+}
+.styleBtn {
+  color: #054231;
+  background: #1ab9e3;
+}
+.save {
+  width: 50%;
+}
+
+.menu-item button {
+  position: relative;
+  color: #054231;
+  letter-spacing: 1px;
+  margin: 20px;
+  font-size: 18px;
+  padding: 10px;
+  text-align: center;
+  transition: 0.5s;
+  border-radius: 10px;
+  cursor: pointer;
+  border-radius: 25px;
+  border: none;
+  background: #64d488;
+}
+.login {
+  font-weight: 600;
+  /* left: -20px; */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  /* width: 20px; */
+  width: 180px;
+  /* box-shadow: 20px 0px 40px 0px  #63d3a6; */
+}
+.edit {
+  color: #fff;
+  width: 220px;
+}
+
+.img-upload {
+  color: #3d77a0;
+  text-decoration: underline;
+  border: 1px solid #888;
+  box-sizing: border-box;
+  display: block;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 10px 0;
+  padding: 2px 5px;
+  vertical-align: baseline;
+  width: 300px;
+}
+.post-text {
+  text-transform: capitalize;
+  color: #302e2e;
+}
+
+.show-comment {
+  cursor: pointer;
+}
+.show-comment:hover {
+  text-decoration: underline;
+}
+
+.show-comment {
+  cursor: pointer;
+}
+.show-comment:hover {
+  text-decoration: underline;
+}
+.back-btn {
+  color: #302e2e;
+}
+.logo:hover {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;   
+   
+}
+table th,
+table td {
+  padding: 20px 20px;
+  text-align: left;
+  color: rgb(0, 0, 0);
+} 
+
+.users {
+  width: auto;
+  height: auto;
+  padding: 15px;
+  margin-top: 40px;
+  border-radius: 25px;
+  display: flex;
+  float: center;
+  justify-content: left;
+  box-shadow: 15px 10px 25px 0px #3fa1a9;
+  background: #fff;
+  background-repeat: no-repeat, no-repeat;
+  background-position: 120% -5%, 200% -40%;
+  background-size: 40%, 80%;
+  animation: open 0.5s;
+}
+
+.friends {
+  width: 200;
+  height: auto;
+  padding: 15px;
+  margin-top: 40px;
+  display: flex;
+  border-radius: 25px;
+  justify-content: right;
+  float: center;
+  box-shadow: 15px 10px 25px 0px #3fa1a9;
+  background: #fff;
+  background-repeat: no-repeat, no-repeat;
+  background-position: 120% -5%, 200% -40%;
+  background-size: 40%, 80%;
+  animation: open 0.5s;
+}
+
