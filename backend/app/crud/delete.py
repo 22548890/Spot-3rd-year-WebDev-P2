@@ -31,7 +31,7 @@ def delete_group(current_user):
             'msg':'Group does not exist'
         }
  
-    membership = Membership((group.id, current_user.id))
+    membership = Membership.query.get((group.id, current_user.id))
     if not membership:
         return {
             'success':False,
