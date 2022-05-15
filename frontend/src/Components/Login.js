@@ -48,8 +48,8 @@ const Password = ({
             required />
     </div>
 
-const handleDevReg = () => {
-    window.location.pathname = "/DevReg";
+const handleSignup = () => {
+    window.location.pathname = "/signup";
 };
 
 const Edit = ({
@@ -65,7 +65,7 @@ const Edit = ({
             
             <button type="submit" className="styleBtn login">LOGIN </button>
             <div>
-                <button className="CRegBtn" onClick={handleDevReg}>Sign up</button>
+                <button className="CRegBtn" onClick={handleSignup}>Sign up</button>
             </div>
 
         </form>

@@ -6,6 +6,7 @@ import { FaUserPlus } from "react-icons/fa";
 const Friends = () => {
   const [friends, setFriends] = useState([]);
   const [users, setUsers] = useState([]);
+  const [data, setData] = useState([]);
 
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
@@ -57,6 +58,20 @@ const Friends = () => {
     setFriends(await response.json());
     return;
   }
+  const handleChange = () => {
+    let search = document.querySelector('input').value;
+    // if (search === '') {
+    //     search = '%';
+    // } 
+    // fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
+    // 'method': 'GET',
+    // headers: { 'Content-Type': 'application/json' }
+    // })
+    // .then(response => response.json())
+    // .then(response => setData(response))
+    // .catch(error => console.log(error));
+}
+
 
   useEffect(() => {
     getMyFriends();
@@ -121,7 +136,10 @@ const Friends = () => {
       </div>
       <div className="users users2 users3">
         <h3>Other Users</h3>
-        <input className="post" type="text" placeholder="Seach name" />
+        <input type="search" 
+        className="friendsSearch"
+        placeholder="Search User..." 
+        onInput={()=>handleChange()}/>
         <table>
           <tbody>
             {users.map((u) => (

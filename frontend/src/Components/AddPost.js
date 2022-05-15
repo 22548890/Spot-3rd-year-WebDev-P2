@@ -29,7 +29,7 @@ const AddPost = () => {
     const ht = hashtag.split("#");
     const hash = [];
     for (let i = 0; i < ht.length; i++) {
-      if (i != ht.length - 1) {
+      if (i !== ht.length - 1) {
         hash[i] = "#" + ht[i + 1];
       }
     }

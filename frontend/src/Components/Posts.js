@@ -11,55 +11,11 @@ const Posts = () => {
     window.location.pathname = `/comments/${id}`;
   };
 
-  const sorting = (column) => {
-    let search = document.querySelector('input').value;
-    // if (order === 'ASC') {
-    //     setOrder('DSC');
-    //     if (search !== '') {
-    //         fetch(`http://127.0.0.1:5000//${search}/${column}/ASC`, {
-    //         'method': 'GET',
-    //         headers: { 'Content-Type': 'application/json' }
-    //         })
-    //         .then(response => response.json())
-    //         .then(response => setData(response))
-    //         .catch(error => console.log(error));
-    //     } else {
-    //         fetch(`http://127.0.0.1:5000//${column}/ASC`, {
-    //         'method': 'GET',
-    //         headers: { 'Content-Type': 'application/json' }
-    //         })
-    //         .then(response => response.json())
-    //         .then(response => setData(response))
-    //         .catch(error => console.log(error));
-    //     }
-    // }
-    // if (order === 'DSC') {
-    //     setOrder('ASC');
-    //     if (search !== '') {
-    //         fetch(`http://127.0.0.1:5000//${search}/${column}/DSC`, {
-    //         'method': 'GET',
-    //         headers: { 'Content-Type': 'application/json' }
-    //         })
-    //         .then(response => response.json())
-    //         .then(response => setData(response))
-    //         .catch(error => console.log(error));
-    //     } else {
-    //         fetch(`http://127.0.0.1:5000//${column}/DSC`, {
-    //         'method': 'GET',
-    //         headers: { 'Content-Type': 'application/json' }
-    //         })
-    //         .then(response => response.json())
-    //         .then(response => setData(response))
-    //         .catch(error => console.log(error));
-    //     }
-    // }
-}
-
   function sortHashtags(hashs) {
     const ht = hashs.split("#");
     const hash = [];
     for (let i = 0; i < ht.length; i++) {
-      if (ht[i] != "#" || ht[i] == "") {
+      if (ht[i] !== "#" || ht[i] === "") {
         hash[i] = "#" + ht[i + 1];
       }
     }
@@ -86,7 +42,7 @@ const Posts = () => {
     <>
       <h1 className="posts heading">Feed:</h1>
       <div className="feed">
-        {data.length == 0 ? (
+        {data.length === 0 ? (
           <div className="card posts">
             <label>There are no posts to show</label>
           </div>
@@ -94,24 +50,26 @@ const Posts = () => {
           <div>
             <div className="card posts">
               <h3>Sort Feed</h3>
-              
-              <input
-                className="post"
-                type="search"
-                placeholder="Search for a User or Group..."
-                on={(value) => sorting(value)}
-              />
-              <label>Sort by:</label>
-              <select className="comConSelect" required value={"Sort feed"} onChange={(value) => sorting(value)}>
-                <option value={"Sort feed"} hidden>
-                  Sort feed
-                </option>
-                <option value={"Location"}>Location</option>
-                <option value={"Time"}>Time descending</option>
-                <option value={"Group"}>Group</option>
-                <option value={"User"}>User</option>
-                
-              </select>
+              <div className="dropdown">
+                <label>Sort by:</label>
+                <div className="sort"><select className="comConSelect" 
+                defaultValue="Recent" required >
+                  <option value={"Nearest"}>Nearest</option>
+                  <option value={"Recent"}>Most Recent</option>
+                  <option value={"Oldest"}>Oldest</option>
+                </select></div>
+                <div className="filter">
+                  <label>Filter by:</label>
+                  <select className="comConSelect" defaultValue="All" 
+                  required >
+                    <option value={"Groups"}>My Groups</option>
+                    <option value={"Friends"}>My Friends</option>
+                    <option value={"All"}>All</option>
+                  </select>
+                </div>
+              </div>
+
+
             </div>
             {data.map((d) => (
               <div className="card posts">
@@ -121,6 +79,7 @@ const Posts = () => {
                 {hashtags.map(() => (
                   <label></label>
                 ))} */}
+                <label>{d["group.name"]}</label>
                 <label>{d.hashtags_text}</label>
                 <label>
                   {moment(d.date).format("hh:mm A") +

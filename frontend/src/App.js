@@ -56,7 +56,7 @@ function App() {
       <div>
         <Router>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/SignUp" component={SignUp} />
+          <Route exact path="/signup" component={SignUp} />
           <Route exact path="/logout" component={handleLogout} />
           <ProtectedRoute exact path="/ViewProfile" component={UpdateProfile} />
           <ProtectedRoute exact path="/" component={Home} />

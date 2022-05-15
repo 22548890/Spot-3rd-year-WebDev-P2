@@ -269,4 +269,11 @@ table td {
   background-color: rgb(44, 99, 138);
   color: #FFF;
 }
+.dropdown {
+ display: flex;
+ padding: 1%;
+}
+.friendsSearch{
+  margin-right: 55%;
+}
 

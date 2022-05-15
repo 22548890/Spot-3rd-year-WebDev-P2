@@ -103,6 +103,20 @@ function MyGroups() {
     return;
   }
 
+  const handleChange = () => {
+    let search = document.querySelector('input').value;
+    // if (search === '') {
+    //     search = '%';
+    // } 
+    // fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
+    // 'method': 'GET',
+    // headers: { 'Content-Type': 'application/json' }
+    // })
+    // .then(response => response.json())
+    // .then(response => setData(response))
+    // .catch(error => console.log(error));
+  }
+
   useEffect(() => {
     getMyGroups();
     getAllGroups();
@@ -113,7 +127,7 @@ function MyGroups() {
       <nav id="navbar" class="">
         <div className="nav-wrapper">
           <div className="logo" onClick={handleHome}>
-          <img
+            <img
               src={logo}
               className="logoNav"
               alt="Test"
@@ -123,7 +137,7 @@ function MyGroups() {
           </div>
 
           <ul id="menu">
-          
+
             <li>
               <a onClick={handleCreateGroup}> Create Group </a>
             </li>
@@ -143,15 +157,9 @@ function MyGroups() {
         </div>
       </nav>
 
-      <div className="card_groups">
-        <thead>
-          <input type="text" placeholder="Search Groups..." />
-        </thead>
-      </div>
-
       <h1 className="posts heading">My Groups</h1>
 
-      {data.length == 0 ? (
+      {data.length === 0 ? (
         <div className="card feed">
           <label>You are not currently in group</label>
         </div>
@@ -174,12 +182,15 @@ function MyGroups() {
       )}
 
       <h1 className="posts heading">All Groups</h1>
-      {dataAllGroups.length == 0 ? (
+      {dataAllGroups.length === 0 ? (
         <div className="card feed">
           <label>There are no groups to join</label>
         </div>
       ) : (
         <div className="feed card">
+          <input type="search"
+            placeholder="Search Group..."
+            onInput={() => handleChange()} />
           {dataAllGroups.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>

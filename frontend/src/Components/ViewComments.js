@@ -70,7 +70,7 @@ export default function ViewComments() {
     }
     var str = "" + window.location.pathname;
     var postId = str.substring(str.lastIndexOf("/") + 1, str.length);
-    console.log(postId);
+    //console.log(postId);
 
     useEffect(() => {
         getComments();
