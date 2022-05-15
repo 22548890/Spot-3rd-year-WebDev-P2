@@ -203,19 +203,6 @@ def comment(current_user):
         'user': current_user.username
     }
 
-@app.route('/friend/add', methods = ['POST'])
-@cross_origin()
-@token_required
-def friend_adduser(current_user):
-    user_id = request.json['user_id']
-    user = User.query.get(user_id)
-    current_user.friends.append(user)
-
-    db.session.commit()
-    return {
-        'success': True
-    }
-
 # @app.route('/friend/request', methods = ['POST'])
 # @cross_origin()
 # @token_required
