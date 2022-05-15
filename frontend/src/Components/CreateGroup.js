@@ -133,6 +133,15 @@ class CreateGroup extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let data = this.state;
+    var string = "%";
+    if (data.name.includes(string)) {
+      Swal.fire(
+        "Group name cannot contain a '%'.",
+        " Please try again.",
+        "warning"
+      );
+      return;
+    }
     const requestOpt = {
       method: "POST",
       headers: {
