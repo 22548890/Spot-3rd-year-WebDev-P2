@@ -29,6 +29,7 @@ const ShowGroup = () => {
     e.preventDefault();
     window.location.pathname = "/";
   };
+  //test
 
   async function getGroup() {
     const response = await fetch(
