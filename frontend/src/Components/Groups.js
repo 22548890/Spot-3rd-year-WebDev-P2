@@ -127,9 +127,7 @@ function MyGroups() {
             <li>
               <a onClick={handleCreateGroup}> Create Group </a>
             </li>
-            <li>
-              <a onClick={handleViewExplore}> Explore</a>
-            </li>
+
             <li>
               <a onClick={handleFriends}> Friends</a>
             </li>

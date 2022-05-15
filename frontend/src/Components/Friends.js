@@ -35,10 +35,6 @@ const Friends = () => {
     window.location.pathname = "/Groups";
   };
 
-  const handleViewExplore = () => {
-    window.location.pathname = "/Explore";
-  };
-
   const handleLogout = () => {
     localStorage.clear();
     localStorage.clear();
@@ -101,9 +97,6 @@ const Friends = () => {
               <a onClick={handleViewGroups}> Groups</a>
             </li>
             <li>
-              <a onClick={handleViewExplore}> Explore</a>
-            </li>
-            <li>
               <a onClick={handleViewProfile}> Profile</a>
             </li>
             <li>
@@ -139,11 +132,11 @@ const Friends = () => {
                 }}
                 >{u.username}</td>
                 <td>
-                  <FaUserPlus cursor="pointer"
+                  <button className="follow"
                     onClick={() => {
                       addFriend(u.id);
                     }}
-                  ></FaUserPlus>
+                  >Follow</button>
                 </td>
               </tr>
             ))}

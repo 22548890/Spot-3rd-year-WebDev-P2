@@ -257,4 +257,16 @@ table td {
   background-size: 40%, 80%;
   animation: open 0.5s;
 }
+.follow{
+  width: 120px;
+  height: 28px;
+  border: 1px solid rgb(44, 99, 138);
+  
+  color: rgb(11, 27, 39);
+  border-radius: 5px;
+}
+.follow:hover{
+  background-color: rgb(44, 99, 138);
+  color: #FFF;
+}
 

@@ -145,5 +145,5 @@ def non_friends(current_user):
 @token_required
 def timeout(current_user):
     return {
-        "timeout":False
+        "timeout":"false"
     }

@@ -188,7 +188,7 @@ def token_required(f):
            current_user = User.query.filter_by(id=data['id']).first()
        except:
            return jsonify({
-               'timeout':True,
+               'timeout':"true",
                'message': 'token is invalid'})
  
        return f(current_user, *args, **kwargs)
