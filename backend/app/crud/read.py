@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 from sqlalchemy import desc, or_
 from haversine import haversine, Unit
 import geocoder
+from itertools import chain
 
 @app.route('/profile/my', methods=['GET'])
 @cross_origin()
@@ -28,8 +29,22 @@ def getallgroups(current_user):
 @cross_origin()
 @token_required
 def getmygroups(current_user):
-    results = groups_schema.dump(current_user.groups)
+    groups = groups_schema.dump(current_user.groups)
+    admin_to_group_ids = {mship.group_id for mship in Membership.query.filter_by(user_id=current_user.id).all() if mship.admin == 1}
+    admin_to = [dict(chain.from_iterable([group.items(), {'admin':1}.items()])) for group in groups if group['id'] in admin_to_group_ids]
+    others = [dict(chain.from_iterable([group.items(), {'admin':0}.items()])) for group in groups if not group['id'] in admin_to_group_ids]
+    results = admin_to + others
     return jsonify(results)
+
+
+@app.route('/group=<group_id>', methods=['GET'])
+@cross_origin()
+@token_required
+def getgroup(current_user, group_id):
+    group = Group.query.get(group_id)
+    results = group_schema.dump(group)
+    return jsonify(results)
+
 
 # @app.route('/feed/main', methods=['GET'])
 # @cross_origin()
@@ -51,7 +66,7 @@ def getmygroups(current_user):
 @app.route('/feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>', methods=['GET'])
 @cross_origin()
 @token_required
-def feed(current_user, group_name, username, orderby, order):
+def feed(current_user, group_name='%', username='%', orderby='date', order='dsc'):
     group_ids = [group.id for group in current_user.groups]
     user_ids = [user.id for user in current_user.friends]
     
@@ -84,18 +99,6 @@ def feed(current_user, group_name, username, orderby, order):
 @cross_origin()
 @token_required
 def getgroupfeed(current_user, group_id):
-    # group = Group.query.get(group_id)
-    # if not group:
-    #     return {
-    #         'success': False,
-    #         'msg': 'Group does not exist'
-    #     }
-
-    # if not current_user in group.users:
-    #     return {
-    #         'success': False,
-    #         'msg': 'Not a member of group'
-    #     }
     posts = Post.query.filter_by(group_id=group_id).order_by(desc('date'))
 
     results = posts_schema.dump(posts)
@@ -145,7 +148,10 @@ def getcomments(current_user, post_id):
 @token_required
 def getgroupusers(current_user, group_id):
     group = Group.query.get(group_id)
-    results = users_schema.dump(group.users)
+    admin_ids = [mship.user_id for mship in Membership.query.filter_by(group_id=group_id).all() if mship.admin == 1]
+    admins = [dict(chain.from_iterable([user.items(), {'admin':1}.items()])) for user in users_schema.dump(group.users) if user['id'] in admin_ids]
+    others = [dict(chain.from_iterable([user.items(), {'admin':0}.items()])) for user in users_schema.dump(group.users) if not user['id'] in admin_ids]
+    results = admins + others
     return jsonify(results)
 
 @app.route('/friends', methods=['GET'])
