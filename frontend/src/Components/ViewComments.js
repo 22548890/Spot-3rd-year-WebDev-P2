@@ -3,6 +3,7 @@ import logo from '../SPOT.svg'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
+import ShowMap from "./ShowMap";
 
 export default function ViewComments() {
     const [text, setText] = useState('')
@@ -113,7 +114,9 @@ export default function ViewComments() {
                     <div className="card posts">
                         <h3 className="post">{"@" + dataPost["user.username"]}</h3>
                         <label className="post-text">{dataPost.text}</label>
+                        <label>{dataPost.hashtags_text}</label>
                         <label>Location: {dataPost.latitude+" "+dataPost.longitude}</label>
+                        <ShowMap lat={dataPost.latitude} lng={dataPost.longitude}></ShowMap>
                         <label>{moment(dataPost.date).format('hh:mm A') + " - " + moment(data.date).format("DD/MM")}</label>
                     </div>
                     {/* ))} */}
