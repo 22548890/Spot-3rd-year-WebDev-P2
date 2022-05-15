@@ -14,30 +14,19 @@ import ViewGroup from "./Components/ViewGroup";
 import Friends from "./Components/Friends";
 import ShowGroup from "./Components/ShowGroup";
 
-
 function App() {
   const [data, setData] = useState([]);
-  const timeoutMinutes = 59;//only logout on use not if closed
+  // const [timeoutTime, setData] = useState([]);
+  const timeoutMinutes = 59; //only logout on use not if closed
+
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
     window.location.pathname = "/login";
   };
-  const timeoutTime = localStorage.getItem("timeoutTime");
-  useEffect(() => {
-    if (timeoutTime === "true") {
-      const timer = setTimeout(() => {
-        alert("Your session has expired. You will be logged out.")
-        handleLogout();
-        localStorage.setItem("timeoutTime", "false");
-      }, 1000 * 60 * timeoutMinutes);
-    } 
-    // getTimeout();
-     
-  }, []);
 
-  // async function getTimeout() {
-  //   const response = await fetch(`http://127.0.0.1:5000/timeout`, {
+  // async function getTime() {
+  //   const response = await fetch(`http://127.0.0.1:5000/groups/my`, {
   //     method: "GET",
   //     headers: {
   //       "Content-Type": "application/json",
@@ -45,14 +34,40 @@ function App() {
   //     },
   //   });
   //   setData(await response.json());
-  //   if (data.timeout==="true"){
-  //      handleLogout();
-  //    }
-  //   // return;
+  //   return;
   // }
+  async function getTimeout() {
+    const response = await fetch(`http://127.0.0.1:5000/timeout`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+    });
+    setData(await response.json());
+    // if (data.timeout === "True") {
+    //   alert("Timeout is true");
+    //   //  handleLogout();
+    // } else {
+    //   alert("Timeout is false");
+    // }
+    // return;
+  }
+
+  // const timeoutTime = localStorage.getItem("timeoutTime");
+  useEffect(() => {
+    getTimeout();
+    if (data === "True") {
+      const timer = setTimeout(() => {
+        alert("Your session has expired. You will be logged out.");
+        handleLogout();
+        localStorage.setItem("timeoutTime", "false");
+      }, 1000 * 60 * timeoutMinutes);
+    }
+    // getTimeout();
+  }, []);
 
   return (
-
     <Router>
       <div>
         <Router>
