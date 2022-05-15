@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import AddPost from "./AddPost";
 import ShowMap from "./ShowMap";
 import BigMap from "./BigMap";
+import Posts from "./Posts";
 
 function Home() {
   const handleLogout = () => {
@@ -28,28 +29,6 @@ function Home() {
   const handleFriends = () => {
     window.location.pathname = "/Friends";
   };
-
-  const handleComments = (id) => {
-    window.location.pathname = `/comments/${id}`;
-  };
-
-  const [data, setData] = useState([]);
-
-  async function getPosts() {
-    const response = await fetch(`http://127.0.0.1:5000/feed/main`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": localStorage.getItem("token"),
-      },
-    });
-    setData(await response.json());
-    return;
-  }
-
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   return (
     <>
@@ -89,32 +68,7 @@ function Home() {
       <div>
         <AddPost></AddPost>
         <BigMap></BigMap>
-        <h1 className="posts heading">Feed:</h1>
-        <div className="feed">
-          {data.map((d) => (
-            <div className="card posts">
-              <h3 className="post">{"@" + d["user.username"]}</h3>
-              <label className="post-text">{d.text}</label>
-              <label>
-                {moment(d.date).format("hh:mm A") +
-                  " - " +
-                  moment(d.date).format("DD/MM")}
-              </label>
-              <label
-                className="show-comment"
-                onClick={() => handleComments(d.id)}
-              >
-                Show Comments
-              </label>
-              {(d.latitude == null) ? (
-                <label></label>
-              ) : (
-                <ShowMap lat = {d.latitude} lng = {d.longitude} ></ShowMap>
-              )}
-
-            </div>
-          ))}
-        </div>
+        <Posts></Posts>
       </div>
     </>
   );

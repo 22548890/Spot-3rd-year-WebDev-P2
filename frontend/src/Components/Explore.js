@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CSS/LoginCSS.css";
+import logo from "../SPOT.svg";
 
 function Explore() {
   const [data, setData] = useState([]);
@@ -14,7 +15,11 @@ function Explore() {
   };
 
   const handleViewGroup = () => {
-    window.location.pathname = "/ViewGroup";
+    window.location.pathname = "/Groups";
+  };
+
+  const handleFriends = () => {
+    window.location.pathname = "/Friends";
   };
 
   const handleLogout = () => {
@@ -40,11 +45,23 @@ function Explore() {
     <>
       <nav id="navbar" class="">
         <div className="nav-wrapper">
-          <div className="logo">
-            <label>Spot</label>
+          <div className="logo" onClick={handleHome}>
+            <img
+              src={logo}
+              className="logoNav"
+              alt="Test"
+              height="75"
+              width="75"
+            />
           </div>
 
           <ul id="menu">
+          <li>
+              <a onClick={handleFriends}> Friends</a>
+            </li>
+            <li>
+              <a onClick={handleViewGroup}> Groups</a>
+            </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
             </li>
@@ -64,24 +81,24 @@ function Explore() {
       </div>
 
       <h1 className="posts heading">All Groups</h1>
-      <div className="feed">
-        {data.map((d) => (
-          <div className="card posts">
-            <label className="post-text">{d.name}</label>
-            <label className="show-comment" onClick={handleViewGroup}>
-              View Group
-            </label>
-            {/* <label className="post-text">{d.id}</label> */}
-            {/* <button> Join Group </button> */}
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <button className="btn home" onClick={handleHome}>
-          Back Home
-        </button>
-      </div>
+      {data.length == 0 ? (
+        <div className="card posts feed">
+          <label>There are no groups to show</label>
+        </div>
+      ) : (
+        <div className="feed">
+          {data.map((d) => (
+            <div className="card posts">
+              <label className="post-text">{d.name}</label>
+              <label className="show-comment" onClick={handleViewGroup}>
+                View Group
+              </label>
+              {/* <label className="post-text">{d.id}</label> */}
+              {/* <button> Join Group </button> */}
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

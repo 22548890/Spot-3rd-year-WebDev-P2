@@ -32,8 +32,8 @@ const AddPost = () => {
       if (i != ht.length - 1) {
         hash[i] = "#" + ht[i + 1];
       }
-      setCat(hash);
     }
+    setCat(hash);
     for(let i = 0; i < ht.length; i++) {  
       for(let j = i+1; j < ht.length; j++) {  
           if(hash[i] === hash[j])  

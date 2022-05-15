@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CSS/LoginCSS.css";
+import logo from "../SPOT.svg";
 
 function MyGroups() {
   const [data, setData] = useState([]);
@@ -14,8 +15,16 @@ function MyGroups() {
     window.location.pathname = "/ViewGroup";
   };
 
+  const handleFriends = () => {
+    window.location.pathname = "/Friends";
+  };
+
+
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
+  };
+  const handleViewExplore = () => {
+    window.location.pathname = "/Explore";
   };
 
   const handleLogout = () => {
@@ -29,10 +38,13 @@ function MyGroups() {
     window.location.pathname = "/";
   };
 
-  const handleDelete = (groupName) => { 
+  const handleDelete = (groupName) => {
     const requestOpt = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json","access-token": localStorage.getItem("token") },
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
       body: JSON.stringify({
         group_name: groupName,
       }),
@@ -45,7 +57,7 @@ function MyGroups() {
     (async () => {
       await fetchFunc();
     })();
-    alert("Deleted "+groupName+" group");
+    alert("Deleted " + groupName + " group");
     window.location.reload();
   };
 
@@ -62,7 +74,7 @@ function MyGroups() {
   }
 
   async function getAllGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/all`, {
+    const response = await fetch(`http://127.0.0.1:5000/groups/not-my`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +99,7 @@ function MyGroups() {
     fetch("http://127.0.0.1:5000/group/join", requestOpt)
       .then((response) => response.json())
       .catch((error) => console.log(error));
-      window.location.reload();
+    window.location.reload();
     return;
   }
 
@@ -101,12 +113,25 @@ function MyGroups() {
       <nav id="navbar" class="">
         <div className="nav-wrapper">
           <div className="logo" onClick={handleHome}>
-            <label>Spot</label>
+          <img
+              src={logo}
+              className="logoNav"
+              alt="Test"
+              height="75"
+              width="75"
+            />
           </div>
 
           <ul id="menu">
+          
             <li>
               <a onClick={handleCreateGroup}> Create Group </a>
+            </li>
+            <li>
+              <a onClick={handleViewExplore}> Explore</a>
+            </li>
+            <li>
+              <a onClick={handleFriends}> Friends</a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
@@ -127,38 +152,48 @@ function MyGroups() {
       </div>
 
       <h1 className="posts heading">My Groups</h1>
-      <div className="card feed">
-        {data.map((d) => (
-          <div className="groups">
-            <label className="post-text">{d.name}</label>
-            <label className="show-comment" onClick={"to be added"}>
-              View Group
-            </label>
-            {/* <label className="post-text">{d.id}</label> */}
-            <button onClick={()=>handleDelete(d.name)}> Delete Group </button>
-          </div>
-        ))}
-      </div>
+
+      {data.length == 0 ? (
+        <div className="card feed">
+          <label>You are not currently in group</label>
+        </div>
+      ) : (
+        <div className="card feed">
+          {data.map((d) => (
+            <div className="groups">
+              <label className="post-text">{d.name}</label>
+              <label className="show-comment" onClick={"to be added"}>
+                View Group
+              </label>
+              {/* <label className="post-text">{d.id}</label> */}
+              <button onClick={() => handleDelete(d.name)}>
+                {" "}
+                Delete Group{" "}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       <h1 className="posts heading">All Groups</h1>
-      <div className="feed card">
-        {dataAllGroups.map((d) => (
-          <div className="groups">
-            <label className="post-text">{d.name}</label>
-            <label className="show-comment" onClick={"to be added"}>
-              View Group
-            </label>
-            {/* <label className="post-text">{d.id}</label> */}
-            <button onClick={()=>joinGroup(d.name)}> Join Group </button>
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <button className="btn home" onClick={handleHome}>
-          Back Home
-        </button>
-      </div>
+      {dataAllGroups.length == 0 ? (
+        <div className="card feed">
+          <label>There are no groups to join</label>
+        </div>
+      ) : (
+        <div className="feed card">
+          {dataAllGroups.map((d) => (
+            <div className="groups">
+              <label className="post-text">{d.name}</label>
+              <label className="show-comment" onClick={"to be added"}>
+                View Group
+              </label>
+              {/* <label className="post-text">{d.id}</label> */}
+              <button onClick={() => joinGroup(d.name)}> Join Group </button>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

@@ -13,7 +13,7 @@ const Friends = () => {
 
   function addFriend(id) {
     const requestOpt = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "access-token": localStorage.getItem("token"),
@@ -133,9 +133,13 @@ const Friends = () => {
           <tbody>
             {users.map((u) => (
               <tr key={u.id}>
-                <td>{u.username}</td>
+                <td className="show-comment"
+                onClick={() => {
+                  
+                }}
+                >{u.username}</td>
                 <td>
-                  <FaUserPlus
+                  <FaUserPlus cursor="pointer"
                     onClick={() => {
                       addFriend(u.id);
                     }}

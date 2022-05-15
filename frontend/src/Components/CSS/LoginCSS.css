@@ -211,6 +211,7 @@ input::placeholder {
 .logo:hover {
   cursor: pointer;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;   

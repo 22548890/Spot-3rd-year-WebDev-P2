@@ -38,6 +38,17 @@ export default function ViewComments() {
     const handleBack= () => {
         window.location.pathname = "/";
     };
+    const handleViewGroups = () => {
+        window.location.pathname = "/Groups";
+      };
+    
+      const handleViewExplore = () => {
+        window.location.pathname = "/Explore";
+      };
+    
+      const handleFriends = () => {
+        window.location.pathname = "/Friends";
+      };
 
     async function getPost() {
         const response = await fetch(`http://127.0.0.1:5000/get/post=${postId}`, {
@@ -68,18 +79,24 @@ export default function ViewComments() {
         <>
             <nav id="navbar" class="">
                 <div className="nav-wrapper">
-                    <div className="logo">
+                    <div className="logo" onClick={handleBack}>
                         <img src={logo} className="logoNav" alt="Test" height="75" width="75" />
 
                     </div>
 
                     <ul id="menu">
-                        <li>
-                            <a onClick={"toadd"}> Groups</a>
+                    <li>
+                            <a onClick={handleViewExplore}> Explore</a>
                         </li>
                         <li>
+                            <a onClick={handleFriends}> Friends</a>
+                        </li>
+                        <li>
+                            <a onClick={handleViewGroups}> Groups</a>
+                        </li>
+                        {/* <li>
                             <a onClick={"toadd"}> My Groups</a>
-                        </li>
+                        </li> */}
                         <li>
                             <a onClick={handleViewProfile}> Profile</a>
                         </li>
@@ -101,7 +118,7 @@ export default function ViewComments() {
                     </div>
                     {/* ))} */}
                 </div>
-                <button onClick={handleBack} className="comment back-btn">Return to posts</button>
+                {/* <button onClick={handleBack} className="comment back-btn">Return to posts</button> */}
                 <div className="card posts feed">
                     <label className="post">Add a Comment: </label>
                     <input className="post" id="comment" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />
