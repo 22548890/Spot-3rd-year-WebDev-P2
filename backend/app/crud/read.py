@@ -5,8 +5,6 @@ from app.models import user_schema, users_schema, post_schema, group_schema, gro
 from flask import jsonify
 from flask_cors import cross_origin
 from sqlalchemy import desc, or_
-from haversine import haversine, Unit
-import geocoder
 from itertools import chain
 
 @app.route('/profile/my', methods=['GET'])
@@ -16,23 +14,34 @@ def myprofile(current_user):
     result =  user_schema.dump(current_user)
     return jsonify(result)
 
-@app.route('/groups/not-my', methods=['GET'])
+@app.route('/groups/not-my/group=<group_name>', methods=['GET'])
 @cross_origin()
 @token_required
-def getallgroups(current_user): 
-    groups = Group.query.all()
-    groups_rest = [group for group in groups if not current_user in group.users]
-    results = groups_schema.dump(groups_rest)
+def getallgroups(current_user, group_name): 
+    my_group_ids = [group.id for group in current_user.groups]
+
+    group_name += '%'
+
+    groups = Group.query.filter(Group.id.not_in(my_group_ids), Group.name.like(group_name))
+    
+    results = groups_schema.dump(groups)
     return jsonify(results)
 
-@app.route('/groups/my', methods=['GET'])
+@app.route('/groups/my/group=<group_name>', methods=['GET'])
 @cross_origin()
 @token_required
-def getmygroups(current_user):
-    groups = groups_schema.dump(current_user.groups)
-    admin_to_group_ids = {mship.group_id for mship in Membership.query.filter_by(user_id=current_user.id).all() if mship.admin == 1}
+def getmygroups(current_user, group_name):
+    my_group_ids = [group.id for group in current_user.groups]
+
+    group_name += '%'
+    groups = Group.query.filter(Group.id.in_(my_group_ids), Group.name.like(group_name))
+
+    groups = groups_schema.dump(groups)
+
+    admin_to_group_ids = [mship.group_id for mship in Membership.query.filter_by(user_id=current_user.id).all() if mship.admin == 1]
     admin_to = [dict(chain.from_iterable([group.items(), {'admin':1}.items()])) for group in groups if group['id'] in admin_to_group_ids]
     others = [dict(chain.from_iterable([group.items(), {'admin':0}.items()])) for group in groups if not group['id'] in admin_to_group_ids]
+
     results = admin_to + others
     return jsonify(results)
 
@@ -42,27 +51,11 @@ def getmygroups(current_user):
 @token_required
 def getgroup(current_user, group_id):
     group = Group.query.get(group_id)
-    results = group_schema.dump(group)
-    return jsonify(results)
+    mship = Membership.query.get((group_id, current_user.id))
+    result = group_schema.dump(group)
+    result = dict(chain.from_iterable([result.items(), {'admin':mship.admin}.items()]))
+    return jsonify(result)
 
-
-# @app.route('/feed/main', methods=['GET'])
-# @cross_origin()
-# @token_required
-# def getmainfeed(current_user):
-#     group_ids = [group.id for group in current_user.groups]
-#     friend_ids = [friend.id for friend in current_user.friends]
-
-#     posts = Post.query.filter(or_(Post.group_id.in_(group_ids), Post.user_id.in_(friend_ids))).order_by(desc('date'))
-
-#     results = posts_schema.dump(posts)
-#     return jsonify(results)
-
-
-
-#
-# Note: when group and user unrestricted, send me '%'
-#
 @app.route('/feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>', methods=['GET'])
 @cross_origin()
 @token_required
@@ -88,12 +81,11 @@ def feed(current_user, group_name='%', username='%', orderby='date', order='dsc'
         posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids)).order_by(desc('date'))
     
     if orderby == 'location':
-        posts = [post for post in posts if not (post.latitude is None or post.longitude is None)]
-        posts.sort(key=distance_to_post)
+        posts = [post for post in posts if (post.latitude and post.longitude)]
+        posts.sort(key=User.distance_to_post)
 
     results = posts_schema.dump(posts)
     return jsonify(results)
-
 
 @app.route('/feed/group=<group_id>', methods=['GET'])
 @cross_origin()
@@ -104,7 +96,7 @@ def getgroupfeed(current_user, group_id):
     results = posts_schema.dump(posts)
     return jsonify(results)
 
-@app.route('/get/post=<post_id>', methods=['GET']) # should I just use multiple schema?
+@app.route('/get/post=<post_id>', methods=['GET'])
 @cross_origin()
 @token_required
 def getpost(current_user, post_id):
@@ -123,26 +115,6 @@ def getcomments(current_user, post_id):
     results = comments_schema.dump(comments)
     return jsonify(results)
 
-# @app.route('/friends/requests/to', methods=['GET'])
-# @cross_origin()
-# @token_required
-# def friendsrequeststo(current_user):
-#     requests_to = current_user.friendships_request_to
-#     users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted == False]
-
-#     results = users_schema.dump(users)
-#     return jsonify(results)
-
-# @app.route('/friends/requests/from', methods=['GET'])
-# @cross_origin()
-# @token_required
-# def friendsrequestsfrom(current_user):
-#     requests_from = current_user.friendships_request_from
-#     users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted == False]
-
-#     results = users_schema.dump(users)
-#     return jsonify(results)
-
 @app.route('/users/group=<group_id>', methods=['GET'])
 @cross_origin()
 @token_required
@@ -154,43 +126,30 @@ def getgroupusers(current_user, group_id):
     results = admins + others
     return jsonify(results)
 
-@app.route('/friends', methods=['GET'])
+@app.route('/friends/user=<username>', methods=['GET'])
 @cross_origin()
 @token_required
-def friends(current_user):
-    results = users_schema.dump(current_user.friends)
-    return jsonify(results)
-    # requests_from = current_user.friendships_request_from
-    # users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted]
-    # requests_to = current_user.friendships_request_to
-    # more_users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted]
-    # if len(more_users) > 0:
-    #     users.append(more_users)
-    # results = users_schema.dump(users)
-    # return jsonify(results)
+def friends(current_user, username):
+    friend_ids = [friend.id for friend in current_user.friends]
 
-@app.route('/non-friends', methods=['GET'])
-@cross_origin()
-@token_required
-def non_friends(current_user):
-    excl_ids = [friend.id for friend in current_user.friends]
-    excl_ids.append(current_user.id)
-    users = User.query.filter(User.id.not_in(excl_ids))
+    username += '%'
+    users = User.query.filter(User.id.in_(friend_ids), User.username.like(username))
+
     results = users_schema.dump(users)
     return jsonify(results)
 
-# @app.route('/users/all', methods=['GET'])  # excluding friends and requested and requests from
-# @cross_origin()
-# @token_required
-# def all_users(current_user): 
-#     requests_from = current_user.friendships_request_from
-#     users = [friendship.friend_request_from for friendship in requests_from if friendship.accepted]
-#     requests_to = current_user.friendships_request_to
-#     more_users = [friendship.friend_request_to for friendship in requests_to if friendship.accepted]
-#     if len(more_users) > 0:
-#         users.append(more_users)
-#     results = users_schema.dump(users)
-#     return jsonify(results)
+@app.route('/non-friends/user=<username>', methods=['GET'])
+@cross_origin()
+@token_required
+def non_friends(current_user, username):
+    excl_ids = [friend.id for friend in current_user.friends]
+    excl_ids.append(current_user.id)
+
+    username += '%'
+    users = User.query.filter(User.id.not_in(excl_ids), User.username.like(username))
+    
+    results = users_schema.dump(users)
+    return jsonify(results)
 
 @app.route('/timeout', methods=['GET'])
 @cross_origin()
@@ -199,14 +158,4 @@ def timeout(current_user):
     return {
         "timeout":False
     }
-
-def distance_to_post(post):
-    g = geocoder.ip('me')
-    lat = float(post.latitude)
-    lng = float(post.longitude)
-
-    loc1 = (g.lat, g.lng)
-    loc2 = (lat, lng)
-
-    return haversine(loc1, loc2)
 

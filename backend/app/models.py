@@ -2,6 +2,8 @@ from flask import request, jsonify
 from datetime import datetime, timedelta
 from functools import wraps
 import jwt
+import geocoder
+from haversine import haversine
 
 from app import db, ma, app
 
@@ -54,6 +56,20 @@ class User(db.Model):
     
     # friends_request_to = association_proxy('friendships_request_to', 'friend_request_to')
     # friends_request_from = association_proxy('friendships_request_from', 'friend_request_from')
+
+    def distance_to_post(post):
+        # This code works to get current location, but the server only allows a certain amount of location requests a day
+        # g = geocoder.ip('me') 
+        # loc1 = (g.lat, g.lng)
+
+        loc1 = (-33.9346,18.8668)
+        
+        lat = float(post.latitude)
+        lng = float(post.longitude)
+
+        loc2 = (lat, lng)
+
+        return haversine(loc1, loc2)
 
     def __init__(self, username, email, avatar_url, password_hash):
         self.username = username

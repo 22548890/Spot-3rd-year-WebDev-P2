@@ -114,8 +114,8 @@ const Posts = () => {
             <select id="sortValue" className="comConSelect"
               defaultValue="dsc"  onInput={() => handleSearchGroup()}>
               <option value={"location"}>Nearest</option>
-              <option value={"dsc"} >Most Recent</option>//date
-              <option value={"asc"} >Oldest</option>//date
+              <option value={"dsc"} >Most Recent</option>
+              <option value={"asc"} >Oldest</option>
             </select></div>
           <div className="filter">
             <input type="search"

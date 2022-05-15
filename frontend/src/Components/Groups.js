@@ -188,7 +188,7 @@ function MyGroups() {
               >
                 View Members
               </label>
-              {/* <label className="post-text">{d.id}</label> */}
+              {/* <label className="post-text">{d.admin}</label> */}
               {d.admin === 1 ? (
                 <div>
                   <button onClick={() => handleDelete(d.name)}>
