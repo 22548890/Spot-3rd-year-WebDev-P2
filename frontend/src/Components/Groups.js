@@ -5,7 +5,9 @@ import logo from "../SPOT.svg";
 function MyGroups() {
   const [data, setData] = useState([]);
   const [dataAllGroups, setDataAllGroups] = useState([]);
+  // const [dataAdmin, setAdmin] = useState([]);
   // const [group_name, setGroupName] = useState("");
+  const admin = false;
 
   const handleCreateGroup = () => {
     window.location.pathname = "/CreateGroup";
@@ -18,7 +20,6 @@ function MyGroups() {
   const handleFriends = () => {
     window.location.pathname = "/Friends";
   };
-
 
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
@@ -85,6 +86,17 @@ function MyGroups() {
     return;
   }
 
+  // async function getAdmin() {
+  //   const response = await fetch("", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "access-token": localStorage.getItem("token"),
+  //     },
+  //   });
+  //   setAdmin(await response.json());
+  // }
+
   async function joinGroup(name) {
     const requestOpt = {
       method: "POST",
@@ -113,7 +125,7 @@ function MyGroups() {
       <nav id="navbar" class="">
         <div className="nav-wrapper">
           <div className="logo" onClick={handleHome}>
-          <img
+            <img
               src={logo}
               className="logoNav"
               alt="Test"
@@ -123,7 +135,6 @@ function MyGroups() {
           </div>
 
           <ul id="menu">
-          
             <li>
               <a onClick={handleCreateGroup}> Create Group </a>
             </li>
@@ -162,14 +173,20 @@ function MyGroups() {
           {data.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
-              <label className="show-comment" onClick={"to be added"}>
+              <label className="show-comment" onClick={handleViewGroup}>
                 View Group
               </label>
               {/* <label className="post-text">{d.id}</label> */}
-              <button onClick={() => handleDelete(d.name)}>
-                {" "}
-                Delete Group{" "}
-              </button>
+              {admin == true ? (
+                <div>
+                  <button onClick={() => handleDelete(d.name)}>
+                    {" "}
+                    Delete Group{" "}
+                  </button>
+                </div>
+              ) : (
+                <div>{/* <label>Not admin</label> */}</div>
+              )}
             </div>
           ))}
         </div>
@@ -194,6 +211,9 @@ function MyGroups() {
           ))}
         </div>
       )}
+      <button className="styleBtn" onClick={handleHome}>
+        Back{" "}
+      </button>
     </>
   );
 }
