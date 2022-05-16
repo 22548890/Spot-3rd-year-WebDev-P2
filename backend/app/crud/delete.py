@@ -7,11 +7,25 @@ from flask import jsonify, request
 from flask_cors import cross_origin
 from sqlalchemy import desc
 
-@app.route('/profile/delete', methods=['DELETE'])
+@app.route('/profile/delete', methods=['DELETE'])  # not tested
 @cross_origin()
 @token_required
 def delete_profile(current_user):
+    mships = Membership.query.filter_by(user_id=current_user.id).filter_by(admin=True)
+    group_ids = [m.group_id for m in mships]
+    groups = Group.query.filter(Group.id.in_(group_ids))
+
     db.session.delete(current_user)
+
+    for group in groups:
+        m = Membership.query.filter_by(group_id=group.id).first()
+        if not m:
+            db.session.delete(group)
+        else:
+            m = Membership.query.filter_by(group_id=group.id).filter_by(admin=True).first()
+            if not m:
+                Membership.query.filter_by(group_id=group.id).first().admin = True
+
     db.session.commit()
     return {
         'success':True
@@ -51,19 +65,27 @@ def delete_group(current_user):
         'success':True
     }
 
-# @app.route('/friend/request/reject', methods=['DELETE']) # not tested yet
-# @cross_origin()
-# @token_required
-# def friend_request_reject(current_user): 
-#     username = request.json['username']
+@app.route('/group/leave', methods=['DELETE'])
+@cross_origin()
+@token_required
+def leave_group(current_user):
+    name = request.json['name']
 
-#     friend = User.query.filter_by(username=username).first()
+    group = Group.query.filter_by(name=name).first()
 
-#     friendship = Friendship.query.get((friend.id, current_user.id))
+    mship = Membership.query.get((group.id, current_user.id))
 
-#     db.session.delete(friendship)
-#     db.session.commit()
+    db.session.delete(mship)
 
-#     return {
-#         'success':True
-#     }
+    m = Membership.query.filter_by(group_id=group.id).first()
+    if not m:
+        db.session.delete(group)
+    else:
+        m = Membership.query.filter_by(group_id=group.id).filter_by(admin=True).first()
+        if not m:
+            Membership.query.filter_by(group_id=group.id).first().admin = True
+
+    db.session.commit()
+    return {
+        'success':True
+    }

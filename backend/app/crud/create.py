@@ -37,6 +37,7 @@ def register():
 def login():
     username = request.json['username']
     password = request.json['password']
+    remember_me = request.json['remember_me']
 
     user = User.query.filter_by(username=username).first()
 
@@ -47,10 +48,14 @@ def login():
         }
 
     if check_password_hash(user.password_hash, password):
-        token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
+        if remember_me:
+            token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
+        else :
+            token = jwt.encode({'id':user.id}, app.config['SECRET_KEY'], algorithm="HS256")
+            
         return {
             'success': True,
-            'token':token#.decode('utf8')
+            'token':token.decode('utf8')
         }
     else:
         return {
