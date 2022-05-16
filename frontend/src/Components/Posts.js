@@ -12,8 +12,8 @@ const Posts = () => {
   const [order, setOrder] = useState("dsc");
   const [searchUser, setSearchUser] = useState("%");
   const [searchGroup, setSearchGroup] = useState("%");
-  const [latitude, setLat] = useState("");
-  const [longitude, setLng] = useState("");
+  const [latitude, setLat] = useState("%");
+  const [longitude, setLng] = useState("%");
   const [radius, setRadius] = useState("%");
   const [showLoc, setLocTrue] = useState(true);
   const [locationShared, setShare] = useState(false);
@@ -28,6 +28,9 @@ const Posts = () => {
         console.log(err);
       }
     );
+    if (document.getElementById("checkLoc").checked===false){
+      window.location.reload();
+    }
   }
 
   const handleComments = (id) => {
@@ -120,31 +123,6 @@ const Posts = () => {
   const onSubmitLocation = () => {
     //ifs
     //error handleSignup
-
-    // if (latitude === "") {
-    //   setLat("%");
-    // } else {
-    //   if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(latitude)) {
-    //     Swal.fire(
-    //       "Please include an appropriate latitude",
-    //       "Try again!",
-    //       "warning"
-    //     );
-    //     return;
-    //   }
-    // }
-    // if (longitude === "") {
-    //   setLng("%");
-    // } else {
-    //   if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(longitude)) {
-    //     Swal.fire(
-    //       "Please include an appropriate longitude",
-    //       "Try again!",
-    //       "warning"
-    //     );
-    //     return;
-    //   }
-    // }
 
     handleSearchGroup();
   };
