@@ -87,7 +87,10 @@ def feed(current_user, group_name, username, tag, orderby, order):
     
     if orderby == 'location':
         posts = [post for post in posts if (post.latitude and post.longitude)]
-        posts.sort(key=User.distance_to_post)
+        if order == 'asc': # furthest first 
+            posts.sort(key=User.distance_to_post, reverse=True)
+        else:
+            posts.sort(key=User.distance_to_post)
 
     results = posts_schema.dump(posts)
     return jsonify(results)
