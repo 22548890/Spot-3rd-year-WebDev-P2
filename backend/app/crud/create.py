@@ -48,11 +48,11 @@ def login():
         }
 
     if check_password_hash(user.password_hash, password):
-        if remember_me:
-            token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(hours=1)}, app.config['SECRET_KEY'], algorithm="HS256")
+        if not remember_me:
+            token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(minutes=30)}, app.config['SECRET_KEY'], algorithm="HS256")
         else :
             token = jwt.encode({'id':user.id}, app.config['SECRET_KEY'], algorithm="HS256")
-            
+
         return {
             'success': True,
             'token':token.decode('utf8')
@@ -208,52 +208,3 @@ def comment(current_user):
         'post_id': post_id,
         'user': current_user.username
     }
-
-# @app.route('/friend/request', methods = ['POST'])
-# @cross_origin()
-# @token_required
-# def friend_add(current_user):
-#     username = request.json['username']
-
-#     friend = User.query.filter_by(username=username).first()
-
-#     if not friend:
-#         return {
-#             'success': False,
-#             'msg': 'User does not exist'
-#         }
-
-#     fship = Friendship.query.get((current_user.id, friend.id))
-#     if fship:
-#         if fship.accepted:
-#             return {
-#                 'success': False,
-#                 'msg': 'Already friends'
-#             }
-#         else:
-#             return {
-#                 'success': False,
-#                 'msg': 'Request already sent'
-#             }
-
-#     fship = Friendship.query.get((friend.id, current_user.id))
-#     if fship:
-#         if fship.accepted:
-#             return {
-#                 'success': False,
-#                 'msg': 'Already friends'
-#             }
-#         else:
-#             return {
-#                 'success': False,
-#                 'msg': 'Request already received'
-#             }
-
-#     friendship = Friendship(friend_request_from_id=current_user.id, friend_request_to_id=friend.id)
-
-#     db.session.add(friendship)
-#     db.session.commit()
-    
-#     return {
-#         'success': True
-#     }
