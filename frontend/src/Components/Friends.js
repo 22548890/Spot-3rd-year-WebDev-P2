@@ -141,7 +141,7 @@ const Friends = () => {
           </div>
 
           <ul id="menu">
-          <li>
+            <li>
               <a onClick={"nothing"}> Friends</a>
             </li>
             <li>
@@ -170,7 +170,7 @@ const Friends = () => {
         <table>
           <tbody>
             {friends.length == 0 ? (
-              <label className="post feed">You have no friends</label>
+              <label className="post feed">No users to display</label>
             ) : (
               <>
                 {friends.map((f) => (
@@ -205,14 +205,12 @@ const Friends = () => {
         <table>
           <tbody>
             {users.length == 0 ? (
-              <label className="post feed">No users to show</label>
+              <label className="post feed">No users to display</label>
             ) : (
               <>
                 {users.map((u) => (
                   <tr key={u.id}>
-                    <td className="show-comment" onClick={() => {}}>
-                      {u.username}
-                    </td>
+                    <td>{u.username}</td>
 
                     <td>
                       <button
@@ -226,6 +224,9 @@ const Friends = () => {
                     </td>
                   </tr>
                 ))}
+                <button className="styleBtn" onClick={handleHome}>
+                  Back{" "}
+                </button>
               </>
             )}
           </tbody>
