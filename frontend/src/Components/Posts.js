@@ -18,7 +18,6 @@ const Posts = () => {
   const [showLoc, setLocTrue] = useState(true);
   const [locationShared, setShare] = useState(false);
 
-
   function setLocation() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -70,7 +69,16 @@ const Posts = () => {
     return;
   }
 
-  async function getPostsFiltered(group, user, type, sort, tag, lat, long, rad) {
+  async function getPostsFiltered(
+    group,
+    user,
+    type,
+    sort,
+    tag,
+    lat,
+    long,
+    rad
+  ) {
     if (user === "") {
       user = "%";
     }
@@ -139,16 +147,15 @@ const Posts = () => {
     // }
 
     handleSearchGroup();
-
-  }
+  };
 
   const handleSearchGroup = () => {
     let sGroup = document.getElementById("searchGroup").value;
     let sUser = document.getElementById("searchUser").value;
     let sortValue = document.getElementById("sortValue").value;
     let sTag = document.getElementById("searchTag").value;
-    let sLat = "";
-    let sLng = "";
+    let sLat = "%";
+    let sLng = "%";
     if (document.getElementById("checkLoc").checked === false) {
       sLat = document.getElementById("sortLat").value;
       sLng = document.getElementById("sortLng").value;
@@ -178,12 +185,32 @@ const Posts = () => {
       sTag = "%";
     }
     if (sRadius === "") {
-      sRadius = "%";
+      sTag = "%";
+    } else {
+      if (!/^\d+$/.test(sRadius)) {
+        Swal.fire(
+          "Please only include numbers for radius",
+          "Try again!",
+          "warning"
+        );
+        return;
+      }
+      if (sLng === "" || sLat === "") {
+        Swal.fire(
+          "Please include an appropriate latitude and longitude if using radius",
+          "Try again!",
+          "warning"
+        );
+        return;
+      }
     }
     if (sLat === "") {
       sLat = "%";
     } else {
-      if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLat) || !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLng)) {
+      if (
+        !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLat) ||
+        !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLng)
+      ) {
         Swal.fire(
           "Please include an appropriate latitude and longitude",
           "Try again!",
@@ -195,13 +222,18 @@ const Posts = () => {
     if (sLng === "") {
       sLng = "%";
     } else {
-      if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLat) || !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLng)) {
+      if (
+        !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLat) ||
+        !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLng)
+      ) {
         Swal.fire(
           "Please include an appropriate latitude and longitude",
           "Try again!",
           "warning"
         );
         return;
+      } else {
+        setShare(true);
       }
     }
 
@@ -234,10 +266,19 @@ const Posts = () => {
               defaultValue="dsc"
               onInput={() => handleSearchGroup()}
             >
-              <option value={"location"}>Nearest</option>
-              <option value={"dsc"}>Most Recent</option>
-              <option value={"asc"}>Oldest</option>
-              <option value={"furthest"}>Furthest</option>
+              {locationShared ? (
+                <>
+                  <option value={"location"}>Nearest</option>
+                  <option value={"dsc"}>Most Recent</option>
+                  <option value={"asc"}>Oldest</option>
+                  <option value={"furthest"}>Furthest</option>
+                </>
+              ) : (
+                <>
+                  <option value={"dsc"}>Most Recent</option>
+                  <option value={"asc"}>Oldest</option>
+                </>
+              )}
             </select>
           </div>
           <div className="filter">
@@ -275,29 +316,37 @@ const Posts = () => {
             id="checkLoc"
             name="location"
             onChange={() => {
-              setLocation()
+              setLocation();
+              setLocTrue(true);
+              setLocTrue(false);
             }}
           />
-          <div className="sort">
-            <br></br>
+          {showLoc ? (
+            <>
+              <div className="sort">
+                <br></br>
 
-            <label>Certain Location</label>
-            <br />
-            <input
-              type="search"
-              id="sortLat"
-              placeholder="Search latitude..."
-              onChange={() => setLat()}
-            />
-          </div>
-          <div className="sort">
-            <input
-              type="search"
-              id="sortLng"
-              placeholder="Search Longitude..."
-              onChange={() => setLng()}
-            />
-          </div>
+                <label>Certain Location</label>
+                <br />
+                <input
+                  type="search"
+                  id="sortLat"
+                  placeholder="Search latitude..."
+                  onChange={() => setLat()}
+                />
+              </div>
+              <div className="sort">
+                <input
+                  type="search"
+                  id="sortLng"
+                  placeholder="Search Longitude..."
+                  onChange={() => setLng()}
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           <div className="sort">
             <input
               type="search"
@@ -310,7 +359,7 @@ const Posts = () => {
             type="button"
             className="post feed"
             onClick={() => {
-              onSubmitLocation()
+              onSubmitLocation();
             }}
           >
             Search
