@@ -1,0 +1,11 @@
+.CreateGroup {
+    padding:2%;
+    margin: 3%;
+    margin-left: 30%;
+}
+.group{
+    display:flex;
+}
+.post{
+    margin:2%;
+}

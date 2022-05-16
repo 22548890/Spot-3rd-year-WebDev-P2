@@ -1,6 +1,7 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
+import "./CSS/group.css"
 
 const MakeGroup = () => {
   const [group_name, setGroupName] = useState("");
@@ -50,21 +51,24 @@ const MakeGroup = () => {
         <form className="add-form" onSubmit={onSubmit}>
           <div className="form-control">
             <label className="field">Group Name:</label>
+            <div className="group">
             <input
               className="post"
               type="text"
               placeholder="Type group name..."
               onChange={(e) => setGroupName(e.target.value)}
             />
-          </div>
-          <button
-            className="field"
+            <button
+            className="CreateGroup"
             onClick={() => {
               onSubmit();
             }}
           >
-            Add Group
+            Create Group
           </button>
+            </div>
+          </div>
+
         </form>
       </div>
     </>
