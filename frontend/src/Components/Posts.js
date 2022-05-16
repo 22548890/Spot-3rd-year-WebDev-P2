@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player';
 
 const Posts = () => {
   const [data, setData] = useState([]);
-  const [hashtags, setHashtags] = useState([]);
+  const [hashtags, setHashtags] = useState("%");
   const [sort, setSort] = useState("");
   const [orderby, setOrderby] = useState("date");
   const [order, setOrder] = useState("dsc");
@@ -32,7 +32,8 @@ const Posts = () => {
     setOrder("dsc");
     setSearchUser("%");
     setSearchGroup("%");
-    const response = await fetch(`http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&orderby=${orderby}&order=${order}`, {//type=location || date
+    setHashtags("%");
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&tag=${hashtags}&orderby=${orderby}&order=${order}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,12 +44,15 @@ const Posts = () => {
     return;
   }
 
-  async function getPostsFiltered(group, user, type, sort) {
+  async function getPostsFiltered(group, user, type, sort, tag) {
     if (user === "") {
       user = "%";
     }
     if (group === "") {
       group = "%";
+    }
+    if (tag === "") {
+      tag = "%";
     }
     if (type === "") {
       type = "date";
@@ -56,7 +60,7 @@ const Posts = () => {
     if (sort === "") {
       sort = "dsc";
     }
-    const response = await fetch(`http://127.0.0.1:5000/feed/group=${group}&user=${user}&orderby=${type}&order=${sort}`, {//type=location || date
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${group}&user=${user}&tag=${tag}&orderby=${type}&order=${sort}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -71,10 +75,14 @@ const Posts = () => {
     let sGroup = document.getElementById("searchGroup").value;
     let sUser = document.getElementById("searchUser").value;
     let sortValue = document.getElementById("sortValue").value;
+    let sTag = document.getElementById("searchTag").value;
     let orderValue = "";
     if (sortValue === "location") {
       sortValue = "";
       orderValue = "location";
+    } else if (sortValue === "furthest") {
+      orderValue = "location";
+      sortValue = "asc";
     } else {
       orderValue = "date";
     }
@@ -85,7 +93,10 @@ const Posts = () => {
     if (sUser === '') {
       sUser = '%';
     }
-    getPostsFiltered(sGroup, sUser, orderValue, sortValue);
+    if (sTag === '') {
+      sTag = '%';
+    }
+    getPostsFiltered(sGroup, sUser, orderValue, sortValue, sTag);
   }
 
   useEffect(() => {
@@ -100,10 +111,11 @@ const Posts = () => {
           <label>Sort by:</label>
           <div className="sort">
             <select id="sortValue" className="comConSelect"
-              defaultValue="dsc"  onInput={() => handleSearchGroup()}>
+              defaultValue="dsc" onInput={() => handleSearchGroup()}>
               <option value={"location"}>Nearest</option>
               <option value={"dsc"} >Most Recent</option>
               <option value={"asc"} >Oldest</option>
+              <option value={"furthest"} >Furthest</option>
             </select></div>
           <div className="filter">
             <input type="search"
@@ -117,8 +129,13 @@ const Posts = () => {
               placeholder="Search User..."
               onInput={() => handleSearchGroup()} />
           </div>
+          <div className="sort">
+            <input type="search"
+              id="searchTag"
+              placeholder="Search Tag..."
+              onInput={() => handleSearchGroup()} />
+          </div>
         </div>
-
 
       </div>
       <h1 className="posts heading">Feed:</h1>
