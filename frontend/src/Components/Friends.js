@@ -210,7 +210,7 @@ const Friends = () => {
               <>
                 {users.map((u) => (
                   <tr key={u.id}>
-                    <td className="show-comment" onClick={() => {}}>
+                    <td  onClick={() => {}}>
                       {u.username}
                     </td>
 
