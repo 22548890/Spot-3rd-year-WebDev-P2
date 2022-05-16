@@ -139,89 +139,81 @@ function MyGroups() {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo" onClick={handleHome}>
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
-          </div>
 
-          <ul id="menu">
-            <li>
-              <a onClick={handleCreateGroup}> Create Group </a>
-            </li>
-
-            <li>
-              <a onClick={handleFriends}> Friends</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <h1 className="posts heading">My Groups</h1>
-
-      {data.length === 0 ? (
-        <div className="card feed">
-          <label>You are not currently in group</label>
-        </div>
-      ) : (
-        <div className="card feed">
-          {data.map((d) => (
-            <div className="groups">
-              <label className="post-text">{d.name}</label>
-              <label className="show-comment" onClick={()=>handleShowGroup(d.id)}>
-                View Members
-              </label>
-              {/* <label className="post-text">{d.id}</label> */}
-              {admin === true ? (
-                <div>
-                  <button onClick={() => handleDelete(d.name)}>
-                    Delete Group
-                  </button>
+      <div className="container">
+        <div className="left-side">
+          
+                    <button onClick={handleViewProfile}> Profile</button> 
+                    <button onClick={handleFriends}> Friends</button>
+                    {/* <button onClick={handleViewGroups}> Groups</button> */}
+                    <button onClick={handleCreateGroup}> Create Group </button>
+                    <button className="styleBtn" onClick={handleHome}>
+                      Back{" "}
+                    </button>
+              </div>
+              
+              <div className="right-side-groups ">
+                <h1>My Groups</h1>
+                {data.length === 0 ? (
+                <div className="card feed">
+                  <label>You are not currently in group</label>
                 </div>
               ) : (
-                <div>{/* <label>Not admin</label> */}</div>
+                <div className="clear-div">
+                  {data.map((d) => (
+                    <div className="clear-div">
+                      <label className="clear-div">{d.name}</label>
+                      <button className="show-comment clear-div" onClick={()=>handleShowGroup(d.id)}>
+                        View Members
+                      </button>
+                      
+                      {/* <label className="post-text">{d.id}</label> */}
+                      {admin === true ? (
+                        // <div clear-div>
+                          <button className="clear-div" onClick={() => handleDelete(d.name)}>
+                            Delete Group
+                          </button>
+                        // </div>
+                      ) : (
+                        <div className="clear-div">{/* <label>Not admin</label> */}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               )}
-            </div>
-          ))}
-        </div>
-      )}
 
-      <h1 className="posts heading">All Groups</h1>
-      {dataAllGroups.length === 0 ? (
-        <div className="card feed">
-          <label>There are no groups to join</label>
-        </div>
-      ) : (
-        <div className="feed card">
-          <input type="search"
-            placeholder="Search Group..."
-            onInput={() => handleChange()} />
-          {dataAllGroups.map((d) => (
-            <div className="groups">
-              <label className="post-text">{d.name}</label>
-              {/* <label className="post-text">{d.id}</label> */}
-              <button onClick={() => joinGroup(d.name)}> Join Group </button>
-            </div>
-          ))}
-        </div>
-      )}
-      <button className="styleBtn" onClick={handleHome}>
-        Back{" "}
-      </button>
+
+                <h1 className="posts heading">All Groups</h1>
+                {dataAllGroups.length === 0 ? (
+                  <div className="card feed">
+                    <label>There are no groups to join</label>
+                  </div>
+                ) : (
+                  <div className="feed card">
+                    <input type="search"
+                      placeholder="Search Group..."
+                      onInput={() => handleChange()} />
+                    {dataAllGroups.map((d) => (
+                      <div className="groups">
+                        <label className="post-text">{d.name}</label>
+                        {/* <label className="post-text">{d.id}</label> */}
+                        <button onClick={() => joinGroup(d.name)}> Join Group </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+
+
+
+              </div>
+      </div>
+      
+      
+      
+
+
+      
     </>
   );
 }

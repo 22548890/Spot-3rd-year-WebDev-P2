@@ -99,10 +99,7 @@ function Home() {
             <button className="styleBtn" onClick={handleLogout}>
               Logout{" "}
             </button>
-            
 
-
-            
       </div>
       <div className="right-side">
         <div className="filter">

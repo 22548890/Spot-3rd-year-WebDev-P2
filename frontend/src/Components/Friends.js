@@ -115,80 +115,67 @@ const Friends = () => {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo" onClick={handleHome}>
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
-          </div>
 
-          <ul id="menu">
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div className="friends friends2 friends3">
-        <h3>Friends</h3>
-        <table>
-          <tbody>
-            {friends.map((f) => (
-              <tr key={f.id}>
-                <td>{f.username}</td>
-                <td>
-                  <button className="follow"
-                    onClick={() => {
-                      removeFriend(f.id);
-                    }}
-                  >unfollow</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="container">
+              <div className="left-side">
+                    <button className="styleBtn" onClick={handleHome}>
+                      Back{" "}
+                    </button>
+                    <button onClick={handleViewProfile}> Profile</button>                    
+                    <button onClick={handleViewGroups}> Groups</button>
+                    <button className="styleBtn" onClick={handleLogout}>Logout</button>
+              </div>
+              <div className="right-side-groups">
+                <div className="friends">
+                  <h1>Friends</h1>
+                  <table>
+                    <tbody>
+                      {friends.map((f) => (
+                        <tr key={f.id}>
+                          <td className="friendname">{f.username}</td>
+                          <td className="follow-status">
+                            <button className="follow"
+                              onClick={() => {
+                                removeFriend(f.id);
+                              }}
+                            >unfollow</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="friends">
+                  <h1>Other Users</h1>
+                  <input type="search" 
+                  className="friendsSearch"
+                  placeholder="Search User..." 
+                  onInput={()=>handleChange()}/>
+                  <table>
+                    <tbody>
+                      {users.map((u) => (
+                        <tr key={u.id}>
+                          <td className="show-comment"
+                          onClick={() => {
+                            
+                          }}
+                          >{u.username}</td>
+                          
+                          <td  className="follow-status">
+                            <button
+                              onClick={() => {
+                                addFriend(u.id);
+                              }}
+                            >Follow</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
       </div>
-      <div className="users users2 users3">
-        <h3>Other Users</h3>
-        <input type="search" 
-        className="friendsSearch"
-        placeholder="Search User..." 
-        onInput={()=>handleChange()}/>
-        <table>
-          <tbody>
-            {users.map((u) => (
-              <tr key={u.id}>
-                <td className="show-comment"
-                onClick={() => {
-                  
-                }}
-                >{u.username}</td>
-                
-                <td>
-                  <button className="follow"
-                    onClick={() => {
-                      addFriend(u.id);
-                    }}
-                  >Follow</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      
     </>
   );
 };

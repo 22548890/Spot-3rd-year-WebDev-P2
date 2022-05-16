@@ -136,9 +136,9 @@ const Posts = () => {
       {/* <h1 className="posts heading">Feed:</h1> */}
       <div className="content">
         {data.length === 0 ? (
-          <div className="card posts">
-            <label>There are no posts to show</label>
-          </div>
+          
+            <label className="no-post">There are no posts to show</label>
+          
         ) : (
           <div className="post-bubble">
             {data.map((d) => (
@@ -152,9 +152,9 @@ const Posts = () => {
                     moment(d.date).format("DD/MM")}
                 </label>
                 </div>
-                <div className="post-text">
-                  <label >{d.text}</label>
-                </div>
+                <p className="post-text">
+                  {d.text}
+                </p>
                 
                 {d.video_url === '' ? (
                   <label></label>
