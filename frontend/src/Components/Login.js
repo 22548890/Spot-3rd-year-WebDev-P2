@@ -60,7 +60,7 @@ const Edit = ({
         <form onSubmit={onSubmit}>
             {children}
             <div>
-                <input type="checkbox" value="lsRememberMe" id="rememberMe" /> <label for="rememberMe">Remember me</label>
+                <input type="checkbox" id="rememberMe" /> <label for="rememberMe">Remember me</label>
             </div>
             
             <button type="submit" className="styleBtn login">LOGIN </button>
@@ -109,7 +109,6 @@ class Login extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-
         localStorage.setItem("timeoutTime", "true");
         let data = this.state;
         const requestOpt = {
@@ -118,6 +117,7 @@ class Login extends React.Component {
             body: JSON.stringify({
                 'username': data.email,
                 'password': data.password,
+                'remember_me':document.getElementById("rememberMe").checked,
             }),
         }
         async function fetchFunc() {

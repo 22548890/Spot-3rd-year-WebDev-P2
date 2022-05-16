@@ -17,7 +17,7 @@ import ShowGroup from "./Components/ShowGroup";
 function App() {
   const [data, setData] = useState([]);
   // const [timeoutTime, setData] = useState([]);
-  const timeoutMinutes = 59; //only logout on use not if closed
+  const timeoutMinutes = 25; //only logout on use not if closed
 
   const handleLogout = () => {
     localStorage.clear();

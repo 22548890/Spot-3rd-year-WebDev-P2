@@ -1,22 +1,6 @@
 import React from "react";
 import Swal from "sweetalert2";
 
-const ImgUpload = ({ onChange, src, value }) => (
-  <label htmlFor="photo-upload" className="custom-file-upload fas">
-    <div className="img-wrap img-upload">
-      <img className="loginimg" src={src} alt="User Avatar" />
-    </div>
-    <input
-      id="avatar_url_upload"
-      type="url"
-      value={value}
-      onChange={onChange}
-      placeholder={"Paste URL.."}
-      required
-    />
-  </label>
-);
-
 const GroupName = ({ onChange, value }) => (
   <div className="field">
     <label htmlFor="name">Group Name:</label>
@@ -88,47 +72,18 @@ const Edit = ({ onSubmit, children }) => (
 
 class CreateGroup extends React.Component {
   state = {
-    // file: "",
     // imagePreviewUrl:
     //   "https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true",
     name: "",
     // bio: "",
-    // password: "",
     active: "edit",
   };
-
-  // photoUpload = (e) => {
-  //   e.preventDefault();
-  //   const reader = new FileReader();
-  //   const file = e.target.files[0];
-  //   reader.onloadend = () => {
-  //     this.setState({
-  //       file: file,
-  //       imagePreviewUrl: reader.result,
-  //     });
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
   editName = (e) => {
     const name = e.target.value;
     this.setState({
       name,
     });
   };
-
-  // editEmail = (e) => {
-  //   const bio = e.target.value;
-  //   this.setState({
-  //     bio,
-  //   });
-  // };
-
-  // editPassword = (e) => {
-  //   const password = e.target.value;
-  //   this.setState({
-  //     password,
-  //   });
-  // };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -152,8 +107,6 @@ class CreateGroup extends React.Component {
         name: data.name,
       }),
     };
-    // bio: data.bio,
-    // avatar_url: document.getElementById("avatar_url_upload").value,
 
     async function fetchFunc() {
       return await fetch("http://127.0.0.1:5000/group/create", requestOpt)
@@ -178,8 +131,6 @@ class CreateGroup extends React.Component {
           <Edit onSubmit={this.handleSubmit}>
             {/* <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} /> */}
             <GroupName onChange={this.editName} value={name} />
-            {/* <GroupBio onChange={this.editEmail} value={bio} /> */}
-            {/* <Password onChange={this.editPassword} value={password} /> */}
           </Edit>
         ) : (
           <Group
@@ -187,7 +138,6 @@ class CreateGroup extends React.Component {
             // src={imagePreviewUrl}
             name={name}
             // bio={bio}
-            // password={password}
           />
         )}
       </div>

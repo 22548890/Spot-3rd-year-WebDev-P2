@@ -6,9 +6,6 @@ import MakeGroup from "./MakeGroup";
 function MyGroups() {
   const [data, setData] = useState([]);
   const [dataAllGroups, setDataAllGroups] = useState([]);
-  // const [dataAdmin, setAdmin] = useState([]);
-  // const [group_name, setGroupName] = useState("");
-  // const admin = false;
 
   const handleFriends = () => {
     window.location.pathname = "/Friends";
@@ -31,6 +28,10 @@ function MyGroups() {
   const handleHome = (e) => {
     e.preventDefault();
     window.location.pathname = "/";
+  };
+
+  const alertG = () => {
+    alert("Leave group");
   };
 
   const handleDelete = (groupName) => {
@@ -122,6 +123,26 @@ function MyGroups() {
     return;
   }
 
+  async function leaveGroup(name) {
+    const requestOpt = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        name: name,
+      }),
+    };
+    fetch("", requestOpt)
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
+    setTimeout(function () {
+      window.location.reload();
+    }, 20);
+    return;
+  }
+
   const handleChange = () => {
     let search = document.querySelector("input").value;
     // if (search === '') {
@@ -197,7 +218,8 @@ function MyGroups() {
               >
                 View Members
               </label>
-              {/* <label className="post-text">{d.admin}</label> */}
+              <button onClick={() => leaveGroup(d.name)}> Leave Group </button>
+              {/* <label className="post-text">{d.id}</label> */}
               {d.admin === 1 ? (
                 <div>
                   <button onClick={() => handleDelete(d.name)}>
@@ -205,7 +227,7 @@ function MyGroups() {
                   </button>
                 </div>
               ) : (
-                <></>
+                <div> </div>
               )}
             </div>
           ))}
