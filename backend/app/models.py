@@ -22,20 +22,6 @@ user_friend = db.Table('user_friend',
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-
-# class Friendship(db.Model):
-#     friend_request_from_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that requests
-#     friend_request_to_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True) # the one that accepts the request
-#     accepted = db.Column(db.Boolean, default=False)
-
-# #   friend_request_from
-# #   friend_request_to
-
-#     def __init__(self, friend_request_from_id, friend_request_to_id):
-#         self.friend_request_from_id = friend_request_from_id
-#         self.friend_request_to_id = friend_request_to_id
-
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
@@ -51,19 +37,8 @@ class User(db.Model):
 
     friends = db.relationship('User', secondary=user_friend, primaryjoin=user_friend.c.user_id==id, secondaryjoin=user_friend.c.friend_id==id)
 
-    # friendships_request_to = db.relationship('Friendship', backref='friend_request_from', primaryjoin=id==Friendship.friend_request_from_id, cascade='all, delete')
-    # friendships_request_from = db.relationship('Friendship', backref='friend_request_to', primaryjoin=id==Friendship.friend_request_to_id, cascade='all, delete')
-    
-    # friends_request_to = association_proxy('friendships_request_to', 'friend_request_to')
-    # friends_request_from = association_proxy('friendships_request_from', 'friend_request_from')
-
-    def distance_to_post(post):
-        # This code works to get current location, but the server only allows a certain amount of location requests a day
-        # g = geocoder.ip('me') 
-        # loc1 = (g.lat, g.lng)
-
-        loc1 = (-33.9346,18.8668)
-        
+    def distance_to_post(post, lat, lng):
+        loc1 = (float(lat), float(lng))
         lat = float(post.latitude)
         lng = float(post.longitude)
 

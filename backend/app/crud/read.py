@@ -6,7 +6,6 @@ from flask import jsonify
 from flask_cors import cross_origin
 from sqlalchemy import desc, or_
 from itertools import chain
-from haversine import haversine
 
 @app.route('/profile/my', methods=['GET'])
 @cross_origin()
@@ -88,25 +87,14 @@ def feed(current_user, group_name, username, tag, orderby, order, lat, lng, radi
 
     if not radius == '%':
         posts = [post for post in posts if (post.latitude and post.longitude)]
-        posts = [post for post in posts if distance_to_post(post) <= radius]
+        posts = [post for post in posts if User.distance_to_post(post, lat, lng) <= float(radius)]
 
     if orderby == 'location':
         posts = [post for post in posts if (post.latitude and post.longitude)]
         if order == 'asc': # furthest first 
-            posts.sort(key=distance_to_post, reverse=True)
+            posts.sort(key=lambda post: User.distance_to_post(post, lat, lng), reverse=True)
         else:
-            posts.sort(key=distance_to_post)
-
-    def distance_to_post(post):
-        # loc1 = (-33.9346,18.8668)
-        loc1 = (float(lat), float(lng))
-        
-        lat = float(post.latitude)
-        lng = float(post.longitude)
-
-        loc2 = (lat, lng)
-
-        return haversine(loc1, loc2)
+            posts.sort(key=lambda post: User.distance_to_post(post, lat, lng))
 
     results = posts_schema.dump(posts)
     return jsonify(results)
