@@ -56,19 +56,16 @@ const Edit = ({
     onSubmit,
     children,
 }) =>
-    <div className="card">
-        <form onSubmit={onSubmit}>
-            {children}
-            <div>
-                <input type="checkbox" value="lsRememberMe" id="rememberMe" /> <label for="rememberMe">Remember me</label>
-            </div>
-            
-            <button type="submit" className="styleBtn login">LOGIN </button>
-            <div>
-                <button className="CRegBtn" onClick={handleSignup}>Sign up</button>
-            </div>
-
-        </form>
+   <div className="card">
+    <form onSubmit={onSubmit}>
+        {children}
+        <div>
+            <input type="checkbox" value="lsRememberMe" id="rememberMe" className='checkbox' />
+            <label for="rememberMe">Remember me</label>
+        </div>
+        <button type="submit" className="login-btn">Login </button>
+        <button className="signup-btn" onClick={handleSignup}>Sign up</button>
+    </form>
     </div>
 
 const Profile = ({
@@ -150,7 +147,7 @@ class Login extends React.Component {
             active } = this.state;
 
         return (
-            <div >
+            <div className='login-screen'>
 
                 {(active === 'edit') ? (
 

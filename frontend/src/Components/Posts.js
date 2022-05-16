@@ -106,18 +106,19 @@ const Posts = () => {
 
   return (
     <>
-      <div className="card posts">
-        <h3>Sort Feed</h3>
-        <div className="dropdown">
+      <div className= "filter">
+        {/* <h3>Sort Feed</h3> */}
+        {/* <div className="dropdown"> */}
           <label>Sort by:</label>
-          <div className="sort">
-            <select id="sortValue" className="comConSelect"
-              defaultValue="dsc"  onInput={() => handleSearchGroup()}>
-              <option value={"location"}>Nearest</option>
-              <option value={"dsc"} >Most Recent</option>//date
-              <option value={"asc"} >Oldest</option>//date
-            </select></div>
-          <div className="filter">
+          <select id="sortValue" className="sort"
+            defaultValue="dsc"  onInput={() => handleSearchGroup()}>
+            <option value={"location"}>Nearest</option>
+            <option value={"dsc"} >Most Recent</option>//date
+            <option value={"asc"} >Oldest</option>//date
+          </select>
+        </div>
+          
+          {/* <div className="filter">
             <input type="search"
               id="searchGroup"
               placeholder="Search Group..."
@@ -128,51 +129,67 @@ const Posts = () => {
               id="searchUser"
               placeholder="Search User..."
               onInput={() => handleSearchGroup()} />
-          </div>
-        </div>
-
-
-      </div>
-      <h1 className="posts heading">Feed:</h1>
-      <div className="feed">
+          </div> */}
+        {/* </div> */}
+      {/* </div> */}
+      
+      {/* <h1 className="posts heading">Feed:</h1> */}
+      <div className="content">
         {data.length === 0 ? (
           <div className="card posts">
             <label>There are no posts to show</label>
           </div>
         ) : (
-          <div>
+          <div className="post-bubble">
             {data.map((d) => (
-              <div className="card posts">
-                <h3 className="post">{"@" + d["user.username"]}</h3>
-                <label className="post-text">{d.text}</label>
+              <div className="single-post">
+                <div className="user-group-name">
+                  <label className="username">{"@" + d["user.username"]}</label>
+                  <label className="groupname">{d["group.name"]}</label>
+                  <label className="post-time">
+                  {moment(d.date).format("hh:mm A") +
+                    " - " +
+                    moment(d.date).format("DD/MM")}
+                </label>
+                </div>
+                <div className="post-text">
+                  <label >{d.text}</label>
+                </div>
+                
                 {d.video_url === '' ? (
                   <label></label>
                 ) : (
-                  <label className="postvid"><ReactPlayer url={'./videos/'.concat(d.video_url.split('h')[1])} controls={true} /></label>
+                  <div className="post-vid">
+                    <ReactPlayer url={'./videos/'.concat(d.video_url.split('h')[1])} controls={true} className="react-player" width="100%" height="100%"/>    
+                  </div>
                 )}
 
                 {/* {sortHashtags(d.hashtags_text)}
                 {hashtags.map(() => (
                   <label></label>
                 ))} */}
-                <label>{d["group.name"]}</label>
-                <label>{d.hashtags_text}</label>
-                <label>
-                  {moment(d.date).format("hh:mm A") +
-                    " - " +
-                    moment(d.date).format("DD/MM")}
-                </label>
-                <label
-                  className="show-comment"
-                  onClick={() => handleComments(d.id)}
-                >
-                  Show Comments
-                </label>
-                {d.latitude == null ? (
+                
+                <label className="hashtag">{d.hashtags_text}</label>
+                
+                <div className="button-map-elements">
+                  
+                  {d.latitude == null ? (
                   <label></label>
-                ) : (
-                  <ShowMap lat={d.latitude} lng={d.longitude}></ShowMap>
-                )}
+                  ) : (
+                    // <div>
+                    <ShowMap lat={d.latitude} lng={d.longitude}></ShowMap>
+                    // </div>
+                  )}
+                  <button
+                  className="show-comment-btn"
+                  onClick={() => handleComments(d.id)}
+                  >
+                  Comments
+                  </button>
+                </div>
+
+                
+                
               </div>
             ))}
           </div>

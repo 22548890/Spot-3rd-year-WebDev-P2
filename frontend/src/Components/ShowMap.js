@@ -21,9 +21,9 @@ const ShowMap = ({ lat, lng }) => {
   const position = [lat, lng];
   return (
     <>
-      <div>
+      <div className="show-map-container">
         {sMap ? (
-          <div className="post">
+          <div className="show-map">
             <MapContainer
               center={position}
               zoom={13}
@@ -42,18 +42,21 @@ const ShowMap = ({ lat, lng }) => {
                 </Popup>
               </Marker>
             </MapContainer>
-            <button
-              className="post"
-              onClick={() => {
-                setMap(false);
-              }}
-            >
-              Close Map
-            </button>
+            <div>
+              <button
+                className="close-show-map"
+                onClick={() => {
+                  setMap(false);
+                }}
+              >
+                Close Map
+              </button>
+            </div>
+            
           </div>
         ) : (
           <button
-            className="post"
+          // className="show-map"
             onClick={() => {
               setMap(true);
             }}

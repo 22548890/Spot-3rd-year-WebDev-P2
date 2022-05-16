@@ -9,6 +9,56 @@ import BigMap from "./BigMap";
 import Posts from "./Posts";
 
 function Home() {
+
+  
+////////////////////////////////
+    const [data, setData] = useState([]);
+    async function getPostsFiltered(group, user, type, sort) {
+    if (user === "") {
+      user = "%";
+    }
+    if (group === "") {
+      group = "%";
+    }
+    if (type === "") {
+      type = "date";
+    }
+    if (sort === "") {
+      sort = "dsc";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${group}&user=${user}&orderby=${type}&order=${sort}`, {//type=location || date
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+    });
+    setData(await response.json());
+    return;
+  }
+  const handleSearchGroup = () => {
+    let sGroup = document.getElementById("searchGroup").value;
+    let sUser = document.getElementById("searchUser").value;
+    let sortValue = document.getElementById("sortValue").value;
+    let orderValue = "";
+    if (sortValue === "location") {
+      sortValue = "";
+      orderValue = "location";
+    } else {
+      orderValue = "date";
+    }
+
+    if (sGroup === '') {
+      sGroup = '%';
+    }
+    if (sUser === '') {
+      sUser = '%';
+    }
+    getPostsFiltered(sGroup, sUser, orderValue, sortValue);
+  }
+
+
+ //////////////////////////// 
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -32,40 +82,44 @@ function Home() {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo">
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
-          </div>
-
-          <ul id="menu">
-            <li>
-              <a onClick={handleFriends}> Friends</a>
-            </li>
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div>
+<div className="container">
+      <div class="center">
+        {/* <div class="header"> */}
         <AddPost></AddPost>
-        <BigMap></BigMap>
         <Posts></Posts>
+        {/* </div> */}
+        
+      </div>
+
+      <div className="left-side">
+            <button onClick={handleViewProfile}> Profile</button> 
+            <button onClick={handleFriends}> Friends</button>
+            <button onClick={handleViewGroups}> Groups</button>
+            <BigMap></BigMap>
+            <button className="styleBtn" onClick={handleLogout}>
+              Logout{" "}
+            </button>
+            
+
+
+            
+      </div>
+      <div className="right-side">
+        <div className="filter">
+          <input type="search"
+            id="searchGroup"
+            placeholder="Search Group..."
+            onInput={() => handleSearchGroup()} />
+        </div>
+        <div className="filter">
+          <input type="search"
+            id="searchUser"
+            placeholder="Search User..."
+            onInput={() => handleSearchGroup()} />
+        </div>
+        <button onClick={handleViewExplore}> Explore</button>
+      </div>
+        
       </div>
     </>
   );

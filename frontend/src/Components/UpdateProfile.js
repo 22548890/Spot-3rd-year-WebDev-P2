@@ -102,13 +102,13 @@ export default function UpdateProfile() {
         />
         
     
-        <button className="UpdateBtn" onClick={UpdateProfile}>
+      <button className="update-btn" onClick={UpdateProfile}>
         Update Profile
       </button>
-      <button className="deleteBtn" onClick={handleDelete}>
+      <button className="delete-btn" onClick={handleDelete}>
         Delete Account
       </button>
-      <button className="btn home" onClick={handleHome}>
+      <button className="home-btn" onClick={handleHome}>
         Back Home
       </button>
       </div>    

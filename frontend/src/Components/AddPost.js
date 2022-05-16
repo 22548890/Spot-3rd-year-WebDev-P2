@@ -145,34 +145,44 @@ const AddPost = () => {
     setVid("");
   };
 
+
   return (
-    <div className="card posts feed">
+    <div className="header">
       {/* <label>{sessionStorage.getItem('token')}</label> */}
       <form className="add-form" onSubmit={onSubmit}>
-        <div className="form-control">
+        <div>
           <label className="post">Post:</label>
-          <input
-            className="post"
+          <div>
+            <textarea
+            // className="post"
             type="text"
             placeholder="What's happening?"
             onChange={(e) => setText(e.target.value)}
-          />
+            />
+          </div>  
         </div>
-        <div className="form-control">
-          <label className="post">Hashtags for Post(include atleast 3):</label>
-          <br></br>
+
+
+        <div className="post-elements">
           <input
-            className="post"
+            className="hashtags"
             type="text"
-            placeholder="#typehashtagshere"
+            placeholder="#Hashtags#atleast#3"
             onChange={(e) => setHashtags(e.target.value)}
           />
-        </div>
-        <div className="form-control">
-          <label>Choose Group:</label>
-          <span> </span>
+          
+          <label className="vid">
+            <input
+              type="file"
+              className="video-file"
+              onChange={(e) => setVid(e.target.value)}
+            />
+            <text>Upload video</text>
+          </label>
+
+          
           <select
-            className="comConSelect"
+            className="tab"
             required
             value={group_name}
             onChange={(e) => setGroupName(e.target.value)}
@@ -183,53 +193,58 @@ const AddPost = () => {
             {data.map((d) => (
               <option value={d.name}>{d.name}</option>
             ))}
-          </select>
-        </div>
-        <div className="form-control">
-          <label className="post">Video File:</label>
-
-          <input
-            type="file"
-            className="post"
-            onChange={(e) => setVid(e.target.value)}
-          />
+          </select> 
         </div>
 
-        <div className="form-control form-control-check">
-          <label>Share Location(automatic):</label>
+        
+        <div className="post-elements2">
+          <label className="location-man">Share Location(Manually):</label>
           <input
-            type="radio"
-            name="location"
-            onChange={() => {
-              setLocation();
-            }}
-          />
-        </div>
-        <div className="form-control">
-          <label>Share Location(Manually):</label>
-          <br></br>
-          <input
-            className="post"
+            // className="post"
+            className="latitude"
             type="text"
             placeholder="latitude"
             onChange={(e) => setLat(e.target.value)}
           />
-          <br></br>
+          {/* <br></br> */}
           <input
-            className="post"
+            className="longitude"
             type="text"
             placeholder="longitude"
             onChange={(e) => setLon(e.target.value)}
           />
         </div>
-        <button
-          className="post"
-          onClick={() => {
-            onSubmit();
-          }}
-        >
-          Add Post
-        </button>
+        <div  className="post-elements2">
+          
+          {/* <div className="beans"> */}
+          <div className="radio-btn">
+            {/* <label className="radio-text" for="radio-location"></label> */}
+            Share Location(Automatic):
+            <input
+            type="radio"
+            name="location"
+            className="auto-radio"
+            id="radion-location"
+            onChange={() => {
+              setLocation();
+            }}
+          />
+          </div>
+          
+          
+          {/* </div>        */}
+          <div className="post-btn-div">
+            <button
+              className="post-btn"
+              onClick={() => {
+                onSubmit();
+              }}>
+              Post
+            </button>
+          </div>
+        
+        </div>
+        
       </form>
     </div>
   );

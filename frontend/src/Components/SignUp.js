@@ -88,13 +88,15 @@ const Edit = ({ onSubmit, children }) => (
     <form onSubmit={onSubmit}>
       <h1>User Registration</h1>
       {children}
-      <button type="submit" className="styleBtn save">
-        Save{" "}
-      </button>
-      <button className="btn" onClick={handleHome}>
-        {" "}
-        Back{" "}
-      </button>
+      <div className="edit-btns">
+        <button type="submit" className="save-btn">
+          Save{" "}
+        </button>
+        <button className="back-btn" onClick={handleHome}>
+          {" "}
+          Back{" "}
+        </button>
+      </div>
     </form>
   </div>
 );

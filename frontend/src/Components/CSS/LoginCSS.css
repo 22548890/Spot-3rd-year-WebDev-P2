@@ -1,279 +1,193 @@
 body {
-  font-family: "Hind Guntur", sans-serif;
-  color: #054231;
-  display: flex;
-  justify-content: center;
-  background: rgb(56, 88, 108);
-  background-repeat: no-repeat, no-repeat;
-  background-position: 200% -40%;
-  background-size: 80%;
-  background-image: url("https://www.stratospherenetworks.com/blog/wp-content/uploads/2020/04/abstract-computing-network-concept.jpg");
-  background-size: auto;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-button {
-  background-color: #3d77a0;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 0 inset;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
-    sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.15385;
-  margin: 0;
-  outline: none;
-  padding: 8px 0.8em;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  white-space: nowrap;
+  font-family:'Times New Roman', Times, serif;
+  background: linear-gradient(-45deg, #ee5255, #e24782, #23a5d5, #34deb7, rgb(229, 74, 229), rgb(74, 255, 74));
+	background-size: 400% 400%;
+	animation: gradient 10s ease infinite;
+  overflow-y: hidden;
 }
 
-.card {
-  width: auto;
-  height: auto;
-  padding: 15px;
-  margin-top: 40px;
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+.card{
+  max-width: 500px;
+  padding: 10px 15px 30px 15px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
   border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  box-shadow: 15px 10px 25px 0px #3fa1a9;
-  background: #fff;
-  background-repeat: no-repeat, no-repeat;
-  background-position: 120% -5%, 200% -40%;
-  background-size: 40%, 80%;
-  animation: open 0.5s;
-}
-
-.card_groups {
-  margin: auto;
-  width: 25%;
-  height: 25%;
-  padding: 15px;
-  margin-top: 40px;
-  border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  box-shadow: 15px 10px 25px 0px #3fa1a9;
-  background: #fff;
-  background-repeat: no-repeat, no-repeat;
-  background-position: 120% -5%, 200% -40%;
-  background-size: 40%, 80%;
-  animation: open 0.5s;
-}
-
-.statement {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-.industry {
+  animation: open .5s;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.466);
+  box-shadow: 0px 10px 50px 10px;
 }
-
-.field {
-  margin: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
-form:not(.add-form) {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.loginimg {
-  position: relative;
+.card img {
   width: 200px;
   height: 200px;
-  overflow: hidden;
-  /* border-radius: 50%;
-  border-radius: 50%; */
-  display: inline-block;
-  position: relative;
-  /* padding: 6px; */
-  /* background: linear-gradient(270deg, #3fa1a9, #79f1a4); */
-  /* margin-bottom: 25px; */
-  /* width: auto;
-  height: auto; */
-}
-
-label {
-  text-align: center;
-  /* text-transform: uppercase; */
-  font-weight: 700;
-  color: #676767;
-  padding: 1px;
-}
-
-input {
-  text-align: center;
-  border-radius: 15px;
-  border: 1px solid #b7b7b7;
-  padding: 5px 5px 5px 10px;
-  font-size: 18px;
-  transition: 0.2s;
-}
-
-input:focus {
-  outline: none;
-  border: 1px solid #64d488;
-}
-input::placeholder {
-  color: #bebebe;
-}
-.styleBtn {
-  color: #054231;
-  background: #1ab9e3;
-}
-.save {
-  width: 50%;
-}
-
-.menu-item button {
-  position: relative;
-  color: #054231;
-  letter-spacing: 1px;
-  margin: 20px;
-  font-size: 18px;
-  padding: 10px;
-  text-align: center;
-  transition: 0.5s;
-  border-radius: 10px;
-  cursor: pointer;
-  border-radius: 25px;
-  border: none;
-  background: #64d488;
-}
-.login {
-  font-weight: 600;
-  /* left: -20px; */
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  /* width: 20px; */
-  width: 180px;
-  /* box-shadow: 20px 0px 40px 0px  #63d3a6; */
-}
-.edit {
-  color: #fff;
-  width: 220px;
-}
-
-.img-upload {
-  color: #3d77a0;
-  text-decoration: underline;
-  border: 1px solid #888;
-  box-sizing: border-box;
+  /* background-color: #3fa1a9; */
   display: block;
-  font-family: sans-serif;
-  font-size: 14px;
-  line-height: 20px;
-  margin: 10px 0;
-  padding: 2px 5px;
-  vertical-align: baseline;
-  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.post-text {
-  text-transform: capitalize;
-  color: #302e2e;
+.card input {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  padding: 10px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  border: 0px
 }
-
-.show-comment {
-  cursor: pointer;
-}
-.show-comment:hover {
-  text-decoration: underline;
-}
-
-.show-comment {
-  cursor: pointer;
-}
-.show-comment:hover {
-  text-decoration: underline;
-}
-.back-btn {
-  color: #302e2e;
-}
-.logo:hover {
+.checkbox {
   cursor: pointer;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;   
-   
-}
-table th,
-table td {
-  padding: 20px 20px;
-  text-align: left;
-  color: rgb(0, 0, 0);
-} 
-
-.users {
-  width: auto;
-  height: auto;
-  padding: 15px;
-  margin-top: 40px;
-  border-radius: 25px;
-  display: flex;
-  float: center;
-  justify-content: left;
-  box-shadow: 15px 10px 25px 0px #3fa1a9;
-  background: #fff;
-  background-repeat: no-repeat, no-repeat;
-  background-position: 120% -5%, 200% -40%;
-  background-size: 40%, 80%;
-  animation: open 0.5s;
-}
-
-.friends {
-  width: 200;
-  height: auto;
-  padding: 15px;
-  margin-top: 40px;
-  display: flex;
-  border-radius: 25px;
-  justify-content: right;
-  float: center;
-  box-shadow: 15px 10px 25px 0px #3fa1a9;
-  background: #fff;
-  background-repeat: no-repeat, no-repeat;
-  background-position: 120% -5%, 200% -40%;
-  background-size: 40%, 80%;
-  animation: open 0.5s;
-}
-.follow{
-  width: 120px;
-  height: 28px;
-  border: 1px solid rgb(44, 99, 138);
+.login-btn {
+  border: 0px;
+  border-radius: 20px;
+  width: 100px;
+  padding: 10px 25px 10px 25px;
+  margin-top: 10px;
+  margin-right: 5px;
   
-  color: rgb(11, 27, 39);
-  border-radius: 5px;
 }
-.follow:hover{
-  background-color: rgb(44, 99, 138);
-  color: #FFF;
-}
-.dropdown {
- display: flex;
- padding: 1%;
-}
-.friendsSearch{
-  margin-right: 55%;
+.login-btn:hover {
+  background: #03e9f4;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4,
+              0 0 50px #03e9f4, 0 0 100px #03e9f4;
+  cursor: pointer;
 }
 
+.signup-btn {
+  border: 0px;
+  border-radius: 20px;
+  width: 100px;
+  padding: 10px 25px 10px 25px;
+}
+.signup-btn:hover {
+  background: #00ff62;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #00ff62, 0 0 25px #00ff62,
+              0 0 50px #00ff62, 0 0 100px #00ff62;
+  cursor: pointer;
+}
+
+
+/*//////////////////// SIGN UP PAGE //////////////////*/
+
+div .edit-btns {
+  display: flex;
+}
+div .save-btn {
+  border: 0px;
+  border-radius: 20px;
+  width: 100px;
+  padding: 10px 25px 10px 25px;
+  margin-left: auto;
+  margin-right: 10px;
+  
+}
+.save-btn:hover {
+  background: #00ff62;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #00ff62, 0 0 25px #00ff62,
+              0 0 50px #00ff62, 0 0 100px #00ff62;
+  cursor: pointer;
+}
+
+div .back-btn {
+  border: 0px;
+  border-radius: 20px;
+  width: 100px;
+  padding: 10px 20px 10px 35px;
+  color: rgb(0, 0, 0);
+  margin: 0 auto auto 0;
+}
+.back-btn:hover {
+  background: #ff0000;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #ff0000, 0 0 25px #ff0000,
+              0 0 50px #ff0000, 0 0 100px #ff0000;
+  cursor: pointer;
+}
+.img-wrap img{
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+/*//////////////////// END //////////////////*/
+
+
+/* ///////////////////////// Profile //////////////*/
+.loginimg {
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.update-btn {
+  border: 0px;
+  border-radius: 20px;
+  margin-top: 10px;
+  width: 100px;
+  padding: 10px 25px 10px 25px;
+}
+.update-btn:hover {
+  background: #00ff62;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #00ff62, 0 0 25px #00ff62,
+              0 0 50px #00ff62, 0 0 100px #00ff62;
+  cursor: pointer;
+}
+
+.delete-btn {
+  border: 0px;
+  border-radius: 20px;
+  margin-top: 10px;
+  width: 100px;
+  padding: 10px 25px 10px 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.delete-btn:hover {
+  background: #ff0000;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #ff0000, 0 0 25px #ff0000,
+              0 0 50px #ff0000, 0 0 100px #ff0000;
+  cursor: pointer;
+}
+
+.home-btn {
+  border: 0px;
+  border-radius: 20px;
+  margin-top: 10px;
+  width: 100px;
+  padding: 10px 25px 10px 25px;
+}
+.home-btn:hover {
+  background: #00c8ff;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #00c8ff, 0 0 25px #00c8ff,
+              0 0 50px #00c8ff, 0 0 100px #00c8ff;
+  cursor: pointer;
+}
+input{
+  width: 180px;
+}
+/* /////////////////////////////////////////////////////////////// */
