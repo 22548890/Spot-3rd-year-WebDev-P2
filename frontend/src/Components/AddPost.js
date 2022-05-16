@@ -152,6 +152,7 @@ const AddPost = () => {
       <form className="add-form" onSubmit={onSubmit}>
         <div>
           <label className="post">Post:</label>
+          <img htmlFor="photo-upload" className='loginimg' src={data.avatar_url} alt="User Avatar" />
           <div>
             <textarea
             // className="post"

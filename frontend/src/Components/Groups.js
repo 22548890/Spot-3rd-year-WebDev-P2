@@ -142,7 +142,15 @@ function MyGroups() {
 
       <div className="container">
         <div className="left-side">
-          
+        <div className="logo">
+            <img
+              src={logo}
+              className="logoNav"
+              alt="Test"
+              height="75"
+              width="75"
+            />
+          </div>
                     <button onClick={handleViewProfile}> Profile</button> 
                     <button onClick={handleFriends}> Friends</button>
                     {/* <button onClick={handleViewGroups}> Groups</button> */}
@@ -155,25 +163,25 @@ function MyGroups() {
               <div className="right-side-groups ">
                 <h1>My Groups</h1>
                 {data.length === 0 ? (
-                <div className="card feed">
-                  <label>You are not currently in group</label>
-                </div>
+                
+                  <div className="no-groups">You are not currently in group</div>
+                
               ) : (
-                <div className="clear-div">
+                <div className="groups">
                   {data.map((d) => (
-                    <div className="clear-div">
-                      <label className="clear-div">{d.name}</label>
+                    <div >
+                      <label className="username">{d.name}</label>
                       <button className="show-comment clear-div" onClick={()=>handleShowGroup(d.id)}>
                         View Members
                       </button>
                       
                       {/* <label className="post-text">{d.id}</label> */}
                       {admin === true ? (
-                        // <div clear-div>
-                          <button className="clear-div" onClick={() => handleDelete(d.name)}>
+                        <div clear-div>
+                          <button  onClick={() => handleDelete(d.name)}>
                             Delete Group
                           </button>
-                        // </div>
+                         </div>
                       ) : (
                         <div className="clear-div">{/* <label>Not admin</label> */}</div>
                       )}
@@ -182,31 +190,32 @@ function MyGroups() {
                 </div>
               )}
 
-
-                <h1 className="posts heading">All Groups</h1>
+                <div className="groups">
+                <h1>All Groups</h1>
                 {dataAllGroups.length === 0 ? (
-                  <div className="card feed">
+                  // <div className="username">
                     <label>There are no groups to join</label>
-                  </div>
+                  // </div>
                 ) : (
-                  <div className="feed card">
-                    <input type="search"
+                  <div className="groups-box">
+                    <input className="search-groups" type="search"
                       placeholder="Search Group..."
                       onInput={() => handleChange()} />
-                    {dataAllGroups.map((d) => (
-                      <div className="groups">
+                    <div>
+                      {dataAllGroups.map((d) => (
+                      <div >
                         <label className="post-text">{d.name}</label>
                         {/* <label className="post-text">{d.id}</label> */}
                         <button onClick={() => joinGroup(d.name)}> Join Group </button>
                       </div>
                     ))}
+                    </div>
+                    
                   </div>
                 )}
-
-
-
-
               </div>
+                </div>
+                
       </div>
       
       

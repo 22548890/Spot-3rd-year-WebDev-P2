@@ -188,8 +188,6 @@ const Posts = () => {
                   </button>
                 </div>
 
-                
-                
               </div>
             ))}
           </div>

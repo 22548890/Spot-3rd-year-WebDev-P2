@@ -92,6 +92,15 @@ function Home() {
       </div>
 
       <div className="left-side">
+      <div className="logo">
+            <img
+              src={logo}
+              className="logoNav"
+              alt="Test"
+              height="75"
+              width="75"
+            />
+          </div>
             <button onClick={handleViewProfile}> Profile</button> 
             <button onClick={handleFriends}> Friends</button>
             <button onClick={handleViewGroups}> Groups</button>
