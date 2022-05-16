@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 from sqlalchemy import desc, or_
 from haversine import haversine, Unit
 import geocoder
+from itertools import chain
 
 @app.route('/profile/my', methods=['GET'])
 @cross_origin()
@@ -140,13 +141,28 @@ def getcomments(current_user, post_id):
 #     results = users_schema.dump(users)
 #     return jsonify(results)
 
+@app.route('/group=<group_id>', methods=['GET'])
+@cross_origin()
+@token_required
+def getgroup(current_user, group_id):
+    group = Group.query.get(group_id)
+    mship = Membership.query.get((group_id, current_user.id))
+    result = group_schema.dump(group)
+    result = dict(chain.from_iterable([result.items(), {'admin':mship.admin}.items()]))
+    return jsonify(result)
+
+
 @app.route('/users/group=<group_id>', methods=['GET'])
 @cross_origin()
 @token_required
 def getgroupusers(current_user, group_id):
     group = Group.query.get(group_id)
-    results = users_schema.dump(group.users)
+    admin_ids = [mship.user_id for mship in Membership.query.filter_by(group_id=group_id).all() if mship.admin == 1]
+    admins = [dict(chain.from_iterable([user.items(), {'admin':1}.items()])) for user in users_schema.dump(group.users) if user['id'] in admin_ids]
+    others = [dict(chain.from_iterable([user.items(), {'admin':0}.items()])) for user in users_schema.dump(group.users) if not user['id'] in admin_ids]
+    results = admins + others
     return jsonify(results)
+
 
 @app.route('/friends', methods=['GET'])
 @cross_origin()
