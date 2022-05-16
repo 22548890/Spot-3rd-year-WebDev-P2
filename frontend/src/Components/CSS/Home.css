@@ -245,3 +245,13 @@
       float: left;
       padding: 0;
     }
+    .CreateGroup{
+      margin-left:120%;
+      display: flex;
+      margin-top: -14%;
+      margin-bottom:3%;
+    }
+    .leaveBtn{
+      margin-right:0%;
+      margin:1.5%
+    }

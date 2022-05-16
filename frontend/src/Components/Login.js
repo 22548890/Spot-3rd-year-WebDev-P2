@@ -2,7 +2,6 @@ import React from 'react'
 import './CSS/LoginCSS.css'
 import logo from '../SPOT.svg'
 import Swal from 'sweetalert2'
-import moment from "moment"
 
 const ImgUpload = ({
     onChange,
@@ -62,7 +61,7 @@ const Edit = ({
             <div>
                 <input type="checkbox" id="rememberMe" /> <label for="rememberMe">Remember me</label>
             </div>
-            
+
             <button type="submit" className="styleBtn login">LOGIN </button>
             <div>
                 <button className="CRegBtn" onClick={handleSignup}>Sign up</button>
@@ -113,11 +112,11 @@ class Login extends React.Component {
         let data = this.state;
         const requestOpt = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic' + btoa(data.email + ":" + data.password)},
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic' + btoa(data.email + ":" + data.password) },
             body: JSON.stringify({
                 'username': data.email,
                 'password': data.password,
-                'remember_me':document.getElementById("rememberMe").checked,
+                'remember_me': document.getElementById("rememberMe").checked,
             }),
         }
         async function fetchFunc() {
@@ -137,7 +136,7 @@ class Login extends React.Component {
                     info.msg,
                     'Try again!',
                     'warning',
-                  )
+                )
 
             }
         })()
@@ -172,12 +171,5 @@ class Login extends React.Component {
         )
     }
 }
-// ReactDOM.render(
-//     <>
-//         <Login />
-//     </>
-//     ,
-//     document.getElementById('root')
-// )
 
 export default Login;

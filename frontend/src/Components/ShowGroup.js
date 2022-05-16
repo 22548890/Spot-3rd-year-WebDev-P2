@@ -196,7 +196,7 @@ const ShowGroup = () => {
         <table>
           <tbody>
             <div>
-              <button onClick={() => leaveGroup(group.name)}>
+              <button className="leaveBtn" onClick={() => leaveGroup(group.name)}>
                 Leave Group
               </button>
               {group.admin == 1 ? (

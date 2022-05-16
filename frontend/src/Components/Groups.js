@@ -106,16 +106,6 @@ function MyGroups() {
 
   const handleChange = () => {
     let search = document.querySelector("input").value;
-    // if (search === '') {
-    //     search = '%';
-    // }
-    // fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
-    // 'method': 'GET',
-    // headers: { 'Content-Type': 'application/json' }
-    // })
-    // .then(response => response.json())
-    // .then(response => setData(response))
-    // .catch(error => console.log(error));
   };
 
   useEffect(() => {
@@ -142,14 +132,14 @@ function MyGroups() {
               <a onClick={handleFriends}> Friends</a>
             </li>
             <li>
-              <a onClick={"nothing"}> Groups</a>
+              <a> Groups</a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
             </li>
             <li>
               <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
+                Logout
               </button>
             </li>
           </ul>
@@ -207,8 +197,8 @@ function MyGroups() {
             ))}
           </div>
         )}
-        <button className="styleBtn" onClick={handleHome}>
-          Back{" "}
+        <button className="back" onClick={handleHome}>
+          Back
         </button>
       </div>
     </>

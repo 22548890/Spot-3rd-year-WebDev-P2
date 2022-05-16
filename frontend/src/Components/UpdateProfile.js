@@ -53,6 +53,31 @@ export default function UpdateProfile() {
 
   const UpdateProfile = (e) => {
     e.preventDefault();
+    if (document.getElementById("username").value === "") {
+      Swal.fire(
+        "Please enter a username",
+        'REQUIRED',
+        'warning',
+      )
+      return;
+    }
+    if (document.getElementById("email").value === "") {
+      Swal.fire(
+        "Please enter a email",
+        'REQUIRED',
+        'warning',
+      )
+      return;
+    }
+    if (document.getElementById("password").value === "") {
+      Swal.fire(
+        "Please enter a password",
+        'REQUIRED',
+        'warning',
+      )
+      return;
+    }
+    
     const requestOpt = {
       method: "PUT",
       headers: {
@@ -119,7 +144,7 @@ export default function UpdateProfile() {
               <a onClick={handleViewGroups}> Groups</a>
             </li>
             <li>
-              <a onClick={"nothing"}> Profile</a>
+              <a > Profile</a>
             </li>
             <li>
               <button className="styleBtn" onClick={handleLogout}>
@@ -168,7 +193,6 @@ export default function UpdateProfile() {
             id="password"
             type="password"
             maxLength="25"
-            defaultValue={data.password}
             required
           />
 
