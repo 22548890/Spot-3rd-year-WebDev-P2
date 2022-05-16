@@ -27,6 +27,7 @@ const ShowGroup = () => {
         "access-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
+        group_id: groupId,
         user_id: id,
       }),
     };
@@ -170,7 +171,11 @@ const ShowGroup = () => {
                       {d.username === user.username ? (
                         <label></label>
                       ) : (
-                        <button
+                        <div>
+                        {d.admin === 1 ? (
+                          <label></label>
+                        ) : (
+                          <button
                           className="follow"
                           onClick={() => {
                             makeAdmin(d.id);
@@ -178,6 +183,8 @@ const ShowGroup = () => {
                         >
                           Make Admin
                         </button>
+                        )}
+                        </div>
                       )}
                     </div>
                     ) : (
