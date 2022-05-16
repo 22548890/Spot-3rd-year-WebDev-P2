@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Group, Membership, Post, Comment, token_required
+from app.models import User, Group, Membership, Post, Comment, Hashtag, token_required
 from app.models import user_schema, users_schema, post_schema, group_schema, groups_schema, posts_schema, comment_schema, comments_schema
 
 from flask import jsonify
@@ -12,6 +12,16 @@ from itertools import chain
 @token_required
 def myprofile(current_user):
     result =  user_schema.dump(current_user)
+    return jsonify(result)
+
+@app.route('/group=<group_id>', methods=['GET'])
+@cross_origin()
+@token_required
+def getgroup(current_user, group_id):
+    group = Group.query.get(group_id)
+    mship = Membership.query.get((group_id, current_user.id))
+    result = group_schema.dump(group)
+    result = dict(chain.from_iterable([result.items(), {'admin':mship.admin}.items()]))
     return jsonify(result)
 
 @app.route('/groups/not-my/group=<group_name>', methods=['GET'])
@@ -45,16 +55,16 @@ def getmygroups(current_user, group_name):
     results = admin_to + others
     return jsonify(results)
 
-
-@app.route('/feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>', methods=['GET'])
+@app.route('/feed/group=<group_name>&user=<username>&tag=<tag>&orderby=<orderby>&order=<order>', methods=['GET'])
 @cross_origin()
 @token_required
-def feed(current_user, group_name='%', username='%', orderby='date', order='dsc'):
+def feed(current_user, group_name, username, tag, orderby, order):
     group_ids = [group.id for group in current_user.groups]
     user_ids = [user.id for user in current_user.friends]
     
     group_name += '%'
     username += '%'
+    tag += '%'
 
     groups = Group.query.filter(Group.id.in_(group_ids), Group.name.like(group_name))
 
@@ -62,17 +72,25 @@ def feed(current_user, group_name='%', username='%', orderby='date', order='dsc'
     user_ids += [user.id for user in flatList]
     users = User.query.filter(User.id.in_(user_ids), User.username.like(username))
 
+    hashtags = Hashtag.query.filter(Hashtag.tag.like(tag))
+    post_ids_tag = []
+    for hashtag in hashtags:
+        post_ids_tag += [post.id for post in hashtag.posts]
+
     group_ids = [group.id for group in groups]
     user_ids = [friend.id for friend in users]
 
     if order == 'asc':
-        posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids)).order_by('date')
+        posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids), Post.id.in_(post_ids_tag)).order_by('date')
     else:
-        posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids)).order_by(desc('date'))
+        posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids), Post.id.in_(post_ids_tag)).order_by(desc('date'))
     
     if orderby == 'location':
         posts = [post for post in posts if (post.latitude and post.longitude)]
-        posts.sort(key=User.distance_to_post)
+        if order == 'asc': # furthest first 
+            posts.sort(key=User.distance_to_post, reverse=True)
+        else:
+            posts.sort(key=User.distance_to_post)
 
     results = posts_schema.dump(posts)
     return jsonify(results)
@@ -104,18 +122,6 @@ def getcomments(current_user, post_id):
 
     results = comments_schema.dump(comments)
     return jsonify(results)
-
-
-@app.route('/group=<group_id>', methods=['GET'])
-@cross_origin()
-@token_required
-def getgroup(current_user, group_id):
-    group = Group.query.get(group_id)
-    mship = Membership.query.get((group_id, current_user.id))
-    result = group_schema.dump(group)
-    result = dict(chain.from_iterable([result.items(), {'admin':mship.admin}.items()]))
-    return jsonify(result)
-
 
 @app.route('/users/group=<group_id>', methods=['GET'])
 @cross_origin()
