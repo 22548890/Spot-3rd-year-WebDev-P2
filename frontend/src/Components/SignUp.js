@@ -7,8 +7,8 @@ const ImgUpload = ({ onChange, src, value }) => (
       <img className="loginimg" src={src} alt="User Avatar" />
     </div>
     <input
-      id="avatar_url_upload"
-      type="url"
+      id="img_upload"
+      type="file"
       value={value}
       onChange={onChange}
       placeholder={"Paste URL.."}
@@ -90,7 +90,7 @@ const Edit = ({ onSubmit, children }) => (
     <form onSubmit={onSubmit}>
       <h1>User Registration</h1>
       {children}
-      <button type="submit" className="styleBtn save">
+      <button type="submit" className="save-btn">
         Save{" "}
       </button>
       <button className="btn" onClick={handleHome}>
@@ -164,7 +164,7 @@ class SignUp extends React.Component {
         username: data.username,
         password: data.password,
         email: data.email,
-        avatar_url: document.getElementById("avatar_url_upload").value,
+        avatar_url: document.getElementById("img_upload").value,
       }),
     };
 

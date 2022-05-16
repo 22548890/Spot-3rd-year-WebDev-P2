@@ -102,14 +102,14 @@ form:not(.add-form) {
   height: 200px;
   overflow: hidden;
   /* border-radius: 50%;
-  border-radius: 50%; */
+    border-radius: 50%; */
   display: inline-block;
   position: relative;
   /* padding: 6px; */
   /* background: linear-gradient(270deg, #3fa1a9, #79f1a4); */
   /* margin-bottom: 25px; */
   /* width: auto;
-  height: auto; */
+    height: auto; */
 }
 
 label {
@@ -214,15 +214,14 @@ input::placeholder {
 
 table {
   width: 100%;
-  border-collapse: collapse;   
-   
+  border-collapse: collapse;
 }
 table th,
 table td {
   padding: 20px 20px;
   text-align: left;
   color: rgb(0, 0, 0);
-} 
+}
 
 .users {
   width: auto;
@@ -257,23 +256,22 @@ table td {
   background-size: 40%, 80%;
   animation: open 0.5s;
 }
-.follow{
+.follow {
   width: 120px;
   height: 28px;
   border: 1px solid rgb(44, 99, 138);
-  
+
   color: rgb(11, 27, 39);
   border-radius: 5px;
 }
-.follow:hover{
+.follow:hover {
   background-color: rgb(44, 99, 138);
-  color: #FFF;
+  color: #fff;
 }
 .dropdown {
- display: flex;
- padding: 1%;
+  display: flex;
+  padding: 1%;
 }
-.friendsSearch{
+.friendsSearch {
   margin-right: 55%;
 }
-

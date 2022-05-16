@@ -141,11 +141,8 @@ export default function UpdateProfile() {
           <input
             id="photo-upload"
             className="img-upload"
-            type="url"
+            type="file"
             placeholder={"Enter URL"}
-            defaultValue={
-              "https://cdn.mos.cms.futurecdn.net/T7KjBY3bvJN2RJi65MP57N-1024-80.jpg.webp"
-            }
           />
           <label>Username:</label>
           <input
@@ -172,11 +169,14 @@ export default function UpdateProfile() {
             required
           />
 
-          <button className="UpdateBtn" onClick={UpdateProfile}>
+          <button className="update-btn" onClick={UpdateProfile}>
             Update Profile
           </button>
-          <button className="deleteBtn" onClick={handleDelete}>
+          <button className="delete-btn" onClick={handleDelete}>
             Delete Account
+          </button>
+          <button className="home-btn" onClick={handleHome}>
+            Back Home
           </button>
         </div>
       </div>
