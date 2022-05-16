@@ -1,6 +1,6 @@
 import React from "react";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
+import useState from "react";
 
 const MakeGroup = () => {
   const [group_name, setGroupName] = useState("");

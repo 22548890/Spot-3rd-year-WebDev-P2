@@ -2,16 +2,11 @@ import './CSS/Home.css';
 import logo from '../SPOT.svg'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
-import Swal from 'sweetalert2'
 import ShowMap from "./ShowMap";
-import ReactPlayer from 'react-player';
 
 export default function ViewComments() {
-    const [text, setText] = useState('')
-    const [comment, setComment] = useState('')
     const [data, setData] = useState([]);
     const [dataPost, setDataPost] = useState([]);
-    const [onceOff, setOnceOff] = useState(true);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -27,7 +22,9 @@ export default function ViewComments() {
             .then(response => response.json())
             .catch(error => console.log(error));
 
-        window.location.reload();
+            setTimeout(function () {
+                window.location.reload();
+              }, 20);
     }
     const handleLogout = () => {
         localStorage.clear();
@@ -42,10 +39,6 @@ export default function ViewComments() {
     };
     const handleViewGroups = () => {
         window.location.pathname = "/Groups";
-    };
-
-    const handleViewExplore = () => {
-        window.location.pathname = "/Explore";
     };
 
     const handleFriends = () => {
@@ -71,7 +64,6 @@ export default function ViewComments() {
     }
     var str = "" + window.location.pathname;
     var postId = str.substring(str.lastIndexOf("/") + 1, str.length);
-    //console.log(postId);
 
     useEffect(() => {
         getComments();
@@ -105,7 +97,6 @@ export default function ViewComments() {
             </nav>
             <div>
                 <div className="feed">
-                    {/* {data.map((d) => ( */}
                     <div>
             
               <div className="card posts">
@@ -126,12 +117,10 @@ export default function ViewComments() {
               </div>
             
           </div>
-                    {/* ))} */}
                 </div>
-                {/* <button onClick={handleBack} className="comment back-btn">Return to posts</button> */}
                 <div className="card posts feed">
                     <label className="post">Add a Comment: </label>
-                    <input className="post" id="comment" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />
+                    <input className="post" id="comment" type="text" placeholder="Add a comment..."  />
                     <button className="post" onClick={onSubmit}>Comment</button>
                 </div>
                 <h1 className="posts heading">Comments:</h1>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const AddPost = () => {
@@ -150,7 +149,6 @@ const AddPost = () => {
 
   return (
     <div className="card posts feed">
-      {/* <label>{sessionStorage.getItem('token')}</label> */}
       <form className="add-form" onSubmit={onSubmit}>
         <div className="form-control">
           <label className="post">Post:</label>
@@ -178,8 +176,6 @@ const AddPost = () => {
             className="comConSelect"
             required
             id="group_name"
-            // value={group_name}
-            // onChange={(e) => setGroupName(e.target.value)}
           >
             <option value={category} hidden>
               Select group

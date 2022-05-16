@@ -1,10 +1,9 @@
 import React from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./CSS/Home.css";
 import { Marker } from "react-leaflet/Marker";
 import { Popup } from "react-leaflet/Popup";
-import icon from "leaflet/dist/images/marker-icon.png";
 import L from "leaflet";
 import { useState, useEffect } from "react";
 import moment from "moment";
@@ -41,14 +40,17 @@ const BigMap = () => {
   }
 
   async function getPosts() {
-    const response = await fetch(`http://127.0.0.1:5000/feed/group=${"%"}&user=${"%"}&tag=${"%"}&orderby=${"date"}&order=${"dsc"}&lat=${"%"}&lng=${"%"}&radius=${"%"}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": localStorage.getItem("token"),
-      },
-    });
-    setData(await response.json()); 
+    const response = await fetch(
+      `http://127.0.0.1:5000/feed/group=${"%"}&user=${"%"}&tag=${"%"}&orderby=${"date"}&order=${"dsc"}&lat=${"%"}&lng=${"%"}&radius=${"%"}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+    setData(await response.json());
     return;
   }
 
@@ -85,8 +87,12 @@ const BigMap = () => {
                       <Popup>
                         <div>
                           <h3 className="post">{"@" + d["user.username"]}</h3>
-                          <label className="post-text">Group: {d["group.name"]}</label><br/>
-                          <label className="post-text">{d.text}</label><br/>
+                          <label className="post-text">
+                            Group: {d["group.name"]}
+                          </label>
+                          <br />
+                          <label className="post-text">{d.text}</label>
+                          <br />
                           <label>
                             {moment(d.date).format("hh:mm A") +
                               " - " +
@@ -119,9 +125,7 @@ const BigMap = () => {
           <button
             className="post"
             onClick={() => {
-              {
-                lat == null ? setLocation() : setMap(true);
-              }
+              lat == null ? setLocation() : setMap(true);
             }}
           >
             Show Map

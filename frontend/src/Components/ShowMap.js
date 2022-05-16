@@ -1,10 +1,9 @@
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import React from "react";
 import "leaflet/dist/leaflet.css";
 import "./CSS/Home.css";
 import { Marker } from "react-leaflet/Marker";
 import { Popup } from "react-leaflet/Popup";
-import icon from "leaflet/dist/images/marker-icon.png";
 import L from "leaflet";
 import { useState } from "react";
 

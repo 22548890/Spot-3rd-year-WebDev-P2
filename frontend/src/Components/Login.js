@@ -2,7 +2,6 @@ import React from 'react'
 import './CSS/LoginCSS.css'
 import logo from '../SPOT.svg'
 import Swal from 'sweetalert2'
-import moment from "moment"
 
 const ImgUpload = ({
     onChange,

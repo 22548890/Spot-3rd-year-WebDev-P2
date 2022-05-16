@@ -37,7 +37,6 @@ function MyGroups() {
     const response = await fetch(
       `http://127.0.0.1:5000/groups/my/group=${group}`,
       {
-        //type=location || date
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +63,6 @@ function MyGroups() {
     const response = await fetch(
       `http://127.0.0.1:5000/groups/not-my/group=${group}`,
       {
-        //type=location || date
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -104,20 +102,6 @@ function MyGroups() {
     return;
   }
 
-  const handleChange = () => {
-    let search = document.querySelector("input").value;
-    // if (search === '') {
-    //     search = '%';
-    // }
-    // fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
-    // 'method': 'GET',
-    // headers: { 'Content-Type': 'application/json' }
-    // })
-    // .then(response => response.json())
-    // .then(response => setData(response))
-    // .catch(error => console.log(error));
-  };
-
   useEffect(() => {
     getFilteredMyGroups("%");
     getFilteredAllGroups("%");
@@ -142,7 +126,7 @@ function MyGroups() {
               <a onClick={handleFriends}> Friends</a>
             </li>
             <li>
-              <a onClick={"nothing"}> Groups</a>
+              <a > Groups</a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
@@ -201,7 +185,6 @@ function MyGroups() {
             {dataAllGroups.map((d) => (
               <div className="groups">
                 <label className="post-text">{d.name}</label>
-                {/* <label className="post-text">{d.id}</label> */}
                 <button onClick={() => joinGroup(d.name)}> Join Group </button>
               </div>
             ))}

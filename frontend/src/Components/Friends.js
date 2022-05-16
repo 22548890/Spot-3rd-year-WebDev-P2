@@ -1,12 +1,10 @@
 import React from "react";
 import logo from "../SPOT.svg";
 import { useState, useEffect } from "react";
-import { FaUserPlus } from "react-icons/fa";
 
 const Friends = () => {
   const [friends, setFriends] = useState([]);
   const [users, setUsers] = useState([]);
-  const [data, setData] = useState([]);
 
   const handleViewProfile = () => {
     window.location.pathname = "/ViewProfile";
@@ -72,7 +70,6 @@ const Friends = () => {
       user = "%";
     }
     const response = await fetch(`http://127.0.0.1:5000/friends/user=${user}`, {
-      //type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +95,6 @@ const Friends = () => {
     const response = await fetch(
       `http://127.0.0.1:5000/non-friends/user=${user}`,
       {
-        //type=location || date
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +138,7 @@ const Friends = () => {
 
           <ul id="menu">
             <li>
-              <a onClick={"nothing"}> Friends</a>
+              <a > Friends</a>
             </li>
             <li>
               <a onClick={handleViewGroups}> Groups</a>
@@ -169,7 +165,7 @@ const Friends = () => {
         />
         <table>
           <tbody>
-            {friends.length == 0 ? (
+            {friends.length === 0 ? (
               <label className="post feed">No users to display</label>
             ) : (
               <>
@@ -204,7 +200,7 @@ const Friends = () => {
         />
         <table>
           <tbody>
-            {users.length == 0 ? (
+            {users.length === 0 ? (
               <label className="post feed">No users to display</label>
             ) : (
               <>

@@ -1,12 +1,8 @@
 import "./CSS/Home.css";
 import logo from "../SPOT.svg";
-import moment from "moment";
-import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import AddPost from "./AddPost";
-import ShowMap from "./ShowMap";
 import BigMap from "./BigMap";
 import Posts from "./Posts";
+import AddPost from "./AddPost";
 
 
 function Home() {

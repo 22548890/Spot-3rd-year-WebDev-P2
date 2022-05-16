@@ -54,10 +54,6 @@ const ShowGroup = () => {
     e.preventDefault();
     window.location.pathname = "/";
   };
-  const handleGroup = (e) => {
-    e.preventDefault();
-    window.location.pathname = "/Groups";
-  };
 
   async function getProfile() {
     const response = await fetch(`http://127.0.0.1:5000/profile/my`, {
@@ -199,7 +195,7 @@ const ShowGroup = () => {
               <button onClick={() => leaveGroup(group.name)}>
                 Leave Group
               </button>
-              {group.admin == 1 ? (
+              {group.admin === 1 ? (
                 <button onClick={() => handleDelete(group.name)}>
                   Delete Group
                 </button>
@@ -224,7 +220,7 @@ const ShowGroup = () => {
                     )}
                   </td>
                   <td>
-                    {group.admin == 1 ? (
+                    {group.admin === 1 ? (
                       <div>
                         {d.username === user.username ? (
                           <label></label>

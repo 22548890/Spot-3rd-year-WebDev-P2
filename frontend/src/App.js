@@ -9,7 +9,6 @@ import "./Components/CSS/LoginCSS.css";
 import ViewComments from "./Components/ViewComments";
 import UpdateProfile from "./Components/UpdateProfile";
 import MyGroups from "./Components/Groups";
-import CreateGroup from "./Components/CreateGroup";
 import Friends from "./Components/Friends";
 import ShowGroup from "./Components/ShowGroup";
 
@@ -56,7 +55,6 @@ function App() {
           <ProtectedRoute exact path="/" component={Home} />
           <ProtectedRoute path="/comments" component={ViewComments} />
           <ProtectedRoute path="/Groups" component={MyGroups} />
-          <ProtectedRoute path="/CreateGroup" component={CreateGroup} />
           <ProtectedRoute path="/Friends" component={Friends} />
           <ProtectedRoute path="/ShowGroup" component={ShowGroup} />
         </Router>

@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 const Posts = () => {
   const [data, setData] = useState([]);
   const [hashtags, setHashtags] = useState("%");
-  const [isClick, setClick] = useState("0");
   const [orderby, setOrderby] = useState("date");
   const [order, setOrder] = useState("dsc");
   const [searchUser, setSearchUser] = useState("%");
@@ -36,17 +35,6 @@ const Posts = () => {
   const handleComments = (id) => {
     window.location.pathname = `/comments/${id}`;
   };
-
-  function sortHashtags(hashs) {
-    const ht = hashs.split("#");
-    const hash = [];
-    for (let i = 0; i < ht.length; i++) {
-      if (ht[i] !== "#" || ht[i] === "") {
-        hash[i] = "#" + ht[i + 1];
-      }
-    }
-    setHashtags(hash);
-  }
 
   async function getPosts() {
     setOrderby("date");
