@@ -2,18 +2,22 @@ import ShowMap from "./ShowMap";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import ReactPlayer from "react-player";
+import Swal from "sweetalert2";
 
 const Posts = () => {
   const [data, setData] = useState([]);
   const [hashtags, setHashtags] = useState("%");
-  const [sort, setSort] = useState("");
+  const [isClick, setClick] = useState("0");
   const [orderby, setOrderby] = useState("date");
   const [order, setOrder] = useState("dsc");
   const [searchUser, setSearchUser] = useState("%");
   const [searchGroup, setSearchGroup] = useState("%");
-  const [latitude, setLat] = useState("%");
-  const [longitude, setLng] = useState("%");
+  const [latitude, setLat] = useState("");
+  const [longitude, setLng] = useState("");
   const [radius, setRadius] = useState("%");
+  const [showLoc, setLocTrue] = useState(true);
+  const [locationShared, setShare] = useState(false);
+
 
   function setLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -48,8 +52,11 @@ const Posts = () => {
     setSearchUser("%");
     setSearchGroup("%");
     setHashtags("%");
+    setLat("%");
+    setLng("%");
+    setRadius("%");
     const response = await fetch(
-      `http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&tag=${hashtags}&orderby=${orderby}&order=${order}`,
+      `http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&tag=${hashtags}&orderby=${orderby}&order=${order}&lat=${latitude}&lng=${longitude}&radius=${radius}`,
       {
         //type=location || date
         method: "GET",
@@ -63,7 +70,7 @@ const Posts = () => {
     return;
   }
 
-  async function getPostsFiltered(group, user, type, sort, tag) {
+  async function getPostsFiltered(group, user, type, sort, tag, lat, long, rad) {
     if (user === "") {
       user = "%";
     }
@@ -79,10 +86,18 @@ const Posts = () => {
     if (sort === "") {
       sort = "dsc";
     }
+    if (lat === "") {
+      lat = "%";
+    }
+    if (long === "") {
+      long = "%";
+    }
+    if (rad === "") {
+      rad = "%";
+    }
     const response = await fetch(
-      `http://127.0.0.1:5000/feed/group=${group}&user=${user}&tag=${tag}&orderby=${type}&order=${sort}`,
+      `http://127.0.0.1:5000/feed/group=${group}&user=${user}&tag=${tag}&orderby=${type}&order=${sort}&lat=${lat}&lng=${long}&radius=${rad}`,
       {
-        //type=location || date
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -94,8 +109,36 @@ const Posts = () => {
     return;
   }
 
-  const onSubmit = () => {
-    console.log("this is working" + latitude + longitude)
+  const onSubmitLocation = () => {
+    //ifs
+    //error handleSignup
+
+    // if (latitude === "") {
+    //   setLat("%");
+    // } else {
+    //   if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(latitude)) {
+    //     Swal.fire(
+    //       "Please include an appropriate latitude",
+    //       "Try again!",
+    //       "warning"
+    //     );
+    //     return;
+    //   }
+    // }
+    // if (longitude === "") {
+    //   setLng("%");
+    // } else {
+    //   if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(longitude)) {
+    //     Swal.fire(
+    //       "Please include an appropriate longitude",
+    //       "Try again!",
+    //       "warning"
+    //     );
+    //     return;
+    //   }
+    // }
+
+    handleSearchGroup();
 
   }
 
@@ -104,8 +147,15 @@ const Posts = () => {
     let sUser = document.getElementById("searchUser").value;
     let sortValue = document.getElementById("sortValue").value;
     let sTag = document.getElementById("searchTag").value;
-    let sLat = document.getElementById("sortLat").value;
-    let sLng = document.getElementById("sortLng").value;
+    let sLat = "";
+    let sLng = "";
+    if (document.getElementById("checkLoc").checked === false) {
+      sLat = document.getElementById("sortLat").value;
+      sLng = document.getElementById("sortLng").value;
+    } else {
+      sLat = latitude;
+      sLng = longitude;
+    }
     let sRadius = document.getElementById("sortRadius").value;
     let orderValue = "";
     if (sortValue === "location") {
@@ -127,15 +177,34 @@ const Posts = () => {
     if (sTag === "") {
       sTag = "%";
     }
+    if (sRadius === "") {
+      sRadius = "%";
+    }
     if (sLat === "") {
       sLat = "%";
+    } else {
+      if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLat) || !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLng)) {
+        Swal.fire(
+          "Please include an appropriate latitude and longitude",
+          "Try again!",
+          "warning"
+        );
+        return;
+      }
     }
     if (sLng === "") {
       sLng = "%";
+    } else {
+      if (!/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLat) || !/^[+-]?(([1-8]?[0-9])(\.[0-9]{1,12})?|90(\.0{1,9})?)$/.test(sLng)) {
+        Swal.fire(
+          "Please include an appropriate latitude and longitude",
+          "Try again!",
+          "warning"
+        );
+        return;
+      }
     }
-    if (sRadius === "") {
-      sTag = "%";
-    }
+
     getPostsFiltered(
       sGroup,
       sUser,
@@ -199,15 +268,16 @@ const Posts = () => {
         </div>
         <label>Sort by a location:</label>
         <label>Current Location:</label>
-        
-        <form className="add-form" onSubmit={onSubmit}>
-        <input
-          type="radio"
-          name="location"
-          onChange={() => {
-            setLocation();
-          }}
-        />
+
+        <form className="add-form">
+          <input
+            type="checkbox"
+            id="checkLoc"
+            name="location"
+            onChange={() => {
+              setLocation()
+            }}
+          />
           <div className="sort">
             <br></br>
 
@@ -237,14 +307,14 @@ const Posts = () => {
             />
           </div>
           <button
-          type="button"
-          className="post feed"
-          onClick={() => {
-            onSubmit();
-          }}
-        >
-          Search
-        </button>
+            type="button"
+            className="post feed"
+            onClick={() => {
+              onSubmitLocation()
+            }}
+          >
+            Search
+          </button>
         </form>
       </div>
       <h1 className="posts heading">Feed:</h1>

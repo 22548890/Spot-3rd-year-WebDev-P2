@@ -55,7 +55,7 @@ def login():
             
         return {
             'success': True,
-            'token':token.decode('utf8')
+            'token':token#.decode('utf8')
         }
     else:
         return {
