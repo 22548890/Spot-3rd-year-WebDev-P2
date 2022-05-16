@@ -55,7 +55,7 @@ def login():
             
         return {
             'success': True,
-            'token':token#S.decode('utf8')
+            'token':token.decode('utf8')
         }
     else:
         return {
@@ -81,9 +81,6 @@ def group_create(current_user):
     db.session.commit()
 
     membership = Membership(group_id=group.id, user_id=current_user.id, admin=True)
-
-    # current_user.memberships.append(membership)
-    # group.memberships.append(membership)
 
     db.session.add(membership)
     db.session.commit()
@@ -116,9 +113,6 @@ def group_join(current_user):
                 'name': current_user.id
             }
         membership = Membership(group_id=group.id, user_id=current_user.id, admin=False)
-
-    # current_user.memberships.append(membership)
-    # group.memberships.append(membership)
 
     db.session.add(membership)
     db.session.commit()
@@ -208,52 +202,3 @@ def comment(current_user):
         'post_id': post_id,
         'user': current_user.username
     }
-
-# @app.route('/friend/request', methods = ['POST'])
-# @cross_origin()
-# @token_required
-# def friend_add(current_user):
-#     username = request.json['username']
-
-#     friend = User.query.filter_by(username=username).first()
-
-#     if not friend:
-#         return {
-#             'success': False,
-#             'msg': 'User does not exist'
-#         }
-
-#     fship = Friendship.query.get((current_user.id, friend.id))
-#     if fship:
-#         if fship.accepted:
-#             return {
-#                 'success': False,
-#                 'msg': 'Already friends'
-#             }
-#         else:
-#             return {
-#                 'success': False,
-#                 'msg': 'Request already sent'
-#             }
-
-#     fship = Friendship.query.get((friend.id, current_user.id))
-#     if fship:
-#         if fship.accepted:
-#             return {
-#                 'success': False,
-#                 'msg': 'Already friends'
-#             }
-#         else:
-#             return {
-#                 'success': False,
-#                 'msg': 'Request already received'
-#             }
-
-#     friendship = Friendship(friend_request_from_id=current_user.id, friend_request_to_id=friend.id)
-
-#     db.session.add(friendship)
-#     db.session.commit()
-    
-#     return {
-#         'success': True
-#     }

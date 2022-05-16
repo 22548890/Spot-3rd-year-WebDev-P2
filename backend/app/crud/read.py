@@ -55,10 +55,10 @@ def getmygroups(current_user, group_name):
     results = admin_to + others
     return jsonify(results)
 
-@app.route('/feed/group=<group_name>&user=<username>&tag=<tag>&orderby=<orderby>&order=<order>', methods=['GET'])
+@app.route('/feed/group=<group_name>&user=<username>&tag=<tag>&orderby=<orderby>&order=<order>&lat=<lat>&lng=<lng>&radius=<radius>', methods=['GET'])
 @cross_origin()
 @token_required
-def feed(current_user, group_name, username, tag, orderby, order):
+def feed(current_user, group_name, username, tag, orderby, order, lat, lng, radius):
     group_ids = [group.id for group in current_user.groups]
     user_ids = [user.id for user in current_user.friends]
     
@@ -84,13 +84,17 @@ def feed(current_user, group_name, username, tag, orderby, order):
         posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids), Post.id.in_(post_ids_tag)).order_by('date')
     else:
         posts = Post.query.filter(Post.group_id.in_(group_ids), Post.user_id.in_(user_ids), Post.id.in_(post_ids_tag)).order_by(desc('date'))
-    
+
+    if not radius == '%':
+        posts = [post for post in posts if (post.latitude and post.longitude)]
+        posts = [post for post in posts if User.distance_to_post(post, lat, lng) <= float(radius)]
+
     if orderby == 'location':
         posts = [post for post in posts if (post.latitude and post.longitude)]
         if order == 'asc': # furthest first 
-            posts.sort(key=User.distance_to_post, reverse=True)
+            posts.sort(key=lambda post: User.distance_to_post(post, lat, lng), reverse=True)
         else:
-            posts.sort(key=User.distance_to_post)
+            posts.sort(key=lambda post: User.distance_to_post(post, lat, lng))
 
     results = posts_schema.dump(posts)
     return jsonify(results)
