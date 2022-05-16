@@ -71,7 +71,8 @@ const Friends = () => {
     if (user === "") {
       user = "%";
     }
-    const response = await fetch(`http://127.0.0.1:5000/friends/user=${user}`, {//type=location || date
+    const response = await fetch(`http://127.0.0.1:5000/friends/user=${user}`, {
+      //type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -84,34 +85,38 @@ const Friends = () => {
 
   const handleSearchFriends = () => {
     let sUser = document.getElementById("searchFriendUser").value;
-    if (sUser === '') {
-      sUser = '%';
+    if (sUser === "") {
+      sUser = "%";
     }
     getPostsFilteredFriends(sUser);
-  }
+  };
 
   async function getPostsFilteredNonFriends(user) {
     if (user === "") {
       user = "%";
     }
-    const response = await fetch(`http://127.0.0.1:5000/non-friends/user=${user}`, {//type=location || date
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": localStorage.getItem("token"),
-      },
-    });
+    const response = await fetch(
+      `http://127.0.0.1:5000/non-friends/user=${user}`,
+      {
+        //type=location || date
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("token"),
+        },
+      }
+    );
     setUsers(await response.json());
     return;
   }
 
   const handleSearchNonFriends = () => {
     let sUser = document.getElementById("searchNonFriendUser").value;
-    if (sUser === '') {
-      sUser = '%';
+    if (sUser === "") {
+      sUser = "%";
     }
     getPostsFilteredNonFriends(sUser);
-  }
+  };
 
   useEffect(() => {
     getPostsFilteredFriends("%");
@@ -136,6 +141,9 @@ const Friends = () => {
           </div>
 
           <ul id="menu">
+          <li>
+              <a onClick={"nothing"}> Friends</a>
+            </li>
             <li>
               <a onClick={handleViewGroups}> Groups</a>
             </li>
@@ -152,54 +160,74 @@ const Friends = () => {
       </nav>
       <div className="friends friends2 friends3">
         <h3>Friends</h3>
-        <input type="search" 
-        id="searchFriendUser"
-        className="friendsSearch"
-        placeholder="Search User..." 
-        onInput={()=>handleSearchFriends()}/>
+        <input
+          type="search"
+          id="searchFriendUser"
+          className="friendsSearch"
+          placeholder="Search User..."
+          onInput={() => handleSearchFriends()}
+        />
         <table>
           <tbody>
-            {friends.map((f) => (
-              <tr key={f.id}>
-                <td>{f.username}</td>
-                <td>
-                  <button className="follow"
-                    onClick={() => {
-                      removeFriend(f.id);
-                    }}
-                  >unfollow</button>
-                </td>
-              </tr>
-            ))}
+            {friends.length == 0 ? (
+              <label className="post feed">You have no friends</label>
+            ) : (
+              <>
+                {friends.map((f) => (
+                  <tr key={f.id}>
+                    <td>{f.username}</td>
+                    <td>
+                      <button
+                        className="follow"
+                        onClick={() => {
+                          removeFriend(f.id);
+                        }}
+                      >
+                        unfollow
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>
       <div className="users users2 users3">
         <h3>Other Users</h3>
-        <input type="search" 
-        id="searchNonFriendUser"
-        className="friendsSearch"
-        placeholder="Search User..." 
-        onInput={()=>handleSearchNonFriends()}/>
+        <input
+          type="search"
+          id="searchNonFriendUser"
+          className="friendsSearch"
+          placeholder="Search User..."
+          onInput={() => handleSearchNonFriends()}
+        />
         <table>
           <tbody>
-            {users.map((u) => (
-              <tr key={u.id}>
-                <td className="show-comment"
-                onClick={() => {
-                  
-                }}
-                >{u.username}</td>
-                
-                <td>
-                  <button className="follow"
-                    onClick={() => {
-                      addFriend(u.id);
-                    }}
-                  >Follow</button>
-                </td>
-              </tr>
-            ))}
+            {users.length == 0 ? (
+              <label className="post feed">No users to show</label>
+            ) : (
+              <>
+                {users.map((u) => (
+                  <tr key={u.id}>
+                    <td className="show-comment" onClick={() => {}}>
+                      {u.username}
+                    </td>
+
+                    <td>
+                      <button
+                        className="follow"
+                        onClick={() => {
+                          addFriend(u.id);
+                        }}
+                      >
+                        Follow
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>

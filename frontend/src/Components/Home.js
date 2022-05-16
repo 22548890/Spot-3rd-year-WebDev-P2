@@ -8,6 +8,7 @@ import ShowMap from "./ShowMap";
 import BigMap from "./BigMap";
 import Posts from "./Posts";
 
+
 function Home() {
   const handleLogout = () => {
     localStorage.clear();
@@ -20,10 +21,6 @@ function Home() {
 
   const handleViewGroups = () => {
     window.location.pathname = "/Groups";
-  };
-
-  const handleViewExplore = () => {
-    window.location.pathname = "/Explore";
   };
 
   const handleFriends = () => {

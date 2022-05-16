@@ -5,6 +5,18 @@ export default function ViewProfile() {
   const [data, setData] = useState([]);
   const [onceOff, setOnceOff] = useState(true);
 
+  const handleViewProfile = () => {
+    window.location.pathname = "/ViewProfile";
+  };
+
+  const handleViewGroups = () => {
+    window.location.pathname = "/Groups";
+  };
+
+  const handleFriends = () => {
+    window.location.pathname = "/Friends";
+  };
+
   const handleDelete = () => { 
     const requestOpt = {
       method: "DELETE",
@@ -50,44 +62,69 @@ export default function ViewProfile() {
     setOnceOff(false);
   }
   return (
-    <div className="card">
-      <form onSubmit={handleEdit}>
-        <h1>Profile Preview</h1>
-        <label className="custom-file-upload fas">
-          <div className="img-wrap">
-            <img
-              for="photo-upload"
-              src={
-                "https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true"
-              }
-              alt="Upload"
-            />
-          </div>
-        </label>
-        {data.map((d) => (
-          <>
-            <div className="name">{d.name}</div>
-            <div className="email">
+    <><nav id="navbar" class="">
+      <div className="nav-wrapper">
+        <div className="logo">
+          <img
+            src={logo}
+            className="logoNav"
+            alt="Test"
+            height="75"
+            width="75" />
+        </div>
+
+        <ul id="menu">
+          <li>
+            <a onClick={handleFriends}> Friends</a>
+          </li>
+          <li>
+            <a onClick={handleViewGroups}> Groups</a>
+          </li>
+          <li>
+            <a onClick={handleViewProfile}> Profile</a>
+          </li>
+          <li>
+            <button className="styleBtn" onClick={handleLogout}>
+              Logout{" "}
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav><div className="card">
+        <form onSubmit={handleEdit}>
+          <h1>Profile Preview</h1>
+          <label className="custom-file-upload fas">
+            <div className="img-wrap">
+              <img
+                for="photo-upload"
+                src={"https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true"}
+                alt="Upload" />
             </div>
-            <div className="open">
-              {d.open_to_contracts == true
-                ? "Private Account"
-                : "Public Account"}
-            </div>
-            <div className="Money made:">
-            </div>
-          </>
-        ))}
-        <button className="styleBtn edit" type="submit">
-          Edit Details{" "}
-        </button>
-        <button className="deleteBtn" onClick={handleDelete}>
-          Delete Account{" "}
-        </button>
-        <button className="btn home" onClick={handleHome}>
-          Back Home
-        </button>
-      </form>
-    </div>
+          </label>
+          {data.map((d) => (
+            <>
+              <div className="name">{d.name}</div>
+              <div className="email">
+              </div>
+              <div className="open">
+                {d.open_to_contracts == true
+                  ? "Private Account"
+                  : "Public Account"}
+              </div>
+              <div className="Money made:">
+              </div>
+            </>
+          ))}
+          <button className="styleBtn edit" type="submit">
+            Edit Details{" "}
+          </button>
+          <button className="deleteBtn" onClick={handleDelete}>
+            Delete Account{" "}
+          </button>
+          <button className="btn home" onClick={handleHome}>
+            Back Home
+          </button>
+        </form>
+      </div></>
   );
 }

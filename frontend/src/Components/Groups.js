@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./CSS/LoginCSS.css";
 import logo from "../SPOT.svg";
+import MakeGroup from "./MakeGroup";
 
 function MyGroups() {
   const [data, setData] = useState([]);
@@ -8,14 +9,6 @@ function MyGroups() {
   // const [dataAdmin, setAdmin] = useState([]);
   // const [group_name, setGroupName] = useState("");
   // const admin = false;
-
-  const handleCreateGroup = () => {
-    window.location.pathname = "/CreateGroup";
-  };
-
-  const handleViewGroup = () => {
-    window.location.pathname = "/ViewGroup";
-  };
 
   const handleFriends = () => {
     window.location.pathname = "/Friends";
@@ -163,12 +156,11 @@ function MyGroups() {
           </div>
 
           <ul id="menu">
-            <li>
-              <a onClick={handleCreateGroup}> Create Group </a>
-            </li>
-
-            <li>
+          <li>
               <a onClick={handleFriends}> Friends</a>
+            </li>
+            <li>
+              <a onClick={"nothing"}> Groups</a>
             </li>
             <li>
               <a onClick={handleViewProfile}> Profile</a>
@@ -181,6 +173,7 @@ function MyGroups() {
           </ul>
         </div>
       </nav>
+      <MakeGroup></MakeGroup>
 
       <h1 className="posts heading">My Groups</h1>
       <div className="card feed"><input
@@ -212,9 +205,7 @@ function MyGroups() {
                   </button>
                 </div>
               ) : (
-                <div>
-                  <label>Not admin</label>
-                </div>
+                <></>
               )}
             </div>
           ))}

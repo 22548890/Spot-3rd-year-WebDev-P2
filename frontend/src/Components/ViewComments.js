@@ -86,18 +86,12 @@ export default function ViewComments() {
                     </div>
 
                     <ul id="menu">
-                    <li>
-                            <a onClick={handleViewExplore}> Explore</a>
-                        </li>
                         <li>
                             <a onClick={handleFriends}> Friends</a>
                         </li>
                         <li>
                             <a onClick={handleViewGroups}> Groups</a>
                         </li>
-                        {/* <li>
-                            <a onClick={"toadd"}> My Groups</a>
-                        </li> */}
                         <li>
                             <a onClick={handleViewProfile}> Profile</a>
                         </li>
