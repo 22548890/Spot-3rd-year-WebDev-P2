@@ -67,8 +67,11 @@ const Friends = () => {
     window.location.pathname = "/";
   };
 
-  async function getMyFriends() {
-    const response = await fetch(`http://127.0.0.1:5000/friends`, {
+  async function getPostsFilteredFriends(user) {
+    if (user === "") {
+      user = "%";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/friends/user=${user}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -78,27 +81,20 @@ const Friends = () => {
     setFriends(await response.json());
     return;
   }
-  const handleChange = () => {
-    let search = document.querySelector('input').value;
-    // if (search === '') {
-    //     search = '%';
-    // } 
-    // fetch(`http://127.0.0.1:5000/searchCompany/${search}/date/DSC`, {
-    // 'method': 'GET',
-    // headers: { 'Content-Type': 'application/json' }
-    // })
-    // .then(response => response.json())
-    // .then(response => setData(response))
-    // .catch(error => console.log(error));
-}
 
+  const handleSearchFriends = () => {
+    let sUser = document.getElementById("searchFriendUser").value;
+    if (sUser === '') {
+      sUser = '%';
+    }
+    getPostsFilteredFriends(sUser);
+  }
 
-  useEffect(() => {
-    getMyFriends();
-  }, []);
-
-  async function getUsers() {
-    const response = await fetch(`http://127.0.0.1:5000/non-friends`, {
+  async function getPostsFilteredNonFriends(user) {
+    if (user === "") {
+      user = "%";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/non-friends/user=${user}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -109,8 +105,20 @@ const Friends = () => {
     return;
   }
 
+  const handleSearchNonFriends = () => {
+    let sUser = document.getElementById("searchNonFriendUser").value;
+    if (sUser === '') {
+      sUser = '%';
+    }
+    getPostsFilteredNonFriends(sUser);
+  }
+
   useEffect(() => {
-    getUsers();
+    getPostsFilteredFriends("%");
+  }, []);
+
+  useEffect(() => {
+    getPostsFilteredNonFriends("%");
   }, []);
 
   return (
@@ -144,6 +152,11 @@ const Friends = () => {
       </nav>
       <div className="friends friends2 friends3">
         <h3>Friends</h3>
+        <input type="search" 
+        id="searchFriendUser"
+        className="friendsSearch"
+        placeholder="Search User..." 
+        onInput={()=>handleSearchFriends()}/>
         <table>
           <tbody>
             {friends.map((f) => (
@@ -164,9 +177,10 @@ const Friends = () => {
       <div className="users users2 users3">
         <h3>Other Users</h3>
         <input type="search" 
+        id="searchNonFriendUser"
         className="friendsSearch"
         placeholder="Search User..." 
-        onInput={()=>handleChange()}/>
+        onInput={()=>handleSearchNonFriends()}/>
         <table>
           <tbody>
             {users.map((u) => (

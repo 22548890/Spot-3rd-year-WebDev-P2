@@ -63,8 +63,11 @@ function MyGroups() {
     window.location.reload();
   };
 
-  async function getMyGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/my`, {
+  async function getFilteredMyGroups(group) {
+    if (group === "") {
+      group = "%";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/groups/my/group=${group}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -75,8 +78,19 @@ function MyGroups() {
     return;
   }
 
-  async function getAllGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/not-my`, {
+  const handleSearchMyGroups = () => {
+    let sGroup = document.getElementById("searchMyGroup").value;
+    if (sGroup === '') {
+      sGroup = '%';
+    }
+    getFilteredMyGroups(sGroup);
+  }
+
+  async function getFilteredAllGroups(group) {
+    if (group === "") {
+      group = "%";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/groups/not-my/group=${group}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -87,16 +101,13 @@ function MyGroups() {
     return;
   }
 
-  // async function getAdmin() {
-  //   const response = await fetch("", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "access-token": localStorage.getItem("token"),
-  //     },
-  //   });
-  //   setAdmin(await response.json());
-  // }
+  const handleSearchAllGroups = () => {
+    let sGroup = document.getElementById("searchAllGroup").value;
+    if (sGroup === '') {
+      sGroup = '%';
+    }
+    getFilteredAllGroups(sGroup);
+  }
 
   async function joinGroup(name) {
     const requestOpt = {
@@ -133,8 +144,8 @@ function MyGroups() {
   };
 
   useEffect(() => {
-    getMyGroups();
-    getAllGroups();
+    getFilteredMyGroups("%");
+    getFilteredAllGroups("%");
   }, []);
 
   return (
@@ -172,13 +183,18 @@ function MyGroups() {
       </nav>
 
       <h1 className="posts heading">My Groups</h1>
-
+      <div className="card feed"><input
+            type="search"
+            id="searchMyGroup"
+            placeholder="Search Group..."
+            onInput={() => handleSearchMyGroups()}
+          />
       {data.length === 0 ? (
-        <div className="card feed">
+        <div className="feed">
           <label>You are not currently in group</label>
         </div>
       ) : (
-        <div className="card feed">
+        <div className="feed">
           {data.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
@@ -204,19 +220,21 @@ function MyGroups() {
           ))}
         </div>
       )}
+      </div>
 
       <h1 className="posts heading">All Groups</h1>
-      {dataAllGroups.length === 0 ? (
-        <div className="card feed">
-          <label>There are no groups to join</label>
-        </div>
-      ) : (
-        <div className="feed card">
-          <input
+      <div className="card feed"><input
             type="search"
+            id="searchAllGroup"
             placeholder="Search Group..."
-            onInput={() => handleChange()}
+            onInput={() => handleSearchAllGroups()}
           />
+      {dataAllGroups.length === 0 ? (
+        
+          <label>There are no groups to join</label>
+        
+      ) : (
+        <div className="feed ">
           {dataAllGroups.map((d) => (
             <div className="groups">
               <label className="post-text">{d.name}</label>
@@ -228,7 +246,7 @@ function MyGroups() {
       )}
       <button className="styleBtn" onClick={handleHome}>
         Back{" "}
-      </button>
+      </button></div>
     </>
   );
 }

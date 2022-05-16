@@ -87,18 +87,6 @@ const Posts = () => {
     }
     getPostsFiltered(sGroup, sUser, orderValue, sortValue);
   }
-  const handleSort = () => {
-    let sortValue = document.getElementById("sortValue").value;
-    let orderValue = "";
-    if (sortValue === "location") {
-      sortValue = "";
-      orderValue = "location";
-    } else {
-      orderValue = "date";
-    }
-
-    getPostsFiltered(searchGroup, searchUser, orderValue, sortValue);
-  }
 
   useEffect(() => {
     getPosts();

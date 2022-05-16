@@ -198,9 +198,7 @@ const ShowGroup = () => {
           </tbody>
         </table>
       </div>
-      <button className="btn back" onclick={handleGroup}>
-        Back
-      </button>
+      
     </>
   );
 };

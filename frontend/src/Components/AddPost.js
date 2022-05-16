@@ -41,8 +41,11 @@ const AddPost = () => {
     }
   }
 
-  async function getMyGroups() {
-    const response = await fetch(`http://127.0.0.1:5000/groups/my`, {
+  async function getFilteredMyGroups(group) {
+    if (group === "") {
+      group = "%";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/groups/my/group=${group}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +57,7 @@ const AddPost = () => {
   }
 
   useEffect(() => {
-    getMyGroups();
+    getFilteredMyGroups("%");
   }, []);
 
   const onSubmit = (e) => {
