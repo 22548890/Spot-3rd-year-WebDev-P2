@@ -11,6 +11,7 @@ import Posts from "./Posts";
 
 function Home() {
   const handleLogout = () => {
+    backendLogout();
     localStorage.clear();
     sessionStorage.clear();
     window.location.pathname = "/login";
@@ -26,7 +27,15 @@ function Home() {
   const handleFriends = () => {
     window.location.pathname = "/Friends";
   };
-
+  async function backendLogout() {
+    const requestOpt = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', "access-token": localStorage.getItem("token") },
+    }
+    return await fetch('http://127.0.0.1:5000/logout', requestOpt)
+      .then(response => response.json())
+      .catch(error => console.log(error));
+  }
   return (
     <>
       <nav id="navbar" class="">
