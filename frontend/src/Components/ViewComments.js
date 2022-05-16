@@ -4,6 +4,7 @@ import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import ShowMap from "./ShowMap";
+import ReactPlayer from 'react-player';
 
 export default function ViewComments() {
     const [text, setText] = useState('')
@@ -36,25 +37,25 @@ export default function ViewComments() {
     const handleViewProfile = () => {
         window.location.pathname = "/ViewProfile";
     };
-    const handleBack= () => {
+    const handleBack = () => {
         window.location.pathname = "/";
     };
     const handleViewGroups = () => {
         window.location.pathname = "/Groups";
-      };
-    
-      const handleViewExplore = () => {
+    };
+
+    const handleViewExplore = () => {
         window.location.pathname = "/Explore";
-      };
-    
-      const handleFriends = () => {
+    };
+
+    const handleFriends = () => {
         window.location.pathname = "/Friends";
-      };
+    };
 
     async function getPost() {
         const response = await fetch(`http://127.0.0.1:5000/get/post=${postId}`, {
             method: "GET",
-            headers: { "Content-Type": "application/json", "access-token": localStorage.getItem("token")},
+            headers: { "Content-Type": "application/json", "access-token": localStorage.getItem("token") },
         });
         setDataPost(await response.json());
         return;
@@ -105,14 +106,26 @@ export default function ViewComments() {
             <div>
                 <div className="feed">
                     {/* {data.map((d) => ( */}
-                    <div className="card posts">
-                        <h3 className="post">{"@" + dataPost["user.username"]}</h3>
-                        <label className="post-text">{dataPost.text}</label>
-                        <label>{dataPost.hashtags_text}</label>
-                        <label>Location: {dataPost.latitude+" "+dataPost.longitude}</label>
-                        <ShowMap lat={dataPost.latitude} lng={dataPost.longitude}></ShowMap>
-                        <label>{moment(dataPost.date).format('hh:mm A') + " - " + moment(data.date).format("DD/MM")}</label>
-                    </div>
+                    <div>
+            
+              <div className="card posts">
+                <h3 className="post">{"@" + dataPost["user.username"]}</h3>
+                <label className="post-text">{dataPost.text}</label>
+                <label>{dataPost["group.name"]}</label>
+                <label>{dataPost.hashtags_text}</label>
+                <label>
+                  {moment(dataPost.date).format("hh:mm A") +
+                    " - " +
+                    moment(dataPost.date).format("DD/MM")}
+                </label>
+                {dataPost.latitude == null ? (
+                  <label></label>
+                ) : (
+                  <ShowMap lat={dataPost.latitude} lng={dataPost.longitude}></ShowMap>
+                )}
+              </div>
+            
+          </div>
                     {/* ))} */}
                 </div>
                 {/* <button onClick={handleBack} className="comment back-btn">Return to posts</button> */}
@@ -125,7 +138,7 @@ export default function ViewComments() {
                 <div className="card posts feed">
                     {data.map((d) => (
                         <>
-                            <label className="post-text">{d.text+ " ~ "+d['user.username']} </label>
+                            <label className="post-text">{d.text + " ~ " + d['user.username']} </label>
                             <label>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
 
                         </>

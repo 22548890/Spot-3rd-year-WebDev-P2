@@ -41,14 +41,14 @@ const BigMap = () => {
   }
 
   async function getPosts() {
-    const response = await fetch(`http://127.0.0.1:5000/feed/group=${"%"}&user=${"%"}&orderby=${"date"}&order=${"dsc"}&lat=${"%"}&lng=${"%"}&radius=${"%"}`, {
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${"%"}&user=${"%"}&tag=${"%"}&orderby=${"date"}&order=${"dsc"}&lat=${"%"}&lng=${"%"}&radius=${"%"}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "access-token": localStorage.getItem("token"),
       },
     });
-    setData(await response.json());
+    setData(await response.json()); 
     return;
   }
 

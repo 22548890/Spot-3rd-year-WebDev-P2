@@ -157,17 +157,17 @@ const AddPost = () => {
           <input
             className="post"
             type="text"
-            placeholder="What's happening?"
+            placeholder="Post message..."
             onChange={(e) => setText(e.target.value)}
           />
         </div>
         <div className="form-control">
-          <label className="post">Hashtags for Post(include atleast 3):</label>
+          <label className="post">Hashtags for Post(include at least 3):</label>
           <br></br>
           <input
             className="post"
             type="text"
-            placeholder="#typehashtagshere"
+            placeholder="#hash1#hash2#hash3"
             onChange={(e) => setHashtags(e.target.value)}
           />
         </div>
@@ -215,14 +215,14 @@ const AddPost = () => {
           <input
             className="post"
             type="text"
-            placeholder="latitude"
+            placeholder="latitude..."
             onChange={(e) => setLat(e.target.value)}
           />
           <br></br>
           <input
             className="post"
             type="text"
-            placeholder="longitude"
+            placeholder="longitude..."
             onChange={(e) => setLon(e.target.value)}
           />
         </div>

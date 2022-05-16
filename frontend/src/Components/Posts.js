@@ -152,7 +152,6 @@ const Posts = () => {
     } else {
       orderValue = "date";
     }
-
     if (sGroup === "") {
       sGroup = "%";
     }
@@ -163,7 +162,7 @@ const Posts = () => {
       sTag = "%";
     }
     if (sRadius === "") {
-      sTag = "%";
+      sRadius = "%";
     } else {
       if (!/^\d+$/.test(sRadius)) {
         Swal.fire(
@@ -361,16 +360,11 @@ const Posts = () => {
                 ) : (
                   <label className="postvid">
                     <ReactPlayer
-                      url={"./videos/".concat(d.video_url.split("h")[1])}
+                      url={"/videos/".concat(d.video_url.split("h")[1])}
                       controls={true}
                     />
                   </label>
                 )}
-
-                {/* {sortHashtags(d.hashtags_text)}
-                {hashtags.map(() => (
-                  <label></label>
-                ))} */}
                 <label>{d["group.name"]}</label>
                 <label>{d.hashtags_text}</label>
                 <label>

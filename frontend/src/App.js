@@ -10,7 +10,6 @@ import ViewComments from "./Components/ViewComments";
 import UpdateProfile from "./Components/UpdateProfile";
 import MyGroups from "./Components/Groups";
 import CreateGroup from "./Components/CreateGroup";
-import ViewGroup from "./Components/ViewGroup";
 import Friends from "./Components/Friends";
 import ShowGroup from "./Components/ShowGroup";
 

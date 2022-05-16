@@ -26,7 +26,7 @@ def update_profile(current_user):
 
     current_user.username = username
     current_user.email = email
-    current_user.password = generate_password_hash(password)
+    current_user.password_hash = generate_password_hash(password)
     current_user.avatar_url = avatar_url
 
     db.session.commit()
