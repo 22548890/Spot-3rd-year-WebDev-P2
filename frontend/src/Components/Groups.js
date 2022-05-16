@@ -5,16 +5,9 @@ import logo from "../SPOT.svg";
 function MyGroups() {
   const [data, setData] = useState([]);
   const [dataAllGroups, setDataAllGroups] = useState([]);
-  // const [dataAdmin, setAdmin] = useState([]);
-  // const [group_name, setGroupName] = useState("");
-  // const admin = false;
 
   const handleCreateGroup = () => {
     window.location.pathname = "/CreateGroup";
-  };
-
-  const handleViewGroup = () => {
-    window.location.pathname = "/ViewGroup";
   };
 
   const handleFriends = () => {
@@ -38,6 +31,10 @@ function MyGroups() {
   const handleHome = (e) => {
     e.preventDefault();
     window.location.pathname = "/";
+  };
+
+  const alertG = () => {
+    alert("Leave group");
   };
 
   const handleDelete = (groupName) => {
@@ -87,17 +84,6 @@ function MyGroups() {
     return;
   }
 
-  // async function getAdmin() {
-  //   const response = await fetch("", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "access-token": localStorage.getItem("token"),
-  //     },
-  //   });
-  //   setAdmin(await response.json());
-  // }
-
   async function joinGroup(name) {
     const requestOpt = {
       method: "POST",
@@ -110,6 +96,26 @@ function MyGroups() {
       }),
     };
     fetch("http://127.0.0.1:5000/group/join", requestOpt)
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
+    setTimeout(function () {
+      window.location.reload();
+    }, 20);
+    return;
+  }
+
+  async function leaveGroup(name) {
+    const requestOpt = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        name: name,
+      }),
+    };
+    fetch("", requestOpt)
       .then((response) => response.json())
       .catch((error) => console.log(error));
     setTimeout(function () {
@@ -188,6 +194,7 @@ function MyGroups() {
               >
                 View Members
               </label>
+              <button onClick={() => leaveGroup(d.name)}> Leave Group </button>
               {/* <label className="post-text">{d.id}</label> */}
               {d.admin === 1 ? (
                 <div>
@@ -196,9 +203,7 @@ function MyGroups() {
                   </button>
                 </div>
               ) : (
-                <div>
-                  <label>Not admin</label>
-                </div>
+                <div> </div>
               )}
             </div>
           ))}
