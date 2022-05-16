@@ -1,7 +1,7 @@
 import ShowMap from "./ShowMap";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import ReactPlayer from 'react-player';
+import ReactPlayer from "react-player";
 
 const Posts = () => {
   const [data, setData] = useState([]);
@@ -11,6 +11,21 @@ const Posts = () => {
   const [order, setOrder] = useState("dsc");
   const [searchUser, setSearchUser] = useState("%");
   const [searchGroup, setSearchGroup] = useState("%");
+  const [latitude, setLat] = useState("%");
+  const [longitude, setLng] = useState("%");
+  const [radius, setRadius] = useState("%");
+
+  function setLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
 
   const handleComments = (id) => {
     window.location.pathname = `/comments/${id}`;
@@ -33,13 +48,17 @@ const Posts = () => {
     setSearchUser("%");
     setSearchGroup("%");
     setHashtags("%");
-    const response = await fetch(`http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&tag=${hashtags}&orderby=${orderby}&order=${order}`, {//type=location || date
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": localStorage.getItem("token"),
-      },
-    });
+    const response = await fetch(
+      `http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&tag=${hashtags}&orderby=${orderby}&order=${order}`,
+      {
+        //type=location || date
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("token"),
+        },
+      }
+    );
     setData(await response.json());
     return;
   }
@@ -60,15 +79,24 @@ const Posts = () => {
     if (sort === "") {
       sort = "dsc";
     }
-    const response = await fetch(`http://127.0.0.1:5000/feed/group=${group}&user=${user}&tag=${tag}&orderby=${type}&order=${sort}`, {//type=location || date
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": localStorage.getItem("token"),
-      },
-    });
+    const response = await fetch(
+      `http://127.0.0.1:5000/feed/group=${group}&user=${user}&tag=${tag}&orderby=${type}&order=${sort}`,
+      {
+        //type=location || date
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": localStorage.getItem("token"),
+        },
+      }
+    );
     setData(await response.json());
     return;
+  }
+
+  const onSubmit = () => {
+    console.log("this is working" + latitude + longitude)
+
   }
 
   const handleSearchGroup = () => {
@@ -76,6 +104,9 @@ const Posts = () => {
     let sUser = document.getElementById("searchUser").value;
     let sortValue = document.getElementById("sortValue").value;
     let sTag = document.getElementById("searchTag").value;
+    let sLat = document.getElementById("sortLat").value;
+    let sLng = document.getElementById("sortLng").value;
+    let sRadius = document.getElementById("sortRadius").value;
     let orderValue = "";
     if (sortValue === "location") {
       sortValue = "";
@@ -87,17 +118,35 @@ const Posts = () => {
       orderValue = "date";
     }
 
-    if (sGroup === '') {
-      sGroup = '%';
+    if (sGroup === "") {
+      sGroup = "%";
     }
-    if (sUser === '') {
-      sUser = '%';
+    if (sUser === "") {
+      sUser = "%";
     }
-    if (sTag === '') {
-      sTag = '%';
+    if (sTag === "") {
+      sTag = "%";
     }
-    getPostsFiltered(sGroup, sUser, orderValue, sortValue, sTag);
-  }
+    if (sLat === "") {
+      sLat = "%";
+    }
+    if (sLng === "") {
+      sLng = "%";
+    }
+    if (sRadius === "") {
+      sTag = "%";
+    }
+    getPostsFiltered(
+      sGroup,
+      sUser,
+      orderValue,
+      sortValue,
+      sTag,
+      sLat,
+      sLng,
+      sRadius
+    );
+  };
 
   useEffect(() => {
     getPosts();
@@ -110,33 +159,93 @@ const Posts = () => {
         <div className="dropdown">
           <label>Sort by:</label>
           <div className="sort">
-            <select id="sortValue" className="comConSelect"
-              defaultValue="dsc" onInput={() => handleSearchGroup()}>
+            <select
+              id="sortValue"
+              className="comConSelect"
+              defaultValue="dsc"
+              onInput={() => handleSearchGroup()}
+            >
               <option value={"location"}>Nearest</option>
-              <option value={"dsc"} >Most Recent</option>
-              <option value={"asc"} >Oldest</option>
-              <option value={"furthest"} >Furthest</option>
-            </select></div>
+              <option value={"dsc"}>Most Recent</option>
+              <option value={"asc"}>Oldest</option>
+              <option value={"furthest"}>Furthest</option>
+            </select>
+          </div>
           <div className="filter">
-            <input type="search"
+            <input
+              type="search"
               id="searchGroup"
               placeholder="Search Group..."
-              onInput={() => handleSearchGroup()} />
+              onInput={() => handleSearchGroup()}
+            />
           </div>
           <div className="filter">
-            <input type="search"
+            <input
+              type="search"
               id="searchUser"
               placeholder="Search User..."
-              onInput={() => handleSearchGroup()} />
+              onInput={() => handleSearchGroup()}
+            />
           </div>
           <div className="sort">
-            <input type="search"
+            <input
+              type="search"
               id="searchTag"
               placeholder="Search Tag..."
-              onInput={() => handleSearchGroup()} />
+              onInput={() => handleSearchGroup()}
+            />
           </div>
+          <br></br>
         </div>
+        <label>Sort by a location:</label>
+        <label>Current Location:</label>
+        
+        <form className="add-form" onSubmit={onSubmit}>
+        <input
+          type="radio"
+          name="location"
+          onChange={() => {
+            setLocation();
+          }}
+        />
+          <div className="sort">
+            <br></br>
 
+            <label>Certain Location</label>
+            <br />
+            <input
+              type="search"
+              id="sortLat"
+              placeholder="Search latitude..."
+              onChange={() => setLat()}
+            />
+          </div>
+          <div className="sort">
+            <input
+              type="search"
+              id="sortLng"
+              placeholder="Search Longitude..."
+              onChange={() => setLng()}
+            />
+          </div>
+          <div className="sort">
+            <input
+              type="search"
+              id="sortRadius"
+              placeholder="Type radius..."
+              onChange={() => setRadius()}
+            />
+          </div>
+          <button
+          type="button"
+          className="post feed"
+          onClick={() => {
+            onSubmit();
+          }}
+        >
+          Search
+        </button>
+        </form>
       </div>
       <h1 className="posts heading">Feed:</h1>
       <div className="feed">
@@ -150,10 +259,15 @@ const Posts = () => {
               <div className="card posts">
                 <h3 className="post">{"@" + d["user.username"]}</h3>
                 <label className="post-text">{d.text}</label>
-                {d.video_url === '' ? (
+                {d.video_url === "" ? (
                   <label></label>
                 ) : (
-                  <label className="postvid"><ReactPlayer url={'./videos/'.concat(d.video_url.split('h')[1])} controls={true} /></label>
+                  <label className="postvid">
+                    <ReactPlayer
+                      url={"./videos/".concat(d.video_url.split("h")[1])}
+                      controls={true}
+                    />
+                  </label>
                 )}
 
                 {/* {sortHashtags(d.hashtags_text)}
