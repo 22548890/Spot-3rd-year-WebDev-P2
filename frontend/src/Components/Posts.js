@@ -7,6 +7,10 @@ const Posts = () => {
   const [data, setData] = useState([]);
   const [hashtags, setHashtags] = useState([]);
   const [sort, setSort] = useState("");
+  const [orderby, setOrderby] = useState("date");
+  const [order, setOrder] = useState("dsc");
+  const [searchUser, setSearchUser] = useState("%");
+  const [searchGroup, setSearchGroup] = useState("%");
 
   const handleComments = (id) => {
     window.location.pathname = `/comments/${id}`;
@@ -24,7 +28,11 @@ const Posts = () => {
   }
 
   async function getPosts() {
-    const response = await fetch(`http://127.0.0.1:5000//feed/group=<group_name>&user=<username>&orderby=<orderby>&order=<order>`, {
+    setOrderby("date");
+    setOrder("dsc");
+    setSearchUser("%");
+    setSearchGroup("%");
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${searchGroup}&user=${searchUser}&orderby=${orderby}&order=${order}`, {//type=location || date
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -35,12 +43,84 @@ const Posts = () => {
     return;
   }
 
+  async function getPostsFiltered(group, user, type, sort) {
+    if (user === "") {
+      user = "%";
+    }
+    if (group === "") {
+      group = "%";
+    }
+    if (type === "") {
+      type = "date";
+    }
+    if (sort === "") {
+      sort = "dsc";
+    }
+    const response = await fetch(`http://127.0.0.1:5000/feed/group=${group}&user=${user}&orderby=${type}&order=${sort}`, {//type=location || date
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+    });
+    setData(await response.json());
+    return;
+  }
+
+  const handleSearchGroup = () => {
+    let sGroup = document.getElementById("searchGroup").value;
+    let sUser = document.getElementById("searchUser").value;
+    let sortValue = document.getElementById("sortValue").value;
+    let orderValue = "";
+    if (sortValue === "location") {
+      sortValue = "";
+      orderValue = "location";
+    } else {
+      orderValue = "date";
+    }
+
+    if (sGroup === '') {
+      sGroup = '%';
+    }
+    if (sUser === '') {
+      sUser = '%';
+    }
+    getPostsFiltered(sGroup, sUser, orderValue, sortValue);
+  }
+
   useEffect(() => {
     getPosts();
   }, []);
 
   return (
     <>
+      <div className="card posts">
+        <h3>Sort Feed</h3>
+        <div className="dropdown">
+          <label>Sort by:</label>
+          <div className="sort">
+            <select id="sortValue" className="comConSelect"
+              defaultValue="dsc"  onInput={() => handleSearchGroup()}>
+              <option value={"location"}>Nearest</option>
+              <option value={"dsc"} >Most Recent</option>
+              <option value={"asc"} >Oldest</option>
+            </select></div>
+          <div className="filter">
+            <input type="search"
+              id="searchGroup"
+              placeholder="Search Group..."
+              onInput={() => handleSearchGroup()} />
+          </div>
+          <div className="filter">
+            <input type="search"
+              id="searchUser"
+              placeholder="Search User..."
+              onInput={() => handleSearchGroup()} />
+          </div>
+        </div>
+
+
+      </div>
       <h1 className="posts heading">Feed:</h1>
       <div className="feed">
         {data.length === 0 ? (
@@ -49,38 +129,16 @@ const Posts = () => {
           </div>
         ) : (
           <div>
-            <div className="card posts">
-              <h3>Sort Feed</h3>
-              <div className="dropdown">
-                <label>Sort by:</label>
-                <div className="sort"><select className="comConSelect" 
-                defaultValue="Recent" required >
-                  <option value={"Nearest"}>Nearest</option>
-                  <option value={"Recent"}>Most Recent</option>
-                  <option value={"Oldest"}>Oldest</option>
-                </select></div>
-                <div className="filter">
-                  <label>Filter by:</label>
-                  <select className="comConSelect" defaultValue="All" 
-                  required >
-                    <option value={"Groups"}>My Groups</option>
-                    <option value={"Friends"}>My Friends</option>
-                    <option value={"All"}>All</option>
-                  </select>
-                </div>
-              </div>
-
-            </div>
             {data.map((d) => (
               <div className="card posts">
                 <h3 className="post">{"@" + d["user.username"]}</h3>
                 <label className="post-text">{d.text}</label>
-                {d.video_url == '' ? (
+                {d.video_url === '' ? (
                   <label></label>
                 ) : (
-                  <label className="postvid"><ReactPlayer url = {'./videos/'.concat(d.video_url.split('h')[1])} controls = {true}/></label>
+                  <label className="postvid"><ReactPlayer url={'./videos/'.concat(d.video_url.split('h')[1])} controls={true} /></label>
                 )}
-                
+
                 {/* {sortHashtags(d.hashtags_text)}
                 {hashtags.map(() => (
                   <label></label>
