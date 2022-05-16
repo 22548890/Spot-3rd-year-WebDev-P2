@@ -157,7 +157,7 @@ function MyGroups() {
         />
         {data.length === 0 ? (
           <div className="feed">
-            <label>You are not currently in group</label>
+            <label>You are not currently in any groups</label>
           </div>
         ) : (
           <div className="feed">
