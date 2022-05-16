@@ -2,7 +2,6 @@ from flask import request, jsonify
 from datetime import datetime, timedelta
 from functools import wraps
 import jwt
-import geocoder
 from haversine import haversine
 
 from app import db, ma, app
@@ -165,27 +164,42 @@ comments_schema = CommentSchema(many=True)
 ###################
 #  Authentication
 ###################
+class JWTTokenBlocklist(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    jwt_token = db.Column(db.Text, nullable=False)
+
+    def __init__(self, jwt_token):
+        self.jwt_token = jwt_token
 
 def token_required(f):
-   @wraps(f)
-   def decorator(*args, **kwargs):
-       token = None
-       if 'access-token' in request.headers:
-           token = request.headers['access-token']
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = None
+        if 'access-token' in request.headers:
+            token = request.headers['access-token']
  
-       if not token:
-           return jsonify({'message': 'a valid token is missing'})
-       try:
-           data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
-           current_user = User.query.filter_by(id=data['id']).first()
-       except:
-           return jsonify({
-               'timeout':"true",
-               'message': 'token is invalid'})
- 
-       return f(current_user, *args, **kwargs)
-   return decorator
+        if not token:
+            return jsonify({'message': 'a valid token is missing'})
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            current_user = User.query.filter_by(id=data['id']).first()
+        except:
+            token_expired = JWTTokenBlocklist.query.filter_by(jwt_token=token).first()
+            if token_expired is not None:
+                db.session.delete(token_expired)
+                db.session.commit()
+            return jsonify({
+                'timeout':"true",
+                'message': 'token is invalid'})
 
+        token_expired = JWTTokenBlocklist.query.filter_by(jwt_token=token).first()
+        if token_expired is not None:
+            return jsonify({
+                'timeout':"true",
+                'message': 'token is invalid'})
+ 
+        return f(current_user, *args, **kwargs)
+    return decorator
 
 db.create_all()
 db.session.commit()

@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Group, Membership, Post, Comment, Hashtag, token_required
+from app.models import User, Group, Membership, Post, Comment, Hashtag, JWTTokenBlocklist, token_required
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -49,7 +49,7 @@ def login():
 
     if check_password_hash(user.password_hash, password):
         if not remember_me:
-            token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(minutes=30)}, app.config['SECRET_KEY'], algorithm="HS256")
+            token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+app.config['ACCESS_TOKEN_EXPIRES']}, app.config['SECRET_KEY'], algorithm="HS256")
         else :
             token = jwt.encode({'id':user.id}, app.config['SECRET_KEY'], algorithm="HS256")
             
@@ -62,6 +62,19 @@ def login():
             'success': False,
             'msg': 'Incorrect password'
         }
+
+@app.route('/logout', methods = ['POST'])
+@cross_origin()
+@token_required
+def logout(current_user):
+    token = request.headers['access-token']
+    blocked = JWTTokenBlocklist(token)
+    
+    db.session.add(blocked)
+    db.session.commit()
+    return {
+        'success': True
+    }
 
 @app.route('/group/create', methods = ['POST'])
 @cross_origin()
