@@ -87,6 +87,52 @@ const ShowGroup = () => {
     return;
   }
 
+  async function leaveGroup(name) {
+    const requestOpt = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        name: name,
+      }),
+    };
+    fetch("http://127.0.0.1:5000/group/leave", requestOpt)
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
+    // setTimeout(function () {
+    //   window.location.reload();
+    // }, 20);
+    handleViewGroups();
+    return;
+  }
+
+  const handleDelete = (groupName) => {
+    const requestOpt = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        group_name: groupName,
+      }),
+    };
+    async function fetchFunc() {
+      return await fetch(`http://127.0.0.1:5000/group/delete`, requestOpt)
+        .then((response) => response.json())
+        .catch((error) => console.log(error));
+    }
+    (async () => {
+      await fetchFunc();
+    })();
+    alert("Deleted " + groupName + " group");
+    // window.location.reload();
+    handleViewGroups();
+    return;
+  };
+
   useEffect(() => {
     getGroupInfo();
   }, []);
@@ -149,6 +195,18 @@ const ShowGroup = () => {
       <div className="card feed">
         <table>
           <tbody>
+            <div>
+              <button onClick={() => leaveGroup(group.name)}>
+                Leave Group
+              </button>
+              {group.admin == 1 ? (
+                <button onClick={() => handleDelete(group.name)}>
+                  Delete Group
+                </button>
+              ) : (
+                <label></label>
+              )}
+            </div>
             {data.map((d) => (
               <>
                 <tr key={d.id}>
@@ -168,28 +226,27 @@ const ShowGroup = () => {
                   <td>
                     {group.admin == 1 ? (
                       <div>
-                      {d.username === user.username ? (
-                        <label></label>
-                      ) : (
-                        <div>
-                        {d.admin === 1 ? (
+                        {d.username === user.username ? (
                           <label></label>
                         ) : (
-                          <button
-                          className="follow"
-                          onClick={() => {
-                            makeAdmin(d.id);
-                          }}
-                        >
-                          Make Admin
-                        </button>
+                          <div>
+                            {d.admin === 1 ? (
+                              <label></label>
+                            ) : (
+                              <button
+                                className="follow"
+                                onClick={() => {
+                                  makeAdmin(d.id);
+                                }}
+                              >
+                                Make Admin
+                              </button>
+                            )}
+                          </div>
                         )}
-                        </div>
-                      )}
-                    </div>
+                      </div>
                     ) : (
                       <label></label>
-                      
                     )}
                   </td>
                 </tr>
@@ -198,7 +255,9 @@ const ShowGroup = () => {
           </tbody>
         </table>
       </div>
-      
+      <button className="styleBtn" onClick={handleViewGroups}>
+        Back{" "}
+      </button>
     </>
   );
 };

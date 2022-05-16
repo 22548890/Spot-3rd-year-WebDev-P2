@@ -143,7 +143,9 @@ export default function UpdateProfile() {
             className="img-upload"
             type="url"
             placeholder={"Enter URL"}
-            defaultValue={data.avatar_url}
+            defaultValue={
+              "https://cdn.mos.cms.futurecdn.net/T7KjBY3bvJN2RJi65MP57N-1024-80.jpg.webp"
+            }
           />
           <label>Username:</label>
           <input
