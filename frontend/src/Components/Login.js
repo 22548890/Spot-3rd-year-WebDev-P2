@@ -62,10 +62,8 @@ const Edit = ({
                 <input type="checkbox" id="rememberMe" /> <label for="rememberMe">Remember me</label>
             </div>
 
-            <button type="submit" className="styleBtn login">LOGIN </button>
-            <div>
-                <button className="CRegBtn" onClick={handleSignup}>Sign up</button>
-            </div>
+            <button type="submit" className="login-btn">Login</button>
+            <button className="signup-btn" onClick={handleSignup}>Sign up</button>
 
         </form>
     </div>

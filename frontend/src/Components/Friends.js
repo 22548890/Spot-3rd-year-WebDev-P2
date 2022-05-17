@@ -128,73 +128,65 @@ const Friends = () => {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo" onClick={handleHome}>
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
+      
+      <div className="container">
+        <div className="left-side">
+            <div className="logo">
+                <img
+                  src={logo}
+                  className="logoNav"
+                  alt="Test"
+                  height="75"
+                  width="75"
+                />
+              </div>
+              <button className="styleBtn" onClick={handleHome}>
+                Back{" "}
+              </button>
+              <button onClick={handleViewProfile}> Profile</button>                    
+              <button onClick={handleViewGroups}> Groups</button>
+              <button className="styleBtn" onClick={handleLogout}>Logout</button>
+        </div>
+
+        <div className="right-side-groups">
+          <h1>Friends</h1>
+          <div className="friends">
+          <input
+            type="search"
+            id="searchFriendUser"
+            className="friendsSearch"
+            placeholder="Search User..."
+            onInput={() => handleSearchFriends()}
+          />
+          <table>
+            <tbody>
+              {friends.length == 0 ? (
+                <label className="post feed">No users to display</label>
+              ) : (
+                <>
+                  {friends.map((f) => (
+                    <tr key={f.id}>
+                      <td>{f.username}</td>
+                      <td>
+                        <button
+                          className="follow-status"
+                          onClick={() => {
+                            removeFriend(f.id);
+                          }}
+                        >
+                          unfollow
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
           </div>
 
-          <ul id="menu">
-            <li>
-              <a onClick={"nothing"}> Friends</a>
-            </li>
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div className="friends friends2 friends3">
-        <h3>Friends</h3>
-        <input
-          type="search"
-          id="searchFriendUser"
-          className="friendsSearch"
-          placeholder="Search User..."
-          onInput={() => handleSearchFriends()}
-        />
-        <table>
-          <tbody>
-            {friends.length == 0 ? (
-              <label className="post feed">No users to display</label>
-            ) : (
-              <>
-                {friends.map((f) => (
-                  <tr key={f.id}>
-                    <td>{f.username}</td>
-                    <td>
-                      <button
-                        className="follow"
-                        onClick={() => {
-                          removeFriend(f.id);
-                        }}
-                      >
-                        unfollow
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </>
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div className="users users2 users3">
-        <h3>Other Users</h3>
+          <h1>Other Users</h1>
+          <div className="friends">
         <input
           type="search"
           id="searchNonFriendUser"
@@ -214,7 +206,7 @@ const Friends = () => {
 
                     <td>
                       <button
-                        className="follow"
+                        className="follow-status"
                         onClick={() => {
                           addFriend(u.id);
                         }}
@@ -224,13 +216,12 @@ const Friends = () => {
                     </td>
                   </tr>
                 ))}
-                <button className="styleBtn" onClick={handleHome}>
-                  Back{" "}
-                </button>
               </>
             )}
           </tbody>
         </table>
+          </div>
+        </div>
       </div>
     </>
   );

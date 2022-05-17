@@ -149,33 +149,37 @@ const AddPost = () => {
   };
 
   return (
-    <div className="card posts feed">
+    <div className="header">
       {/* <label>{sessionStorage.getItem('token')}</label> */}
       <form className="add-form" onSubmit={onSubmit}>
         <div className="form-control">
-          <label className="post">Post:</label>
-          <input
+          <h3>Post</h3>
+          <textarea
             className="post"
             type="text"
             placeholder="Post message..."
             onChange={(e) => setText(e.target.value)}
           />
         </div>
-        <div className="form-control">
-          <label className="post">Hashtags for Post(include at least 3):</label>
-          <br></br>
+        <div className="post-elements">
           <input
             className="post"
             type="text"
-            placeholder="#hash1#hash2#hash3"
+            placeholder="#Atleast#3#Hashtags"
             onChange={(e) => setHashtags(e.target.value)}
           />
-        </div>
-        <div className="form-control">
-          <label>Choose Group:</label>
-          <span> </span>
+          <label className="vid">
+            <input
+            type="file"
+            accept="video/mp4,video/x-m4v,video/*"
+            className="video-file"
+            onChange={(e) => setVid(e.target.value)}
+            />
+            <label className="upvid">Upload video</label>
+          </label>
+         
           <select
-            className="comConSelect"
+            className="tab"
             required
             id="group_name"
             // value={group_name}
@@ -189,51 +193,55 @@ const AddPost = () => {
             ))}
           </select>
         </div>
-        <div className="form-control">
-          <label className="post">Video File:</label>
-
+        
+        
+        <div className="post-elements2">
+          <label  className="location-man">Share Location(Manually):</label>
           <input
-            type="file"
-            className="post"
-            onChange={(e) => setVid(e.target.value)}
-          />
-        </div>
-
-        <div className="form-control form-control-check">
-          <label>Share Location(automatic):</label>
-          <input
-            type="radio"
-            name="location"
-            onChange={() => {
-              setLocation();
-            }}
-          />
-        </div>
-        <div className="form-control">
-          <label>Share Location(Manually):</label>
-          <br></br>
-          <input
-            className="post"
+            className="latitude"
             type="text"
             placeholder="latitude..."
             onChange={(e) => setLat(e.target.value)}
           />
-          <br></br>
           <input
-            className="post"
+            className="longitude"
             type="text"
             placeholder="longitude..."
             onChange={(e) => setLon(e.target.value)}
           />
         </div>
-        <button
-          className="post"
-          onClick={() => {
-            onSubmit();
-          }}
-        >
-          Add Post
-        </button>
+
+
+        <div className="post-elements2">
+          <div className="radio-btn">
+            <label className="text">Share Location(automatic):</label>
+            <input
+              type="radio"
+              name="location"
+              className="auto-radio"
+              onChange={() => {
+                setLocation();
+              }}
+            />
+          </div>
+          <div className="post-btn-div">
+            <button
+              className="post-btn"
+              onClick={() => {
+                onSubmit();
+              }}
+              >
+              Add Post
+          </button>
+          </div>
+        </div>
+
+
+
+
+        
+       
+        
       </form>
     </div>
   );

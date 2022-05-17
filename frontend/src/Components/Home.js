@@ -38,8 +38,16 @@ function Home() {
   }
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
+<div className="container">
+      <div class="center">
+        {/* <div class="header"> */}
+        <AddPost></AddPost>
+        <Posts></Posts>
+        {/* </div> */}
+        
+      </div>
+
+      <div className="left-side">
           <div className="logo">
             <img
               src={logo}
@@ -49,29 +57,17 @@ function Home() {
               width="75"
             />
           </div>
+            <button onClick={handleViewProfile}> Profile</button> 
+            <button onClick={handleFriends}> Friends</button>
+            <button onClick={handleViewGroups}> Groups</button>
+            <BigMap></BigMap>
+            <button className="styleBtn" onClick={handleLogout}>
+              Logout{" "}
+            </button>
 
-          <ul id="menu">
-            <li>
-              <a onClick={handleFriends}> Friends</a>
-            </li>
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div>
-        <AddPost></AddPost>
-        <BigMap></BigMap>
-        <Posts></Posts>
+      </div>
+      
+        
       </div>
     </>
   );

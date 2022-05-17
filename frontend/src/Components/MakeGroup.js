@@ -45,12 +45,12 @@ const MakeGroup = () => {
   return (
     <>
       <h1 className="posts heading">Create a Group</h1>
-      <div className="card posts feed">
+      <div className="create1">
         {/* <label>{sessionStorage.getItem('token')}</label> */}
-        <form className="add-form" onSubmit={onSubmit}>
+        <form className="groups" onSubmit={onSubmit}>
           <div className="form-control">
             <label className="field">Group Name:</label>
-            <div className="group">
+            <div className="groups">
             <input
               className="post"
               type="text"

@@ -161,36 +161,97 @@ const ShowGroup = () => {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo" onClick={handleHome}>
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
-          </div>
-
-          <ul id="menu">
-            <li>
-              <a onClick={handleFriends}> Friends</a>
-            </li>
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout
+      <div className="container">
+        <div className="left-side">
+              <button className="styleBtn" onClick={handleViewGroups}>
+                Back{" "}
               </button>
-            </li>
-          </ul>
+              <button onClick={handleViewProfile}> Profile</button>                    
+              <button className="styleBtn" onClick={handleLogout}>Logout</button>
         </div>
-      </nav>
+
+        
+        <div className="right-side-groups">
+          
+        <h1>Group</h1>
+        <h3 className="posts heading">{group.name}</h3>
+          <div className="group">
+            
+            <table>
+              <tbody>
+                <div className="viewgroup">
+                  <button className="leaveBtn" onClick={() => leaveGroup(group.name)}>
+                    Leave Group
+                  </button>
+                  {group.admin == 1 ? (
+                    <button  className="deleteBtn" onClick={() => handleDelete(group.name)}>
+                      Delete Group
+                    </button>
+                  ) : (
+                    <label></label>
+                  )}
+                </div>
+                {data.map((d) => (
+                  <>
+                    <tr key={d.id}>
+                      <td>
+                        {d.username === user.username ? (
+                          <label className="text2">{d.username}(You)</label>
+                        ) : (
+                          <div className="admin">
+                            {d.admin === 1 ? (
+                              <label className="text">{d.username}(Admin)</label>
+                            ) : (
+                              <label className="text">{d.username}(Member)</label>
+                            )}
+                          </div>
+                        )}
+                      </td>
+                      <td>
+                        {group.admin == 1 ? (
+                          <div className="admin">
+                            {d.username === user.username ? (
+                              <label></label>
+                            ) : (
+                              <div className="admin">
+                                {d.admin === 1 ? (
+                                  <label></label>
+                                ) : (
+                                  <button
+                                    className="follow"
+                                    onClick={() => {
+                                      makeAdmin(d.id);
+                                    }}
+                                  >
+                                    Make Admin
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <label></label>
+                        )}
+                      </td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+
+
+
       <h1 className="posts heading">{group.name}</h1>
       <div className="card feed">
         <table>
@@ -255,6 +316,8 @@ const ShowGroup = () => {
           </tbody>
         </table>
       </div>
+
+
       <button className="styleBtn" onClick={handleViewGroups}>
         Back{" "}
       </button>

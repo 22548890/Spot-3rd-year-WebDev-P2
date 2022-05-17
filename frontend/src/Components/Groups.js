@@ -115,92 +115,86 @@ function MyGroups() {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo" onClick={handleHome}>
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
+      <div className="container">
+        <div className="left-side">
+          <div className="logo">
+              <img
+                src={logo}
+                className="logoNav"
+                alt="Test"
+                height="75"
+                width="75"
+              />
+            </div>
+                      <button onClick={handleViewProfile}> Profile</button> 
+                      <button onClick={handleFriends}> Friends</button>                    
+                      <button className="styleBtn" onClick={handleHome}>
+                        Back{" "}
+                      </button>
+          </div>
+          <div className="right-side-groups ">
+            <MakeGroup></MakeGroup>
+
+            <h1 className="posts heading">My Groups</h1>
+            <div className="groups">
+              <input
+                type="search"
+                id="searchMyGroup"
+                placeholder="Search Group..."
+                onInput={() => handleSearchMyGroups()}
+              />
+              {data.length === 0 ? (
+                <div className="feed">
+                  <label>You are not currently in any groups</label>
+                </div>
+              ) : (
+                <div className="feed">
+                  {data.map((d) => (
+                    <div className="groups">
+                      <label className="namegroup">{d.name}</label>
+                      <button
+                        className="show-comment"
+                        onClick={() => handleShowGroup(d.id)}
+                      >
+                        View Group
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+
+
+            <h1 className="posts heading">All Groups</h1>
+            <div className="groups">
+              <input
+                type="search"
+                id="searchAllGroup"
+                placeholder="Search Group..."
+                onInput={() => handleSearchAllGroups()}
+              />
+              {dataAllGroups.length === 0 ? (
+                <div className="feed">
+                <label>There are no groups to join</label>
+                </div>
+              ) : (
+                <div className="group-box">
+                  {dataAllGroups.map((d) => (
+                    <div className="groups">
+                      <label className="namegroup">{d.name}</label>
+                      {/* <label className="post-text">{d.id}</label> */}
+                      <button onClick={() => joinGroup(d.name)}> Join Group </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          <ul id="menu">
-            <li>
-              <a onClick={handleFriends}> Friends</a>
-            </li>
-            <li>
-              <a> Groups</a>
-            </li>
-            <li>
-              <a onClick={handleViewProfile}> Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <MakeGroup></MakeGroup>
-
-      <h1 className="posts heading">My Groups</h1>
-      <div className="card feed">
-        <input
-          type="search"
-          id="searchMyGroup"
-          placeholder="Search Group..."
-          onInput={() => handleSearchMyGroups()}
-        />
-        {data.length === 0 ? (
-          <div className="feed">
-            <label>You are not currently in any groups</label>
-          </div>
-        ) : (
-          <div className="feed">
-            {data.map((d) => (
-              <div className="groups">
-                <label className="post-text">{d.name}</label>
-                <label
-                  className="show-comment"
-                  onClick={() => handleShowGroup(d.id)}
-                >
-                  View Group
-                </label>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
-      <h1 className="posts heading">All Groups</h1>
-      <div className="card feed">
-        <input
-          type="search"
-          id="searchAllGroup"
-          placeholder="Search Group..."
-          onInput={() => handleSearchAllGroups()}
-        />
-        {dataAllGroups.length === 0 ? (
-          <label>There are no groups to join</label>
-        ) : (
-          <div className="feed ">
-            {dataAllGroups.map((d) => (
-              <div className="groups">
-                <label className="post-text">{d.name}</label>
-                {/* <label className="post-text">{d.id}</label> */}
-                <button onClick={() => joinGroup(d.name)}> Join Group </button>
-              </div>
-            ))}
-          </div>
-        )}
-        <button className="back" onClick={handleHome}>
-          Back
-        </button>
-      </div>
+
     </>
   );
 }

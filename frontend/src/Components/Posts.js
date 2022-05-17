@@ -232,32 +232,10 @@ const Posts = () => {
 
   return (
     <>
-      <div className="card posts">
+      <div className="selection">
         <h3>Sort Feed</h3>
-        <div className="dropdown">
-          <label>Sort by:</label>
-          <div className="sort">
-            <select
-              id="sortValue"
-              className="comConSelect"
-              defaultValue="dsc"
-              onInput={() => handleSearchGroup()}
-            >
-              {locationShared ? (
-                <>
-                  <option value={"location"}>Nearest</option>
-                  <option value={"dsc"}>Most Recent</option>
-                  <option value={"asc"}>Oldest</option>
-                  <option value={"furthest"}>Furthest</option>
-                </>
-              ) : (
-                <>
-                  <option value={"dsc"}>Most Recent</option>
-                  <option value={"asc"}>Oldest</option>
-                </>
-              )}
-            </select>
-          </div>
+        {/* <label className="text2">Sort by:</label> */}
+        <div className="sort-user-group">       
           <div className="filter">
             <input
               type="search"
@@ -282,29 +260,57 @@ const Posts = () => {
               onInput={() => handleSearchGroup()}
             />
           </div>
-          <br></br>
+          <div className="filter">
+            <select
+              id="sortValue"
+              className="comConSelect"
+              defaultValue="dsc"
+              onInput={() => handleSearchGroup()}
+            >
+              {locationShared ? (
+                <>
+                  <option value={"location"}>Nearest</option>
+                  <option value={"dsc"}>Most Recent</option>
+                  <option value={"asc"}>Oldest</option>
+                  <option value={"furthest"}>Furthest</option>
+                </>
+              ) : (
+                <>
+                  <option value={"dsc"}>Most Recent</option>
+                  <option value={"asc"}>Oldest</option>
+                </>
+              )}
+            </select>
+          </div>
         </div>
-        <label>Sort by a location:</label>
-        <label>Current Location:</label>
 
-        <form className="add-form">
-          <input
-            type="checkbox"
-            id="checkLoc"
-            name="location"
-            onChange={() => {
-              setLocation();
-              setLocTrue(true);
-              setLocTrue(false);
-            }}
-          />
-          {showLoc ? (
+        {/* <label className="text2">Sort by location:</label> */}
+        
+
+        <form className="sort-usesr-group">
+          <div className="sort-user-group">
+            <div className="filter1">
+                        <label className="text1">Current Location:</label>
+                                  <input
+                                  className="checkbox"
+                                    type="checkbox"
+                                    id="checkLoc"
+                                    name="location"
+                                    onChange={() => {
+                                      setLocation();
+                                      setLocTrue(true);
+                                      setLocTrue(false);
+                                    }}
+                                  />
+                      </div>
+          </div>
+          
+          <label className="text" >Certain Location:</label >
+          <div className="sort-user-group">
+           
+            {showLoc ? (
             <>
-              <div className="sort">
-                <br></br>
-
-                <label>Certain Location</label>
-                <br />
+              <div className="filter">
                 <input
                   type="search"
                   id="sortLat"
@@ -312,7 +318,7 @@ const Posts = () => {
                   onChange={() => setLat()}
                 />
               </div>
-              <div className="sort">
+              <div className="filter">
                 <input
                   type="search"
                   id="sortLng"
@@ -324,7 +330,7 @@ const Posts = () => {
           ) : (
             <></>
           )}
-          <div className="sort">
+          <div className="filter">
             <input
               type="search"
               id="sortRadius"
@@ -332,19 +338,31 @@ const Posts = () => {
               onChange={() => setRadius()}
             />
           </div>
-          <button
+          </div>
+        
+
+          
+          
+          
+        </form>
+        <button
             type="button"
-            className="post feed"
+            className="search-btn"
             onClick={() => {
               onSubmitLocation();
             }}
           >
             Search
           </button>
-        </form>
       </div>
-      <h1 className="posts heading">Feed:</h1>
-      <div className="feed">
+
+
+
+
+
+
+      {/* <h1 className="posts heading">Feed:</h1> */}
+      <div className="content">
         {data.length === 0 ? (
           <div className="card posts">
             <label>There are no posts to show</label>
@@ -352,37 +370,46 @@ const Posts = () => {
         ) : (
           <div>
             {data.map((d) => (
-              <div className="card posts">
-                <h3 className="post">{"@" + d["user.username"]}</h3>
-                <label className="post-text">{d.text}</label>
-                {d.video_url === "" ? (
-                  <label></label>
-                ) : (
-                  <label className="postvid">
-                    <ReactPlayer
-                      url={"/videos/".concat(d.video_url.split("h")[1])}
-                      controls={true}
-                    />
-                  </label>
-                )}
-                <label>{d["group.name"]}</label>
-                <label>{d.hashtags_text}</label>
-                <label>
+              <div className="single-post">
+                <div className="user-group-name">
+                  <label className="username">{"@" + d["user.username"]}</label>
+                  <label className="groupname">{d["group.name"]}</label>
+                  <label className="post-time">
                   {moment(d.date).format("hh:mm A") +
                     " - " +
                     moment(d.date).format("DD/MM")}
                 </label>
-                <label
-                  className="show-comment"
+                </div>
+                <p className="post-text">{d.text}</p>
+
+
+                {d.video_url === "" ? (
+                  <label></label>
+                ) : (
+                  <div className="post-vid">
+                    <ReactPlayer
+                      url={"/videos/".concat(d.video_url.split("h")[1])}
+                      controls={true}
+                      className="react-player" width="100%" height="100%"
+                    />
+                  </div>
+                )}
+                
+                <label className="hashtag">{d.hashtags_text}</label>
+                
+                <div className="button-map-elements">
+                  {d.latitude == null ? (
+                    <label></label>
+                  ) : (
+                    <ShowMap lat={d.latitude} lng={d.longitude}></ShowMap>
+                  )}
+                  <button
+                  className="show-comment-btn"
                   onClick={() => handleComments(d.id)}
                 >
                   Show Comments
-                </label>
-                {d.latitude == null ? (
-                  <label></label>
-                ) : (
-                  <ShowMap lat={d.latitude} lng={d.longitude}></ShowMap>
-                )}
+                </button>
+                </div>               
               </div>
             ))}
           </div>

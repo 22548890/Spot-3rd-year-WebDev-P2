@@ -124,37 +124,8 @@ export default function UpdateProfile() {
 
   return (
     <>
-      <nav id="navbar" class="">
-        <div className="nav-wrapper">
-          <div className="logo" onClick={handleHome}>
-            <img
-              src={logo}
-              className="logoNav"
-              alt="Test"
-              height="75"
-              width="75"
-            />
-          </div>
 
-          <ul id="menu">
-            <li>
-              <a onClick={handleFriends}> Friends</a>
-            </li>
-            <li>
-              <a onClick={handleViewGroups}> Groups</a>
-            </li>
-            <li>
-              <a > Profile</a>
-            </li>
-            <li>
-              <button className="styleBtn" onClick={handleLogout}>
-                Logout{" "}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div className="card feed">
+      <div className="card">
         <div className="field">
           <h2>My Profile:</h2>
           <img
@@ -196,11 +167,14 @@ export default function UpdateProfile() {
             required
           />
 
-          <button className="UpdateBtn" onClick={UpdateProfile}>
+          <button className="update-btn" onClick={UpdateProfile}>
             Update Profile
           </button>
-          <button className="deleteBtn" onClick={handleDelete}>
+          <button className="delete-btn" onClick={handleDelete}>
             Delete Account
+          </button>
+          <button className="home-btn" onClick={handleHome}>
+            Back Home
           </button>
         </div>
       </div>

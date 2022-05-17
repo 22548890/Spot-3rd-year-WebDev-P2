@@ -57,16 +57,16 @@ const BigMap = () => {
   }, []);
 
   return (
-    <div className="card posts feed">
-      <label> See Posts Around You</label>
+    <div className="show-map-container">
+      {/* <label> See Posts Around You</label> */}
 
-      <div>
+      <div className="show-map-container">
         {sMap ? (
-          <div className="post">
+          <div className="show-map-container">
             <MapContainer
               center={position}
               zoom={13}
-              style={{ width: "500px", height: "500px", position: "center" }}
+              style={{width: "auto", height: "500px", position: "center" , margin: "5px 0px 0px 0px"}}
               scrollWheelZoom={false}
             >
               <TileLayer
@@ -93,12 +93,12 @@ const BigMap = () => {
                               moment(d.date).format("DD/MM")}
                           </label>
                           <br></br>
-                          <label
+                          <button
                             className="show-comment"
                             onClick={() => handleComments(d.id)}
                           >
                             Go to Post
-                          </label>
+                          </button>
                         </div>
                       </Popup>
                     </Marker>
@@ -107,7 +107,7 @@ const BigMap = () => {
               ))}
             </MapContainer>
             <button
-              className="post"
+              // className="post"
               onClick={() => {
                 setMap(false);
               }}
@@ -117,7 +117,7 @@ const BigMap = () => {
           </div>
         ) : (
           <button
-            className="post"
+            // className="post"
             onClick={() => {
               {
                 lat == null ? setLocation() : setMap(true);

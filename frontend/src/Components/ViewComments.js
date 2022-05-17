@@ -79,73 +79,83 @@ export default function ViewComments() {
     }, [])
     return (
         <>
-            <nav id="navbar" class="">
-                <div className="nav-wrapper">
-                    <div className="logo" onClick={handleBack}>
-                        <img src={logo} className="logoNav" alt="Test" height="75" width="75" />
+        <div className="container">
+                    <div className="left-side">
+                        <button className="styleBtn" onClick={handleBack}>
+                        Back{" "}
+                        </button>
+                        <button onClick={handleViewProfile}> Profile</button>
+                        <button onClick={handleFriends}> Friends</button>
+                        <button onClick={handleViewGroups}> Groups</button>
+                        <button className="styleBtn" onClick={handleLogout} >Logout </button>
+                    </div>
+                    <div className='right-side-groups'>
+                        <div className="single-post">
+                            <div className='user-group-name'>
+                                <label className="username">{"@" + dataPost["user.username"]}</label>
+                                <label className='post-time'>{moment(dataPost.date).format('hh:mm A') + " - " + moment(data.date).format("DD/MM")}</label>
+
+                            </div>
+                            
+                            <p className="comment-post-text">{dataPost.text}</p>
+
+                            {/* {dataPost.video_url === '' ? (
+                                <label></label>
+                                ) : (
+                                <div className="post-vid">
+                                    <ReactPlayer url={'./videos/'.concat(dataPost.video_url)} controls={true} className="react-player" width="100%" height="100%"/>    
+                                </div>
+                                
+                                )} */}
+                            
+                            <label className='hashtag'>{dataPost.hashtags_text}</label>
+                            <label className='location'>Location: {dataPost.latitude+" "+dataPost.longitude}</label>
+                            <div className="button-map-elements">
+                                {dataPost.latitude == null ? (
+                                <label></label>
+                                ) : (
+                                    // <div>
+                                    <ShowMap lat={dataPost.latitude} lng={dataPost.longitude}></ShowMap>
+                                    // </div>
+                                )}
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <div className="make-comment">
+                            {/* <label className="post">Add a Comment: </label> */}
+                            <input className="add-comment" id="comment" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />
+                            <button className="post-btn" onClick={onSubmit}>Post comment</button>
+                        </div>
+
+                        <div className='scrollcomment'>
+                            <h1 className="posts heading">Comments:</h1>
+                            <div className="comment-card">
+                                {data.map((d) => (
+                                    <>  
+                                    <div className='post'>
+                                    <div className='user-group-name'>
+                                    <label className="username">{"@" + dataPost["user.username"]}</label>
+                                    <label className='post-time'>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
+                                    </div>
+                                        <p className="post-text">{d.text} </p>
+                                        
+                                    </div>
+                                        
+
+                                    </>
+
+                                ))}
+                            </div>
+                        </div>
+                        
 
                     </div>
+        </div>
 
-                    <ul id="menu">
-                        <li>
-                            <a onClick={handleFriends}> Friends</a>
-                        </li>
-                        <li>
-                            <a onClick={handleViewGroups}> Groups</a>
-                        </li>
-                        <li>
-                            <a onClick={handleViewProfile}> Profile</a>
-                        </li>
-                        <li>
-                            <button className="styleBtn" onClick={handleLogout} >Logout </button>
-                        </li>
-                    </ul>
-                </div>
 
-            </nav>
-            <div>
-                <div className="feed">
-                    {/* {data.map((d) => ( */}
-                    <div>
             
-              <div className="card posts">
-                <h3 className="post">{"@" + dataPost["user.username"]}</h3>
-                <label className="post-text">{dataPost.text}</label>
-                <label>{dataPost["group.name"]}</label>
-                <label>{dataPost.hashtags_text}</label>
-                <label>
-                  {moment(dataPost.date).format("hh:mm A") +
-                    " - " +
-                    moment(dataPost.date).format("DD/MM")}
-                </label>
-                {dataPost.latitude == null ? (
-                  <label></label>
-                ) : (
-                  <ShowMap lat={dataPost.latitude} lng={dataPost.longitude}></ShowMap>
-                )}
-              </div>
-            
-          </div>
-                    {/* ))} */}
-                </div>
-                {/* <button onClick={handleBack} className="comment back-btn">Return to posts</button> */}
-                <div className="card posts feed">
-                    <label className="post">Add a Comment: </label>
-                    <input className="post" id="comment" type="text" placeholder="Add a comment..." onChange={(e) => setText(e.target.value)} />
-                    <button className="post" onClick={onSubmit}>Comment</button>
-                </div>
-                <h1 className="posts heading">Comments:</h1>
-                <div className="card posts feed">
-                    {data.map((d) => (
-                        <>
-                            <label className="post-text">{d.text + " ~ " + d['user.username']} </label>
-                            <label>{moment(d.date).format('hh:mm A') + " - " + moment(d.date).format("DD/MM")}</label>
-
-                        </>
-
-                    ))}
-                </div>
-            </div>
         </>
     )
 
