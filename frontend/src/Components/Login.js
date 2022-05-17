@@ -114,7 +114,7 @@ class Login extends React.Component {
             body: JSON.stringify({
                 'username': data.email,
                 'password': data.password,
-                'remember_me': document.getElementById("rememberMe").checked,
+                'remember_me': document.getElementById("rememberme"),
             }),
         }
         async function fetchFunc() {
@@ -125,6 +125,7 @@ class Login extends React.Component {
         (async () => {
             let info = await fetchFunc();
             if (info.success) { // correct login info
+                localStorage.clear();
                 localStorage.setItem("token", info.token);
                 localStorage.setItem("isAuthenticated", true);
                 window.location.pathname = "/";

@@ -66,7 +66,7 @@ const BigMap = () => {
             <MapContainer
               center={position}
               zoom={13}
-              style={{width: "auto", height: "500px", position: "center" , margin: "5px 0px 0px 0px"}}
+              style={{width: "500px", height: "500px", position: "center" , margin: "5px 0px 0px 0px"}}
               scrollWheelZoom={false}
             >
               <TileLayer
