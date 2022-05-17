@@ -51,11 +51,11 @@ def login():
         if not remember_me:
             token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+app.config['ACCESS_TOKEN_EXPIRES']}, app.config['SECRET_KEY'], algorithm="HS256")
         else :
-            token = jwt.encode({'id':user.id}, app.config['SECRET_KEY'], algorithm="HS256")
+            token = jwt.encode({'id':user.id, 'exp':datetime.utcnow()+timedelta(days=365)}, app.config['SECRET_KEY'], algorithm="HS256")
             
         return {
             'success': True,
-            'token':token#.decode('utf8')
+            'token':token.decode('utf8')
         }
     else:
         return {
