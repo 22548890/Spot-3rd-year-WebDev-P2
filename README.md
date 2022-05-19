@@ -1,4 +1,4 @@
-# DevCo
+# This is the incorrect branch -> branch SpotV10CSS in the final push
 
 
 
@@ -20,10 +20,3 @@ Ansar Kurrimboccus
 Jayden Abrahams
 
 
-## Project Demo link:
-
-
-
-## Project Report link:
-
-https://docs.google.com/document/d/1Kwvinl9qwd2iudi-7Wn3r7HdimUCPiXr_37U85O1CGQ/edit
